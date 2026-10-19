@@ -136,10 +136,42 @@ function mahjong(){
  start(1);cleanup=()=>{};
 }
 
+
+function snake(){
+ host.innerHTML='<div class="score-line" id="snake-score">SCORE 0 · NIVEAU 1</div><canvas class="game-canvas" width="600" height="360"></canvas><div class="game-note">Utilise les flèches du clavier pour diriger le serpent et manger les étoiles. Évite les murs et ton corps.</div>';
+ const c=host.querySelector('canvas'),x=c.getContext('2d'),line=host.querySelector('#snake-score');
+ const cell=20,cols=30,rows=18; let body=[{x:8,y:9},{x:7,y:9},{x:6,y:9}],dir={x:1,y:0},next={x:1,y:0},food={x:18,y:9},score=0,dead=false,tick=0,raf;
+ function spawn(){let f;do{f={x:Math.floor(Math.random()*cols),y:Math.floor(Math.random()*rows)}}while(body.some(b=>b.x===f.x&&b.y===f.y));food=f;}
+ function key(e){const map={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0}};if(map[e.key]){e.preventDefault();let n=map[e.key];if(n.x!==-dir.x||n.y!==-dir.y)next=n;}if(dead&&e.key==='Enter')reset();}
+ function reset(){body=[{x:8,y:9},{x:7,y:9},{x:6,y:9}];dir=next={x:1,y:0};score=0;dead=false;tick=0;spawn();}
+ function draw(){x.fillStyle='#06101f';x.fillRect(0,0,c.width,c.height);x.strokeStyle='#142943';for(let i=0;i<=cols;i++){x.beginPath();x.moveTo(i*cell,0);x.lineTo(i*cell,c.height);x.stroke()}for(let i=0;i<=rows;i++){x.beginPath();x.moveTo(0,i*cell);x.lineTo(c.width,i*cell);x.stroke()}
+ x.fillStyle='#ff5bc8';x.shadowColor='#ff5bc8';x.shadowBlur=12;x.beginPath();x.arc(food.x*cell+10,food.y*cell+10,7,0,7);x.fill();x.shadowBlur=0;
+ body.forEach((b,i)=>{x.fillStyle=i?'#25bfe8':'#70fff0';x.shadowColor=x.fillStyle;x.shadowBlur=i?0:10;x.fillRect(b.x*cell+2,b.y*cell+2,cell-4,cell-4)});x.shadowBlur=0;
+ if(!dead&&tick++%Math.max(4,8-Math.floor(score/5))===0){dir=next;let h={x:body[0].x+dir.x,y:body[0].y+dir.y};if(h.x<0||h.x>=cols||h.y<0||h.y>=rows||body.some(b=>b.x===h.x&&b.y===h.y)){dead=true}else{body.unshift(h);if(h.x===food.x&&h.y===food.y){score++;spawn()}else body.pop()}}
+ line.textContent='SCORE '+score+' · NIVEAU '+(1+Math.floor(score/5));if(dead){x.fillStyle='#020817d9';x.fillRect(0,0,c.width,c.height);x.fillStyle='#ff6acb';x.textAlign='center';x.font='bold 30px sans-serif';x.fillText('PARTIE TERMINÉE',300,165);x.fillStyle='white';x.font='18px sans-serif';x.fillText('Score : '+score+' · Clique sur RECOMMENCER',300,200);x.textAlign='left'}raf=requestAnimationFrame(draw)}
+ window.addEventListener('keydown',key);draw();cleanup=()=>{cancelAnimationFrame(raf);window.removeEventListener('keydown',key)};
+}
+function tictactoe(){
+ let cells=Array(9).fill(''),turn='X',done=false,score=0;
+ host.innerHTML='<div class="score-line" id="ttt-status">À TOI DE JOUER · TU ES X</div><div id="ttt-board" style="display:grid;grid-template-columns:repeat(3,minmax(70px,110px));gap:8px;justify-content:center;margin:18px auto"></div><div class="game-note">Aligne trois symboles pour gagner. Tu joues contre une IA simple.</div>';
+ const board=host.querySelector('#ttt-board'),status=host.querySelector('#ttt-status');
+ function winner(a){for(const [i,j,k] of [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]])if(a[i]&&a[i]===a[j]&&a[j]===a[k])return a[i];return a.every(Boolean)?'draw':null}
+ function render(){board.innerHTML='';cells.forEach((v,i)=>{const b=document.createElement('button');b.textContent=v||'+';b.disabled=!!v||done;b.style.cssText='aspect-ratio:1;border:1px solid #2adcf4;border-radius:12px;background:#0b1a32;color:'+(v==='X'?'#4aeaff':'#ff5ac8')+';font-size:36px;font-weight:bold;cursor:pointer';b.onclick=()=>play(i);board.appendChild(b)});}
+ function endCheck(){const w=winner(cells);if(w){done=true;status.textContent=w==='draw'?'MATCH NUL !':w==='X'?'BRAVO, TU AS GAGNÉ !':'L’IA A GAGNÉ';render();const b=document.createElement('button');b.className='restart-btn';b.textContent='REJOUER';b.onclick=reset;host.appendChild(b);return true}return false}
+ function play(i){if(done||cells[i])return;cells[i]='X';if(endCheck())return;const open=cells.map((v,i)=>v?null:i).filter(v=>v!==null);let pick=open.find(i=>wouldWin(i,'O'));if(pick===undefined)pick=open.find(i=>wouldWin(i,'X'));if(pick===undefined)pick=open[Math.floor(Math.random()*open.length)];if(pick!==undefined)cells[pick]='O';if(!endCheck())render()}
+ function wouldWin(i,s){cells[i]=s;const yes=winner(cells)===s;cells[i]='';return yes}
+ function reset(){cells=Array(9).fill('');done=false;status.textContent='À TOI DE JOUER · TU ES X';render();}render();cleanup=()=>{};
+}
+function reaction(){
+ host.innerHTML='<div class="score-line" id="reaction-status">TEST DE RÉFLEXES</div><div style="display:grid;place-items:center;min-height:260px"><button id="reaction-button" style="width:min(90%,420px);min-height:180px;border:2px solid #4aeaff;border-radius:20px;background:#10243d;color:white;font-size:24px;font-weight:bold;cursor:pointer">CLIQUE POUR COMMENCER</button></div><div class="game-note">Clique quand le bouton devient vert. Si tu cliques trop tôt, recommence !</div>';
+ const b=host.querySelector('#reaction-button'),s=host.querySelector('#reaction-status');let mode='ready',timer=null,start=0;
+ b.onclick=()=>{if(mode==='ready'||mode==='done'||mode==='early'){mode='wait';b.textContent='ATTENDS LE VERT…';b.style.background='#4b2440';b.style.borderColor='#ff5ac8';s.textContent='PRÉPARE-TOI';timer=setTimeout(()=>{mode='go';start=performance.now();b.textContent='MAINTENANT !';b.style.background='#087b5b';b.style.borderColor='#66ffb7';s.textContent='CLIQUE !'},900+Math.random()*2800)}else if(mode==='wait'){clearTimeout(timer);mode='early';b.textContent='TROP TÔT ! RECOMMENCE';b.style.background='#4b182b';s.textContent='FAIS ATTENTION';}else if(mode==='go'){const ms=Math.round(performance.now()-start);mode='done';b.textContent=ms+' ms · REJOUER';b.style.background='#10243d';s.textContent=ms<250?'RÉFLEXES ÉCLAIR !':ms<400?'BIEN JOUÉ !':'ESSAIE DE FAIRE MIEUX !'}};cleanup=()=>clearTimeout(timer);
+}
+
 function launch(game){
- cleanup(); title.textContent=({racer:'Neon Racer',jumper:'Pixel Jumper',blaster:'Star Blaster',memory:'Memory Matrix',mahjong:'Mahjong Neon'})[game]||'Jeu';
- help.textContent=({racer:'Évite les obstacles !',jumper:'Grimpe le plus haut possible !',blaster:'Survis dans l’espace !',memory:'Retrouve toutes les paires !',mahjong:'Associe les tuiles libres et passe les 3 niveaux !'})[game]||'Amuse-toi bien !';
- ({racer, jumper, blaster, memory, mahjong})[game]?.();
+ cleanup(); title.textContent=({racer:'Neon Racer',jumper:'Pixel Jumper',blaster:'Star Blaster',memory:'Memory Matrix',mahjong:'Mahjong Neon',snake:'Snake Neon',ttt:'Tic Tac Toe',reaction:'Reflex Rush'})[game]||'Jeu';
+ help.textContent=({racer:'Évite les obstacles !',jumper:'Grimpe le plus haut possible !',blaster:'Survis dans l’espace !',memory:'Retrouve toutes les paires !',mahjong:'Associe les tuiles libres et passe les 3 niveaux !',snake:'Mange les étoiles et bats ton record !',ttt:'Aligne trois symboles contre l’IA.',reaction:'Teste ta vitesse de réaction !'})[game]||'Amuse-toi bien !';
+ ({racer, jumper, blaster, memory, mahjong, snake, ttt:tictactoe, reaction})[game]?.();
 }
 window.PlanetGames={launch,restart:()=>{const game=window.currentGame;if(game)launch(game);}};
 window.addEventListener('beforeunload',()=>cleanup());

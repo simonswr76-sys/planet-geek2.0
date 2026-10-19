@@ -23,3 +23,6 @@ Un petit site arcade responsive en HTML, CSS et JavaScript, sans framework et sa
 - Les quatre mini-jeux sont de petits jeux originaux inclus dans le site. Ils ne nécessitent pas de compte de jeu.
 - La police du site est chargée depuis Google Fonts ; sans Internet, le site utilise une police de remplacement.
 - Il n'y a pas encore de comptes utilisateurs, de classement en ligne ou de sauvegarde cloud.
+
+
+Jeux inclus : Neon Racer, Pixel Jumper, Star Blaster, Memory Matrix, Mahjong Neon, Snake Neon, Tic Tac Toe et Reflex Rush.
