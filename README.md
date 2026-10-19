@@ -1,6 +1,6 @@
 # Planet Geek — site de mini-jeux
 
-Un petit site arcade responsive en HTML, CSS et JavaScript, sans framework et sans abonnement nécessaire. Il contient quatre mini-jeux intégrés : Neon Racer, Pixel Jumper, Star Blaster et Memory Matrix.
+Un petit site arcade responsive en HTML, CSS et JavaScript, sans framework et sans abonnement nécessaire. Il contient cinq mini-jeux intégrés : Neon Racer, Pixel Jumper, Star Blaster, Memory Matrix et Mahjong Neon, avec trois niveaux de Mahjong.
 
 ## Tester sur ton PC
 1. Décompresse `planet_geek.zip`.

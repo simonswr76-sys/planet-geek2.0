@@ -80,10 +80,23 @@ function memory(){
  deck.forEach((symbol,i)=>{const b=document.createElement('button');b.className='memory-card';b.textContent='?';b.setAttribute('aria-label','Carte cachée');b.onclick=()=>{if(lock||b.classList.contains('flipped')||b.classList.contains('matched'))return;b.textContent=symbol;b.classList.add('flipped');b.setAttribute('aria-label','Carte '+symbol);if(!first){first=b;return;}moves++;if(first.textContent===symbol){first.classList.add('matched');b.classList.add('matched');first=null;pairs++;}else{lock=true;const old=first;setTimeout(()=>{old.textContent='?';b.textContent='?';old.classList.remove('flipped');b.classList.remove('flipped');lock=false;},650);first=null;}line.textContent='PAIRES '+pairs+' / 8 · COUPS '+moves;if(pairs===8)line.textContent='BRAVO ! 8 PAIRES TROUVÉES EN '+moves+' COUPS';};board.appendChild(b);});
  cleanup=()=>{};
 }
+
+function mahjong(){
+ let level=1,tiles=[],selected=null,moves=0,removed=0;
+ const symbols=['龍','竹','發','中','萬','東','南','西','北','白','春','秋','梅','蘭','菊','鳥'];
+ host.innerHTML='<div class="mahjong-toolbar"><div class="score-line" id="mahjong-status">NIVEAU 1 · COUPS 0</div><label class="level-progress">Niveau <select class="level-select" id="mahjong-level"><option value="1">1 · Débutant</option><option value="2">2 · Intermédiaire</option><option value="3">3 · Expert</option></select></label><button id="mahjong-shuffle">↻ Mélanger</button></div><div id="mahjong-board" class="mahjong-board"></div><div id="mahjong-message" class="game-note">Clique deux tuiles identiques libres. Une tuile est libre si elle a un côté gauche ou droit ouvert et rien au-dessus.</div>';
+ const board=host.querySelector('#mahjong-board'),status=host.querySelector('#mahjong-status'),message=host.querySelector('#mahjong-message'),levelSelect=host.querySelector('#mahjong-level');
+ function start(l){level=l;levelSelect.value=String(l);moves=0;removed=0;selected=null;let count=[24,32,40][l-1];let pairs=[];for(let i=0;i<count/2;i++){let sym=symbols[i%symbols.length];pairs.push(sym,sym)}pairs.sort(()=>Math.random()-.5);tiles=pairs.map((sym,i)=>({id:i,sym,removed:false,row:Math.floor(i/8),col:i%8,layer:(l===3&&i%11===0)?1:0}));render();message.textContent='Associe deux tuiles identiques libres pour vider le plateau.';}
+ function free(t){if(t.removed)return false;const same=tiles.filter(o=>!o.removed&&o.layer===t.layer);const left=same.some(o=>o.row===t.row&&o.col===t.col-1),right=same.some(o=>o.row===t.row&&o.col===t.col+1),above=tiles.some(o=>!o.removed&&o.layer>t.layer&&Math.abs(o.row-t.row)<=0&&Math.abs(o.col-t.col)<=0);return (!left||!right)&&!above;}
+ function render(){board.innerHTML='';let max=tiles.length?Math.max(...tiles.map(t=>t.row)):0;board.style.gridTemplateColumns='repeat(8,minmax(25px,1fr))';tiles.forEach(t=>{let b=document.createElement('button');b.className='mahjong-tile'+(t.removed?' removed':'')+(!t.removed&&!free(t)?' blocked':'')+(selected===t.id?' selected':'');b.textContent=t.removed?'':t.sym;b.setAttribute('aria-label',t.removed?'Tuile retirée':'Tuile '+t.sym);b.disabled=t.removed||!free(t);b.onclick=()=>choose(t);board.appendChild(b)});status.textContent='NIVEAU '+level+' · COUPS '+moves+' · TUILES '+(tiles.length-removed)+' / '+tiles.length;if(removed===tiles.length){message.innerHTML='<div class="mahjong-win">NIVEAU TERMINÉ !</div><button id="mahjong-next" class="restart-btn">'+(level<3?'NIVEAU SUIVANT →':'REJOUER ↻')+'</button>';host.querySelector('#mahjong-next').onclick=()=>start(level<3?level+1:1);}}
+ function choose(t){if(selected===null){selected=t.id;render();return;}const first=tiles.find(o=>o.id===selected);if(first&&first.id!==t.id&&first.sym===t.sym&&free(first)&&free(t)){first.removed=true;t.removed=true;removed+=2;moves++;selected=null;render();}else{selected=t.id;message.textContent='Pas une paire identique libre : choisis une autre tuile.';render();}}
+ levelSelect.onchange=()=>start(Number(levelSelect.value));host.querySelector('#mahjong-shuffle').onclick=()=>start(level);start(1);cleanup=()=>{};
+}
+
 function launch(game){
- cleanup(); title.textContent=({racer:'Neon Racer',jumper:'Pixel Jumper',blaster:'Star Blaster',memory:'Memory Matrix'})[game]||'Jeu';
- help.textContent=({racer:'Évite les obstacles !',jumper:'Grimpe le plus haut possible !',blaster:'Survis dans l’espace !',memory:'Retrouve toutes les paires !'})[game]||'Amuse-toi bien !';
- ({racer, jumper, blaster, memory})[game]?.();
+ cleanup(); title.textContent=({racer:'Neon Racer',jumper:'Pixel Jumper',blaster:'Star Blaster',memory:'Memory Matrix',mahjong:'Mahjong Neon'})[game]||'Jeu';
+ help.textContent=({racer:'Évite les obstacles !',jumper:'Grimpe le plus haut possible !',blaster:'Survis dans l’espace !',memory:'Retrouve toutes les paires !',mahjong:'Associe les tuiles libres et passe les 3 niveaux !'})[game]||'Amuse-toi bien !';
+ ({racer, jumper, blaster, memory, mahjong})[game]?.();
 }
 window.PlanetGames={launch,restart:()=>{const game=window.currentGame;if(game)launch(game);}};
 window.addEventListener('beforeunload',()=>cleanup());
