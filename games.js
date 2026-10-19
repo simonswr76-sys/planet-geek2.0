@@ -84,13 +84,56 @@ function memory(){
 function mahjong(){
  let level=1,tiles=[],selected=null,moves=0,removed=0;
  const symbols=['龍','竹','發','中','萬','東','南','西','北','白','春','秋','梅','蘭','菊','鳥'];
- host.innerHTML='<div class="mahjong-toolbar"><div class="score-line" id="mahjong-status">NIVEAU 1 · COUPS 0</div><label class="level-progress">Niveau <select class="level-select" id="mahjong-level"><option value="1">1 · Débutant</option><option value="2">2 · Intermédiaire</option><option value="3">3 · Expert</option></select></label><button id="mahjong-shuffle">↻ Mélanger</button></div><div id="mahjong-board" class="mahjong-board"></div><div id="mahjong-message" class="game-note">Clique deux tuiles identiques libres. Une tuile est libre si elle a un côté gauche ou droit ouvert et rien au-dessus.</div>';
+ host.innerHTML='<div class="mahjong-toolbar"><div class="score-line" id="mahjong-status">NIVEAU 1 · COUPS 0</div><label class="level-progress">Niveau <select class="level-select" id="mahjong-level"><option value="1">1 · Débutant</option><option value="2">2 · Intermédiaire</option><option value="3">3 · Expert</option></select></label><button type="button" id="mahjong-shuffle">↻ Nouvelle partie</button></div><div id="mahjong-board" class="mahjong-board" aria-label="Plateau de Mahjong"></div><div id="mahjong-message" class="game-note">Clique sur deux tuiles identiques qui ont un côté libre. Les tuiles grisées sont bloquées.</div>';
  const board=host.querySelector('#mahjong-board'),status=host.querySelector('#mahjong-status'),message=host.querySelector('#mahjong-message'),levelSelect=host.querySelector('#mahjong-level');
- function start(l){level=l;levelSelect.value=String(l);moves=0;removed=0;selected=null;let count=[24,32,40][l-1];let pairs=[];for(let i=0;i<count/2;i++){let sym=symbols[i%symbols.length];pairs.push(sym,sym)}pairs.sort(()=>Math.random()-.5);tiles=pairs.map((sym,i)=>({id:i,sym,removed:false,row:Math.floor(i/8),col:i%8,layer:(l===3&&i%11===0)?1:0}));render();message.textContent='Associe deux tuiles identiques libres pour vider le plateau.';}
- function free(t){if(t.removed)return false;const same=tiles.filter(o=>!o.removed&&o.layer===t.layer);const left=same.some(o=>o.row===t.row&&o.col===t.col-1),right=same.some(o=>o.row===t.row&&o.col===t.col+1),above=tiles.some(o=>!o.removed&&o.layer>t.layer&&Math.abs(o.row-t.row)<=0&&Math.abs(o.col-t.col)<=0);return (!left||!right)&&!above;}
- function render(){board.innerHTML='';let max=tiles.length?Math.max(...tiles.map(t=>t.row)):0;board.style.gridTemplateColumns='repeat(8,minmax(25px,1fr))';tiles.forEach(t=>{let b=document.createElement('button');b.className='mahjong-tile'+(t.removed?' removed':'')+(!t.removed&&!free(t)?' blocked':'')+(selected===t.id?' selected':'');b.textContent=t.removed?'':t.sym;b.setAttribute('aria-label',t.removed?'Tuile retirée':'Tuile '+t.sym);b.disabled=t.removed||!free(t);b.onclick=()=>choose(t);board.appendChild(b)});status.textContent='NIVEAU '+level+' · COUPS '+moves+' · TUILES '+(tiles.length-removed)+' / '+tiles.length;if(removed===tiles.length){message.innerHTML='<div class="mahjong-win">NIVEAU TERMINÉ !</div><button id="mahjong-next" class="restart-btn">'+(level<3?'NIVEAU SUIVANT →':'REJOUER ↻')+'</button>';host.querySelector('#mahjong-next').onclick=()=>start(level<3?level+1:1);}}
- function choose(t){if(selected===null){selected=t.id;render();return;}const first=tiles.find(o=>o.id===selected);if(first&&first.id!==t.id&&first.sym===t.sym&&free(first)&&free(t)){first.removed=true;t.removed=true;removed+=2;moves++;selected=null;render();}else{selected=t.id;message.textContent='Pas une paire identique libre : choisis une autre tuile.';render();}}
- levelSelect.onchange=()=>start(Number(levelSelect.value));host.querySelector('#mahjong-shuffle').onclick=()=>start(level);start(1);cleanup=()=>{};
+ function start(l){
+  level=l;levelSelect.value=String(l);moves=0;removed=0;selected=null;
+  const count=[24,32,40][l-1], pairs=[];
+  for(let i=0;i<count/2;i++){const sym=symbols[i%symbols.length];pairs.push(sym,sym);}
+  // Shuffle pair order, but keep the board fully visible in a simple grid.
+  for(let i=pairs.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pairs[i],pairs[j]]=[pairs[j],pairs[i]];}
+  tiles=pairs.map((sym,i)=>({id:i,sym,removed:false,row:Math.floor(i/8),col:i%8}));
+  message.textContent='Associe les tuiles identiques. Commence par les bords : une tuile est libre si son côté gauche OU droit est ouvert.';
+  render();
+ }
+ function free(t){
+  if(t.removed)return false;
+  const left=tiles.some(o=>!o.removed&&o.row===t.row&&o.col===t.col-1);
+  const right=tiles.some(o=>!o.removed&&o.row===t.row&&o.col===t.col+1);
+  return !left||!right;
+ }
+ function render(){
+  board.innerHTML='';
+  board.style.gridTemplateColumns='repeat(8, minmax(0, 1fr))';
+  tiles.forEach(t=>{
+   const b=document.createElement('button');
+   b.type='button';
+   b.className='mahjong-tile'+(t.removed?' removed':'')+(!t.removed&&!free(t)?' blocked':'')+(selected===t.id?' selected':'');
+   b.textContent=t.removed?'':t.sym;
+   b.setAttribute('aria-label',t.removed?'Tuile retirée':'Tuile '+t.sym+(free(t)?', libre':', bloquée'));
+   b.disabled=t.removed||!free(t);
+   b.addEventListener('click',()=>choose(t));
+   board.appendChild(b);
+  });
+  status.textContent='NIVEAU '+level+' · COUPS '+moves+' · TUILES '+(tiles.length-removed)+' / '+tiles.length;
+  if(removed===tiles.length){
+   message.innerHTML='<div class="mahjong-win">NIVEAU TERMINÉ !</div><button type="button" id="mahjong-next" class="restart-btn">'+(level<3?'NIVEAU SUIVANT →':'REJOUER ↻')+'</button>';
+   host.querySelector('#mahjong-next').onclick=()=>start(level<3?level+1:1);
+  }
+ }
+ function choose(t){
+  if(selected===null){selected=t.id;message.textContent='Tuile sélectionnée : '+t.sym+'. Choisis la même tuile sur un bord libre.';render();return;}
+  const first=tiles.find(o=>o.id===selected);
+  if(first&&first.id!==t.id&&first.sym===t.sym&&free(first)&&free(t)){
+   first.removed=true;t.removed=true;removed+=2;moves++;selected=null;
+   message.textContent='Bien joué ! Continue à associer les tuiles identiques.';render();
+  }else{
+   selected=t.id;message.textContent=first&&first.sym===t.sym?'Ces tuiles ne sont pas libres. Choisis une tuile de bord.':'Ce ne sont pas les mêmes tuiles. Essaie encore !';render();
+  }
+ }
+ levelSelect.addEventListener('change',()=>start(Number(levelSelect.value)));
+ host.querySelector('#mahjong-shuffle').addEventListener('click',()=>start(level));
+ start(1);cleanup=()=>{};
 }
 
 function launch(game){
