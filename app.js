@@ -1,40 +1,59 @@
 (() => {
+'use strict';
 const modal=document.getElementById('game-modal'), close=document.getElementById('close-modal');
-let current='racer';
-const XP_KEY='planetGeekProgressV1';
-const PROFILE_KEY='planetGeekProfileV1';
-const readProfile=()=>{try{return JSON.parse(localStorage.getItem(PROFILE_KEY))||{name:'Joueur Planet Geek'}}catch{return {name:'Joueur Planet Geek'}}};
-let profile=readProfile();
-const readXP=()=>{try{return JSON.parse(localStorage.getItem(XP_KEY))||{xp:0,games:0,completed:[]}}catch{return {xp:0,games:0,completed:[]}}};
-let xpState=readXP(), claimedThisRound=false;
+let current='racer',claimedThisRound=false;
+const XP_KEY='planetGeekProgressV1', PROFILE_KEY='planetGeekProfileV1', RECORD_KEY='planetGeekRecordsV1', SHOP_KEY='planetGeekShopV1', MISSION_KEY='planetGeekDailyV1';
+const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}};
+const write=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value))}catch{}}
+let profile=read(PROFILE_KEY,{name:'Joueur Planet Geek'});
+let xpState=read(XP_KEY,{xp:0,games:0,completed:[]});
+let records=read(RECORD_KEY,{}), shop=read(SHOP_KEY,{owned:['default'],equipped:'default'}), missionState=read(MISSION_KEY,{});
+if(!Array.isArray(xpState.completed))xpState.completed=[];
+if(!Array.isArray(shop.owned))shop.owned=['default'];
 const levelFor=xp=>Math.floor(Math.sqrt(Math.max(0,xp)/100))+1;
+const today=()=>new Date().toLocaleDateString('sv-SE');
+const gameNames={racer:'Neon Racer',jumper:'Pixel Jumper',blaster:'Star Blaster',memory:'Memory Matrix',mahjong:'Mahjong Neon',snake:'Snake Neon',ttt:'Tic Tac Toe',reaction:'Reflex Rush',pong:'Neon Pong',blocks:'Block Master',dino:'Dino Dash',flappy:'Flappy Rocket',bricks:'Brick Breaker',mole:'Critter Pop',invaders:'Space Invaders',math:'Math Sprint',color:'Color Tap',orbit:'Orbit Catch',cave:'Cave Explorer'};
+const xpNow=()=>Math.max(0,Number(xpState.xp)||0);
+const gamesNow=()=>Math.max(0,Number(xpState.games)||0);
+function completionsToday(){return xpState.completed.filter(x=>x&&String(x.date||'').slice(0,10)===today());}
 function renderXP(){
- const xp=Math.max(0,Number(xpState.xp)||0),games=Math.max(0,Number(xpState.games)||0),level=levelFor(xp),floor=(level-1)**2*100,next=level**2*100,progress=xp-floor,needed=next-floor;
+ const xp=xpNow(),games=gamesNow(),level=levelFor(xp),floor=(level-1)**2*100,next=level**2*100,progress=xp-floor,needed=next-floor;
  document.getElementById('xp-total').textContent=xp+' XP';document.getElementById('xp-level').textContent=level;document.getElementById('xp-games').textContent=games;
  document.getElementById('xp-next-label').textContent='Progression vers le niveau '+(level+1);document.getElementById('xp-progress-text').textContent=progress+' / '+needed+' XP';document.getElementById('xp-progress-fill').style.width=Math.min(100,progress/needed*100)+'%';
- const defs=[['first', 'Première partie',games>=1],['five','5 parties',games>=5],['ten','10 parties',games>=10],['level5','Niveau 5',level>=5],['xp500','500 XP',xp>=500]];
- document.getElementById('xp-badges').innerHTML=defs.map(([id,label,ok])=>'<span class="xp-badge '+(ok?'unlocked':'locked')+'">'+(ok?'✦ ':'🔒 ')+label+(ok?' ✓':'')+'</span>').join('');
- const displayName=(profile.name||'Joueur Planet Geek').trim()||'Joueur Planet Geek';
- document.getElementById('profile-name-display').textContent=displayName;
- document.getElementById('profile-avatar').textContent=displayName.split(/\s+/).slice(0,2).map(part=>part.charAt(0).toUpperCase()).join('')||'PG';
- document.getElementById('profile-level').textContent=level;
- document.getElementById('profile-xp').textContent=xp+' XP';
+ const badges=badgeDefs().map(b=>`<span class="xp-badge ${b.ok?'unlocked':'locked'}">${b.ok?'✦ ':'🔒 '}${b.label}${b.ok?' ✓':''}</span>`);
+ document.getElementById('xp-badges').innerHTML=badges.slice(0,5).join('');
+ const name=(profile.name||'Joueur Planet Geek').trim()||'Joueur Planet Geek';document.getElementById('profile-name-display').textContent=name;document.getElementById('profile-avatar').textContent=name.split(/\s+/).slice(0,2).map(x=>x[0].toUpperCase()).join('')||'PG';document.getElementById('profile-level').textContent=level;document.getElementById('profile-xp').textContent=xp+' XP';
+ renderMissions();renderShop();renderBadges();renderRecords();
 }
-function saveXP(){localStorage.setItem(XP_KEY,JSON.stringify(xpState));renderXP();}
-function claimXP(){if(claimedThisRound){document.getElementById('game-help').textContent='XP déjà récupérée pour cette partie !';return;}xpState.xp=(Number(xpState.xp)||0)+10;xpState.games=(Number(xpState.games)||0)+1;xpState.completed=Array.isArray(xpState.completed)?xpState.completed:[];xpState.completed.push({game:current,date:new Date().toISOString()});claimedThisRound=true;saveXP();document.getElementById('claim-xp').disabled=true;document.getElementById('claim-xp').textContent='✓ XP RÉCUPÉRÉE';document.getElementById('game-help').textContent='+10 XP ajoutés à ton profil !';}
+function badgeDefs(){const xp=xpNow(),games=gamesNow(),level=levelFor(xp),todayCount=completionsToday().length;let mahjong={completed:[]};try{mahjong=JSON.parse(localStorage.getItem('planetGeekMahjongV2')||'{"completed":[]}')}catch{};const levels=Array.isArray(mahjong.completed)?mahjong.completed.length:0;return [
+{id:'first',label:'Première partie',icon:'🎮',ok:games>=1},{id:'five',label:'5 parties',icon:'🕹️',ok:games>=5},{id:'ten',label:'10 parties',icon:'🏅',ok:games>=10},{id:'level5',label:'Niveau 5',icon:'🚀',ok:level>=5},{id:'xp500',label:'500 XP',icon:'💎',ok:xp>=500},{id:'daily3',label:'3 parties aujourd’hui',icon:'📅',ok:todayCount>=3},{id:'mahjong5',label:'5 niveaux de Mahjong',icon:'🀄',ok:levels>=5},{id:'shopper',label:'Premier achat',icon:'🛍️',ok:shop.owned.length>1},{id:'explorer',label:'10 jeux différents',icon:'🌌',ok:new Set(xpState.completed.map(x=>x.game)).size>=10},{id:'xp1000',label:'1000 XP',icon:'👑',ok:xp>=1000}
+]}
+function saveXP(){write(XP_KEY,xpState);renderXP();}
+function claimXP(){if(claimedThisRound){document.getElementById('game-help').textContent='XP déjà récupérée pour cette partie !';return;}xpState.xp=xpNow()+10;xpState.games=gamesNow()+1;xpState.completed.push({game:current,date:new Date().toISOString()});records[current]=Math.max(0,Number(records[current])||0)+1;write(RECORD_KEY,records);claimedThisRound=true;saveXP();document.getElementById('claim-xp').disabled=true;document.getElementById('claim-xp').textContent='✓ XP RÉCUPÉRÉE';document.getElementById('game-help').textContent='+10 XP ajoutés à ton profil !';}
+function renderMissions(){
+ const done=completionsToday(),playedReflection=done.some(x=>['memory','mahjong','ttt','blocks','math'].includes(x.game));
+ const defs=[{id:'one',title:'Lance ta première partie',desc:'Valide 1 partie aujourd’hui',progress:Math.min(1,done.length),target:1,reward:15,ok:done.length>=1},{id:'three',title:'Session arcade',desc:'Valide 3 parties aujourd’hui',progress:Math.min(3,done.length),target:3,reward:30,ok:done.length>=3},{id:'think',title:'Fais travailler tes neurones',desc:'Valide une partie de réflexion',progress:playedReflection?1:0,target:1,reward:20,ok:playedReflection}];
+ const claimed=missionState.date===today()&&Array.isArray(missionState.claimed)?missionState.claimed:[];
+ document.getElementById('daily-missions').innerHTML=defs.map(m=>{const was=claimed.includes(m.id);return `<div class="mission-item"><div class="mission-copy"><strong>${m.title}</strong><small>${m.desc} · ${m.progress}/${m.target} · +${m.reward} XP</small><div class="mission-progress"><span style="width:${m.progress/m.target*100}%"></span></div></div><button data-mission="${m.id}" ${!m.ok||was?'disabled':''}>${was?'RÉCUPÉRÉ':m.ok?'RÉCLAMER':'EN COURS'}</button></div>`}).join('');
+ document.querySelectorAll('[data-mission]').forEach(btn=>btn.addEventListener('click',()=>{const m=defs.find(x=>x.id===btn.dataset.mission);if(!m||!m.ok||claimed.includes(m.id))return;xpState.xp=xpNow()+m.reward;missionState={date:today(),claimed:[...claimed,m.id]};write(MISSION_KEY,missionState);saveXP();document.getElementById('mission-reset').textContent='Récompense récupérée : +'+m.reward+' XP !';}));
+ document.getElementById('mission-reset').textContent='Nouvelles missions au changement de date locale. Termine une partie puis réclame la récompense ici.';
+}
+const shopItems=[{id:'default',name:'Cosmos classique',desc:'Thème original',cost:0},{id:'violet',name:'Nébuleuse violette',desc:'Accent violet et rose',cost:150},{id:'sunset',name:'Supernova',desc:'Accent orange et doré',cost:250},{id:'forest',name:'Émeraude',desc:'Accent vert lumineux',cost:350}];
+function renderShop(){document.body.dataset.theme=shop.equipped||'default';document.getElementById('xp-shop').innerHTML=shopItems.map(it=>{const owned=shop.owned.includes(it.id),equipped=shop.equipped===it.id;return `<div class="shop-item ${owned?'owned':''}"><div><strong>${it.name}</strong><small>${it.desc} · ${it.cost} XP</small></div><button data-shop="${it.id}" ${equipped?'disabled':(!owned&&xpNow()<it.cost?'disabled':'')}>${equipped?'ÉQUIPÉ':owned?'ÉQUIPER': 'ACHETER'}</button></div>`}).join('');document.querySelectorAll('[data-shop]').forEach(btn=>btn.addEventListener('click',()=>{const it=shopItems.find(x=>x.id===btn.dataset.shop);if(!it)return;if(shop.owned.includes(it.id)){shop.equipped=it.id;write(SHOP_KEY,shop);renderXP();return;}if(xpNow()<it.cost)return;xpState.xp=xpNow()-it.cost;shop.owned.push(it.id);shop.equipped=it.id;write(SHOP_KEY,shop);write(XP_KEY,xpState);renderXP();document.getElementById('shop-message').textContent=it.name+' débloqué !';}));}
+function renderBadges(){document.getElementById('badge-collection').innerHTML=badgeDefs().map(b=>`<div class="collection-badge ${b.ok?'unlocked':''}" title="${b.ok?'Badge débloqué':'Badge verrouillé'}"><b>${b.ok?b.icon:'🔒'}</b>${b.label}</div>`).join('');}
+function renderRecords(){const played=Object.entries(records).filter(([,n])=>Number(n)>0).sort((a,b)=>b[1]-a[1]);document.getElementById('personal-records').innerHTML=`<div class="record-item"><div><strong>XP totale gagnée</strong><small>Progression actuelle</small></div><b>${xpNow()} XP</b></div><div class="record-item"><div><strong>Parties validées</strong><small>Tous jeux confondus</small></div><b>${gamesNow()}</b></div>`+(played.length?played.map(([id,n])=>`<div class="record-item"><div><strong>${gameNames[id]||id}</strong><small>Parties validées sur ce jeu</small></div><b>${n}</b></div>`).join(''):'<div class="record-empty">Valide ta première partie pour commencer ton historique.</div>');}
+function makeChallenge(){const payload={v:1,name:(profile.name||'Joueur').slice(0,18),xp:xpNow(),games:gamesNow(),date:today()};const code='PG1-'+btoa(unescape(encodeURIComponent(JSON.stringify(payload)))).replace(/=/g,'');document.getElementById('my-challenge').value=code;document.getElementById('challenge-result').textContent='Copie ce code et envoie-le à ton ami.';try{navigator.clipboard?.writeText(code).then(()=>{document.getElementById('challenge-result').textContent='Code copié ! Envoie-le à ton ami.'}).catch(()=>{})}catch{}}
+function compareChallenge(){const raw=document.getElementById('challenge-code').value.trim();const out=document.getElementById('challenge-result');try{if(!raw.startsWith('PG1-'))throw Error();let encoded=raw.slice(4);encoded+='='.repeat((4-encoded.length%4)%4);const other=JSON.parse(decodeURIComponent(escape(atob(encoded))));if(other.v!==1||typeof other.xp!=='number'||typeof other.games!=='number')throw Error();const me={name:profile.name||'Toi',xp:xpNow(),games:gamesNow()};const wins=(me.xp>other.xp?1:0)+(me.games>other.games?1:0),losses=(me.xp<other.xp?1:0)+(me.games<other.games?1:0);out.textContent=`${me.name} : ${me.xp} XP, ${me.games} parties. ${other.name||'Ami'} : ${other.xp} XP, ${other.games} parties. `+(wins>losses?'Tu es devant !':wins<losses?'Ton ami est devant !':'Égalité !');}catch{out.textContent='Code invalide. Demande à ton ami de créer un nouveau code depuis son site.';}}
 document.getElementById('profile-name').value=profile.name||'';
-document.getElementById('profile-form').addEventListener('submit',e=>{e.preventDefault();const name=document.getElementById('profile-name').value.trim().replace(/\s+/g,' ');if(name.length<2)return;profile={name:name.slice(0,18)};localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));renderXP();document.getElementById('profile-name').value=profile.name;});
+document.getElementById('profile-form').addEventListener('submit',e=>{e.preventDefault();const name=document.getElementById('profile-name').value.trim().replace(/\s+/g,' ');if(name.length<2)return;profile={name:name.slice(0,18)};write(PROFILE_KEY,profile);renderXP();document.getElementById('profile-name').value=profile.name;});
+document.getElementById('make-challenge').addEventListener('click',makeChallenge);document.getElementById('compare-challenge').addEventListener('click',compareChallenge);
 renderXP();
 function openGame(game){current=game;claimedThisRound=false;window.currentGame=game;document.getElementById('claim-xp').disabled=false;document.getElementById('claim-xp').textContent='✓ TERMINER LA PARTIE · +10 XP';modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';PlanetGames.launch(game);}
 function shut(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';document.getElementById('game-host').innerHTML='';}
 document.querySelectorAll('[data-game]').forEach(b=>b.addEventListener('click',()=>openGame(b.dataset.game)));
 document.getElementById('claim-xp').addEventListener('click',claimXP);
-close.addEventListener('click',shut);modal.addEventListener('click',e=>{if(e.target===modal)shut();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')shut();});
-document.getElementById('restart-game').addEventListener('click',()=>{window.currentGame=current;PlanetGames.launch(current);});
-const search=document.getElementById('search'),filters=[...document.querySelectorAll('.filter')],cards=[...document.querySelectorAll('.game-card')];
-let category='Tous';
-function update(){let q=search.value.toLocaleLowerCase('fr');let visible=0;cards.forEach(c=>{let ok=(category==='Tous'||c.dataset.category===category)&&c.dataset.name.toLocaleLowerCase('fr').includes(q);c.hidden=!ok;if(ok)visible++;});document.getElementById('visible-count').textContent=visible;document.getElementById('empty').hidden=visible!==0;}
-search.addEventListener('input',update);filters.forEach(b=>b.addEventListener('click',()=>{filters.forEach(f=>f.classList.toggle('active',f===b));category=b.dataset.category;update();}));
-document.getElementById('year').textContent=new Date().getFullYear();
+close.addEventListener('click',shut);modal.addEventListener('click',e=>{if(e.target===modal)shut();});document.addEventListener('keydown',e=>{if(e.key==='Escape')shut();});document.getElementById('restart-game').addEventListener('click',()=>{window.currentGame=current;PlanetGames.launch(current);});
+const search=document.getElementById('search'),filters=[...document.querySelectorAll('.filter')],cards=[...document.querySelectorAll('.game-card')];let category='Tous';
+function update(){let q=search.value.toLocaleLowerCase('fr'),visible=0;cards.forEach(c=>{let ok=(category==='Tous'||c.dataset.category===category)&&c.dataset.name.toLocaleLowerCase('fr').includes(q);c.hidden=!ok;if(ok)visible++;});document.getElementById('visible-count').textContent=visible;document.getElementById('empty').hidden=visible!==0;}
+search.addEventListener('input',update);filters.forEach(b=>b.addEventListener('click',()=>{filters.forEach(f=>f.classList.toggle('active',f===b));category=b.dataset.category;update();}));document.getElementById('year').textContent=new Date().getFullYear();
 })();

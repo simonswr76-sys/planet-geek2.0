@@ -53,3 +53,19 @@ Les cartes et le lancement des deux jeux sont déjà intégrés dans `index.html
 - Mahjong solitaire : 100 niveaux, niveaux suivants déverrouillés en terminant le précédent, indices, annulation, mélange et sauvegarde automatique locale de la partie et des niveaux.
 - La progression XP et le profil existants restent inclus.
 - La progression est stockée dans le navigateur (localStorage) : elle n'est pas synchronisée entre appareils et peut être perdue si les données du navigateur sont effacées.
+
+
+## Fonctionnalités ajoutées
+- 19 mini-jeux au total, dont Space Invaders, Math Sprint, Color Tap, Orbit Catch et Cave Explorer.
+- Missions quotidiennes avec récompenses XP récupérables une seule fois par mission et par date locale.
+- Boutique XP avec thèmes Cosmos, Nébuleuse violette, Supernova et Émeraude.
+- Collection de 10 badges et statistiques personnelles des parties validées par jeu. Les scores détaillés ne sont affichés que lorsqu'un jeu les transmet; cette version suit surtout les parties validées.
+- Défis entre amis par code à copier/coller. C'est une comparaison manuelle des XP et du nombre de parties, pas un multijoueur en temps réel ni un classement serveur.
+- Progression enregistrée dans localStorage du navigateur. Elle n'est pas synchronisée entre appareils et peut être effacée en supprimant les données du navigateur.
+
+## Publication sur GitHub Pages
+1. Décompresser le ZIP.
+2. Ouvrir le dépôt GitHub et cliquer sur **Add file → Upload files**.
+3. Envoyer les cinq fichiers de ce dossier en remplaçant les versions correspondantes.
+4. Cliquer sur **Commit changes**.
+5. Attendre la publication GitHub Pages puis recharger le site avec Ctrl+F5.
