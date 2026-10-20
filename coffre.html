@@ -1,61 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Le Coffre Caché — Planet Geek</title>
 <style>
-:root{color-scheme:dark;--bg:#07111f;--panel:#0d1c30;--cyan:#39d9ff;--blue:#3678ff;--muted:#a9bfd5}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#102c50 0,#07111f 55%);color:#eef8ff;font-family:system-ui,Segoe UI,sans-serif;min-height:100vh}
-header{padding:26px 18px;text-align:center;border-bottom:1px solid #214768}header a{color:var(--cyan);text-decoration:none}h1{margin:.3em 0;color:var(--cyan);text-shadow:0 0 18px #1685ff;font-size:clamp(2rem,5vw,3.2rem)}p{line-height:1.55}.wrap{max-width:1000px;margin:auto;padding:24px 16px}
-.panel{background:#0d1c30dd;border:1px solid #245178;border-radius:18px;padding:22px;box-shadow:0 0 25px #0066aa22;margin:18px 0}
-input,button{font:inherit;border-radius:10px;padding:12px 14px;border:1px solid #32628a}input{background:#07111f;color:white;width:100%;max-width:360px}button{background:linear-gradient(100deg,#087cc2,#375cff);color:white;cursor:pointer;font-weight:700}button:hover{filter:brightness(1.15)}
-.small{color:var(--muted);font-size:.92rem}.notice{border-left:3px solid #ffce66;padding:10px 14px;background:#302814;border-radius:8px;color:#ffe7b0}
-#library[hidden],#login[hidden]{display:none}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.book{border:1px solid #275071;background:#0a1728;border-radius:14px;padding:17px;display:flex;flex-direction:column;gap:10px}.book h3{margin:0;color:#b7f2ff}.book p{margin:0;flex:1}.tag{font-size:.78rem;color:#9feaff}.links{display:flex;gap:8px;flex-wrap:wrap}.links a{color:#8eeaff;border:1px solid #245178;padding:8px 10px;border-radius:8px;text-decoration:none}.links a:hover{background:#10314e}footer{text-align:center;padding:26px;color:var(--muted)}
+:root{color-scheme:dark;--bg:#080b18;--panel:#121831;--cyan:#22d3ee;--text:#f5f7ff;--muted:#aab4d0}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:32px 18px;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:radial-gradient(ellipse at top,#202452 0%,transparent 55%),var(--bg)}
+main{width:min(760px,100%);margin:0 auto}.back{color:var(--cyan);text-decoration:none}
+header{text-align:center;padding:36px 0 24px}.eyebrow{color:var(--cyan);text-transform:uppercase;letter-spacing:.18em;font-size:.78rem;font-weight:bold}
+h1{margin:12px 0;font-size:clamp(2rem,7vw,3.3rem)}header p{color:var(--muted);line-height:1.6}
+.books{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.book{background:linear-gradient(145deg,#171f40,var(--panel));border:1px solid #343d69;border-radius:18px;padding:24px;box-shadow:0 12px 32px #0005}
+.cover{height:100px;display:grid;place-items:center;border-radius:12px;margin-bottom:18px;background:linear-gradient(135deg,#6d28d9,#0891b2);font-size:2.5rem}
+h2{margin:0 0 8px;font-size:1.2rem}.book p{color:var(--muted);line-height:1.5;min-height:44px}
+.download{display:block;text-align:center;text-decoration:none;color:#07111f;background:linear-gradient(90deg,var(--cyan),#a5f3fc);font-weight:bold;padding:12px 16px;border-radius:10px;margin-top:18px;transition:transform .15s,filter .15s}
+.download:hover{transform:translateY(-2px);filter:brightness(1.08)}footer{color:var(--muted);text-align:center;font-size:.85rem;margin:28px 0 8px}
+@media(max-width:560px){.books{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<header>
-<a href="index.html">← Retour à Planet Geek</a>
-<h1>🔐 Le Coffre Caché</h1>
-<p>Une bibliothèque numérique au néon bleu</p>
-</header>
-<main class="wrap">
-<section class="panel">
-<h2>Accès au coffre</h2>
-<p>Entre le mot de passe pour afficher la bibliothèque.</p>
-<form id="passwordForm">
-<label for="password">Mot de passe</label><br><br>
-<input id="password" type="password" autocomplete="current-password" placeholder="Mot de passe du coffre" required>
-<button type="submit">Ouvrir le coffre</button>
-</form>
-<p id="error" role="alert" class="small"></p>
-<p class="notice"><strong>Important :</strong> cette page utilise un verrou visuel côté navigateur, pas une vraie sécurité. Comme le site est hébergé sur GitHub Pages, les fichiers et le code restent publics. N’y mets pas de documents privés. Pour une vraie confidentialité, il faut un service avec authentification.</p>
-</section>
-<section id="library" class="panel" hidden>
-<h2>📚 Bibliothèque</h2>
-<p>Ces livres classiques sont disponibles gratuitement via Project Gutenberg. Ouvre la fiche du livre pour choisir EPUB, HTML ou les formats proposés. Les livres en EPUB peuvent être envoyés à Kindle avec <em>Send to Kindle</em>.</p>
-<div class="grid">
-<article class="book"><span class="tag">AVENTURE · JULES VERNE</span><h3>Voyage au centre de la Terre</h3><p>Une expédition extraordinaire sous la surface de la planète.</p><div class="links"><a href="https://www.gutenberg.org/ebooks/search/?query=Voyage+au+centre+de+la+Terre+Jules+Verne" target="_blank" rel="noopener">Formats gratuits ↗</a></div></article>
-<article class="book"><span class="tag">AVENTURE · JULES VERNE</span><h3>Vingt mille lieues sous les mers</h3><p>Une aventure maritime à bord du Nautilus.</p><div class="links"><a href="https://www.gutenberg.org/ebooks/search/?query=Vingt+mille+lieues+sous+les+mers" target="_blank" rel="noopener">Formats gratuits ↗</a></div></article>
-<article class="book"><span class="tag">MYSTÈRE · MAURICE LEBLANC</span><h3>Arsène Lupin, gentleman-cambrioleur</h3><p>Les premières aventures du célèbre personnage de Maurice Leblanc.</p><div class="links"><a href="https://www.gutenberg.org/ebooks/search/?query=Arsene+Lupin+gentleman-cambrioleur" target="_blank" rel="noopener">Formats gratuits ↗</a></div></article>
-<article class="book"><span class="tag">AVENTURE · ALEXANDRE DUMAS</span><h3>Les Trois Mousquetaires</h3><p>Une histoire d’amitié, de courage et d’aventure.</p><div class="links"><a href="https://www.gutenberg.org/ebooks/search/?query=Les+trois+mousquetaires+French" target="_blank" rel="noopener">Formats gratuits ↗</a></div></article>
-<article class="book"><span class="tag">SCIENCE-FICTION · JULES VERNE</span><h3>De la Terre à la Lune</h3><p>Un roman d’anticipation autour d’un projet de voyage spatial.</p><div class="links"><a href="https://www.gutenberg.org/ebooks/search/?query=De+la+Terre+a+la+Lune+Jules+Verne" target="_blank" rel="noopener">Formats gratuits ↗</a></div></article>
-<article class="book"><span class="tag">FANTASTIQUE · GASTON LEROUX</span><h3>Le Fantôme de l’Opéra</h3><p>Un mystère dans les coulisses d’un grand opéra.</p><div class="links"><a href="https://www.gutenberg.org/ebooks/search/?query=Le+Fantome+de+l+Opera+French" target="_blank" rel="noopener">Formats gratuits ↗</a></div></article>
-</div>
-<p class="small">Les catalogues et disponibilités peuvent varier selon le pays. Vérifie les conditions de réutilisation affichées sur chaque fiche.</p>
-</section>
+<main>
+<a class="back" href="index.html">← Retour à Planet Geek</a>
+<header><div class="eyebrow">Planet Geek</div><h1>Le Coffre Caché</h1>
+<p>Deux emplacements pour tes livres PDF partageables.<br>Utilise uniquement des fichiers que tu as le droit de distribuer.</p></header>
+<section class="books" aria-label="Livres à télécharger">
+<article class="book"><div class="cover" aria-hidden="true">📘</div><h2>Livre 1</h2>
+<p>Remplace ce titre et ajoute ton fichier PDF autorisé.</p>
+<a class="download" href="livre-1.pdf" download>Télécharger le livre 1</a></article>
+<article class="book"><div class="cover" aria-hidden="true">📗</div><h2>Livre 2</h2>
+<p>Remplace ce titre et ajoute ton fichier PDF autorisé.</p>
+<a class="download" href="livre-2.pdf" download>Télécharger le livre 2</a></article>
+</section><footer>Planet Geek · Le Coffre Caché</footer>
 </main>
-<footer>Planet Geek · Le Coffre Caché</footer>
-<script>
-/* Verrou d'affichage uniquement : ne protège pas les fichiers ni le code source. */
-const PASSWORD = "COFFRE2026";
-document.getElementById("passwordForm").addEventListener("submit", function(e){
- e.preventDefault();
- const value=document.getElementById("password").value;
- if(value===PASSWORD){document.getElementById("library").hidden=false;document.getElementById("error").textContent="";document.getElementById("login")?.setAttribute("hidden","");document.getElementById("library").scrollIntoView({behavior:"smooth"});}
- else {document.getElementById("error").textContent="Mot de passe incorrect. Réessaie.";}
-});
-</script>
 </body>
 </html>
