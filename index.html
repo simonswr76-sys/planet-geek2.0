@@ -13,59 +13,11 @@
   <div class="search-wrap"><span>⌕</span><input id="search" type="search" placeholder="Rechercher un jeu..." aria-label="Rechercher un jeu"></div>
   <a class="submit-link" href="#games">JOUER <span>↗</span></a>
 </header>
-<section class="hero">
-  <div class="hero-copy">
-    <div class="eyebrow"><span class="pulse"></span> ARCADE EN LIGNE · GRATUIT</div>
-    <h1>TON UNIVERS.<br><span>TES RÈGLES.</span></h1>
-    <p>Une planète pleine de mini-jeux. Choisis ton défi, bats ton record et amuse-toi !</p>
-    <a class="primary-btn" href="#games">EXPLORER LES JEUX <span>→</span></a>
-    <div class="hero-stats"><div><strong>19</strong><small>JEUX DISPONIBLES</small></div><i></i><div><strong>∞</strong><small>ENVIE DE REJOUER</small></div></div>
-  </div>
-  <div class="hero-art" aria-hidden="true">
-    <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-    <div class="big-planet"><div class="planet-shine"></div><div class="planet-ring"></div></div>
-    <div class="float-card card-a">✦ <span>ARCADE</span></div>
-    <div class="float-card card-b">▲ <span>LEVEL UP</span></div>
-    <div class="star s1">✦</div><div class="star s2">✧</div><div class="star s3">·</div>
-  </div>
-</section>
-<section class="profile-panel" aria-label="Profil du joueur">
-  <div class="profile-avatar" id="profile-avatar" aria-hidden="true">PG</div>
-  <div class="profile-main">
-    <div class="eyebrow">TON ESPACE JOUEUR</div>
-    <h2 id="profile-name-display">Joueur Planet Geek</h2>
-    <p>Personnalise ton pseudo et suis ta progression.</p>
-    <form id="profile-form" class="profile-form">
-      <label for="profile-name">Pseudo</label>
-      <input id="profile-name" name="profile-name" maxlength="18" minlength="2" placeholder="Entre ton pseudo" autocomplete="nickname" required>
-      <button type="submit" class="profile-save">Enregistrer</button>
-    </form>
-  </div>
-  <div class="profile-level"><small>NIVEAU</small><strong id="profile-level">1</strong><span id="profile-xp">0 XP</span></div>
-</section>
-<section class="xp-panel" aria-label="Progression XP">
-  <div class="xp-title"><div class="eyebrow">TON AVANCÉE</div><h2>PLANET <span>XP</span></h2><p>Joue, gagne de l’XP et débloque des badges !</p></div>
-  <div class="xp-stats"><div><small>XP TOTALE</small><strong id="xp-total">0 XP</strong></div><div><small>NIVEAU</small><strong id="xp-level">1</strong></div><div><small>PARTIES VALIDÉES</small><strong id="xp-games">0</strong></div></div>
-  <div class="xp-progress"><div class="xp-progress-label"><span id="xp-next-label">Progression vers le niveau 2</span><span id="xp-progress-text">0 / 100 XP</span></div><div class="xp-track"><div id="xp-progress-fill"></div></div></div>
-  <div class="xp-badges" id="xp-badges"><span class="xp-badge locked">🔒 Première partie</span><span class="xp-badge locked">🔒 5 parties</span><span class="xp-badge locked">🔒 10 parties</span><span class="xp-badge locked">🔒 Niveau 5</span><span class="xp-badge locked">🔒 500 XP</span></div>
-</section>
-
-<section class="feature-grid" aria-label="Progression et défis">
-  <article class="feature-panel"><div class="eyebrow">DÉFIS DU JOUR</div><h2>MISSIONS <span>QUOTIDIENNES</span></h2><p class="feature-sub">Chaque jour, de nouveaux objectifs à accomplir pour gagner de l’XP bonus.</p><div id="daily-missions" class="mission-list"></div><p id="mission-reset" class="feature-sub"></p></article>
-  <article class="feature-panel"><div class="eyebrow">PERSONNALISE TON UNIVERS</div><h2>BOUTIQUE <span>XP</span></h2><p class="feature-sub">Achète des thèmes visuels avec tes XP. Les achats sont sauvegardés sur cet appareil.</p><div id="xp-shop" class="shop-list"></div><p id="shop-message" class="feature-sub" aria-live="polite"></p></article>
-  <article class="feature-panel"><div class="eyebrow">TES EXPLOITS</div><h2>COLLECTION DE <span>BADGES</span></h2><div id="badge-collection" class="badge-collection"></div></article>
-  <article class="feature-panel"><div class="eyebrow">TES STATISTIQUES</div><h2>RECORDS <span>PERSONNELS</span></h2><p class="feature-sub">Historique des parties validées depuis que tu as activé Planet Geek. Les scores de jeux non transmis ne sont pas inventés.</p><div id="personal-records" class="records-list"></div></article>
-  <article class="feature-panel friend-panel"><div class="eyebrow">DÉFIS ENTRE AMIS</div><h2>DÉFIE UN <span>AMI</span></h2><p class="feature-sub">Crée un code avec ton XP et tes parties validées, puis envoie-le à un ami. Le classement est comparé manuellement, sans compte en ligne.</p><div class="friend-actions"><button type="button" id="make-challenge" class="feature-button">Créer mon code</button><input id="challenge-code" placeholder="Colle le code de ton ami" aria-label="Code de défi d'un ami"><button type="button" id="compare-challenge" class="feature-button secondary">Comparer</button></div><textarea id="my-challenge" readonly rows="2" placeholder="Ton code de défi apparaîtra ici"></textarea><p id="challenge-result" class="feature-sub" aria-live="polite"></p></article>
-  <article class="feature-panel"><div class="eyebrow">TON IDENTITÉ</div><h2>RANG <span>GALACTIQUE</span></h2><div id="rank-card" class="rank-card"><b id="rank-name">Bronze</b><div class="rank-track"><span id="rank-fill"></span></div><small id="rank-desc">Continue à jouer pour progresser.</small></div></article>
-  <article class="feature-panel"><div class="eyebrow">OBJETS COSMÉTIQUES</div><h2>INVENTAIRE <span>DE SKINS</span></h2><p class="feature-sub">Achète et équipe des apparences avec tes XP.</p><div id="skin-inventory" class="skin-grid"></div></article>
-  <article class="feature-panel"><div class="eyebrow">ÉVÉNEMENT DE LA SEMAINE</div><h2>BOSS <span>GALACTIQUE</span></h2><p class="feature-sub">Affronte le boss en cliquant plusieurs fois. Une victoire par semaine.</p><div class="boss-health"><span id="boss-health-fill"></span></div><p id="boss-status" class="feature-sub">Le boss arrive…</p><button type="button" id="boss-hit" class="feature-button">Attaquer le boss</button></article>
-  <article class="feature-panel"><div class="eyebrow">EXPLORATION</div><h2>MONDE À <span>EXPLORER</span></h2><p class="feature-sub">Débloque les zones avec tes parties validées.</p><div id="world-map" class="world-map"></div></article>
-  <article class="feature-panel"><div class="eyebrow">CADEAU DE CONNEXION</div><h2>COFFRE <span>QUOTIDIEN</span></h2><p class="feature-sub">Ouvre un coffre chaque jour pour recevoir de l’XP.</p><div class="chest-art">▣</div><button type="button" id="daily-chest" class="feature-button">Ouvrir le coffre</button><p id="chest-status" class="feature-sub" aria-live="polite"></p></article>
-  <article class="feature-panel"><div class="eyebrow">DÉFI MULTI-JEUX</div><h2>MODE <span>TOURNOI</span></h2><p class="feature-sub">Valide 3 manches en jouant à des mini-jeux, puis réclame la récompense.</p><div class="tournament-track"><span id="tournament-progress">0 / 3 manches</span><b id="tournament-score">0 points</b></div><button type="button" id="tournament-start" class="feature-button">Démarrer / réinitialiser</button><button type="button" id="tournament-claim" class="feature-button secondary">Réclamer +50 XP</button><p id="tournament-status" class="feature-sub"></p></article>
-  <article class="feature-panel"><div class="eyebrow">SECRETS CACHÉS</div><h2>SUCCÈS <span>SECRETS</span></h2><p class="feature-sub">Certains exploits apparaissent seulement quand tu les débloques.</p><div id="secret-achievements" class="secret-list"></div></article>
-  <article class="feature-panel"><div class="eyebrow">TON PETIT ALLIÉ</div><h2>COMPAGNON <span>VIRTUEL</span></h2><div class="companion-card"><div id="companion-face" class="companion-face">🤖</div><div><b id="companion-name">Byte</b><p id="companion-level" class="feature-sub">Niveau 1 · énergie 100%</p></div></div><button type="button" id="companion-feed" class="feature-button">Nourrir · 20 XP</button><p id="companion-status" class="feature-sub">Ton compagnon grandit avec toi.</p></article>
-</section>
-
+<nav class="quick-dock" aria-label="Accès rapide">
+  <a href="#games" title="Aller aux jeux"><span aria-hidden="true">🎮</span><b>Jeux</b></a>
+  <a href="#profile" title="Ouvrir le profil"><span aria-hidden="true">👤</span><b>Profil</b></a>
+  <a href="#stats" title="Voir les statistiques et bonus"><span aria-hidden="true">📊</span><b>Stats & bonus</b></a>
+</nav>
 <main id="games">
   <div class="section-head"><div><div class="eyebrow">SÉLECTION PLANET GEEK</div><h2>CHOISIS TON <span>JEU</span></h2></div><div class="count"><span id="visible-count">19</span> MINI-JEUX</div></div>
   <nav class="filters" aria-label="Catégories">
@@ -139,6 +91,61 @@
   </div>
   <div class="empty-state" id="empty" hidden>Aucun jeu trouvé. Essaie un autre mot !</div>
 </main>
+
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="pulse"></span> ARCADE EN LIGNE · GRATUIT</div>
+    <h1>TON UNIVERS.<br><span>TES RÈGLES.</span></h1>
+    <p>Une planète pleine de mini-jeux. Choisis ton défi, bats ton record et amuse-toi !</p>
+    <a class="primary-btn" href="#games">EXPLORER LES JEUX <span>→</span></a>
+    <div class="hero-stats"><div><strong>19</strong><small>JEUX DISPONIBLES</small></div><i></i><div><strong>∞</strong><small>ENVIE DE REJOUER</small></div></div>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+    <div class="big-planet"><div class="planet-shine"></div><div class="planet-ring"></div></div>
+    <div class="float-card card-a">✦ <span>ARCADE</span></div>
+    <div class="float-card card-b">▲ <span>LEVEL UP</span></div>
+    <div class="star s1">✦</div><div class="star s2">✧</div><div class="star s3">·</div>
+  </div>
+</section>
+<section id="profile" class="profile-panel" aria-label="Profil du joueur">
+  <div class="profile-avatar" id="profile-avatar" aria-hidden="true">PG</div>
+  <div class="profile-main">
+    <div class="eyebrow">TON ESPACE JOUEUR</div>
+    <h2 id="profile-name-display">Joueur Planet Geek</h2>
+    <p>Personnalise ton pseudo et suis ta progression.</p>
+    <form id="profile-form" class="profile-form">
+      <label for="profile-name">Pseudo</label>
+      <input id="profile-name" name="profile-name" maxlength="18" minlength="2" placeholder="Entre ton pseudo" autocomplete="nickname" required>
+      <button type="submit" class="profile-save">Enregistrer</button>
+    </form>
+  </div>
+  <div class="profile-level"><small>NIVEAU</small><strong id="profile-level">1</strong><span id="profile-xp">0 XP</span></div>
+</section>
+<section class="xp-panel" aria-label="Progression XP">
+  <div class="xp-title"><div class="eyebrow">TON AVANCÉE</div><h2>PLANET <span>XP</span></h2><p>Joue, gagne de l’XP et débloque des badges !</p></div>
+  <div class="xp-stats"><div><small>XP TOTALE</small><strong id="xp-total">0 XP</strong></div><div><small>NIVEAU</small><strong id="xp-level">1</strong></div><div><small>PARTIES VALIDÉES</small><strong id="xp-games">0</strong></div></div>
+  <div class="xp-progress"><div class="xp-progress-label"><span id="xp-next-label">Progression vers le niveau 2</span><span id="xp-progress-text">0 / 100 XP</span></div><div class="xp-track"><div id="xp-progress-fill"></div></div></div>
+  <div class="xp-badges" id="xp-badges"><span class="xp-badge locked">🔒 Première partie</span><span class="xp-badge locked">🔒 5 parties</span><span class="xp-badge locked">🔒 10 parties</span><span class="xp-badge locked">🔒 Niveau 5</span><span class="xp-badge locked">🔒 500 XP</span></div>
+</section>
+
+<section id="stats" class="feature-grid" aria-label="Progression et défis">
+  <article class="feature-panel"><div class="eyebrow">DÉFIS DU JOUR</div><h2>MISSIONS <span>QUOTIDIENNES</span></h2><p class="feature-sub">Chaque jour, de nouveaux objectifs à accomplir pour gagner de l’XP bonus.</p><div id="daily-missions" class="mission-list"></div><p id="mission-reset" class="feature-sub"></p></article>
+  <article class="feature-panel"><div class="eyebrow">PERSONNALISE TON UNIVERS</div><h2>BOUTIQUE <span>XP</span></h2><p class="feature-sub">Achète des thèmes visuels avec tes XP. Les achats sont sauvegardés sur cet appareil.</p><div id="xp-shop" class="shop-list"></div><p id="shop-message" class="feature-sub" aria-live="polite"></p></article>
+  <article class="feature-panel"><div class="eyebrow">TES EXPLOITS</div><h2>COLLECTION DE <span>BADGES</span></h2><div id="badge-collection" class="badge-collection"></div></article>
+  <article class="feature-panel"><div class="eyebrow">TES STATISTIQUES</div><h2>RECORDS <span>PERSONNELS</span></h2><p class="feature-sub">Historique des parties validées depuis que tu as activé Planet Geek. Les scores de jeux non transmis ne sont pas inventés.</p><div id="personal-records" class="records-list"></div></article>
+  <article class="feature-panel friend-panel"><div class="eyebrow">DÉFIS ENTRE AMIS</div><h2>DÉFIE UN <span>AMI</span></h2><p class="feature-sub">Crée un code avec ton XP et tes parties validées, puis envoie-le à un ami. Le classement est comparé manuellement, sans compte en ligne.</p><div class="friend-actions"><button type="button" id="make-challenge" class="feature-button">Créer mon code</button><input id="challenge-code" placeholder="Colle le code de ton ami" aria-label="Code de défi d'un ami"><button type="button" id="compare-challenge" class="feature-button secondary">Comparer</button></div><textarea id="my-challenge" readonly rows="2" placeholder="Ton code de défi apparaîtra ici"></textarea><p id="challenge-result" class="feature-sub" aria-live="polite"></p></article>
+  <article class="feature-panel"><div class="eyebrow">TON IDENTITÉ</div><h2>RANG <span>GALACTIQUE</span></h2><div id="rank-card" class="rank-card"><b id="rank-name">Bronze</b><div class="rank-track"><span id="rank-fill"></span></div><small id="rank-desc">Continue à jouer pour progresser.</small></div></article>
+  <article class="feature-panel"><div class="eyebrow">OBJETS COSMÉTIQUES</div><h2>INVENTAIRE <span>DE SKINS</span></h2><p class="feature-sub">Achète et équipe des apparences avec tes XP.</p><div id="skin-inventory" class="skin-grid"></div></article>
+  <article class="feature-panel"><div class="eyebrow">ÉVÉNEMENT DE LA SEMAINE</div><h2>BOSS <span>GALACTIQUE</span></h2><p class="feature-sub">Affronte le boss en cliquant plusieurs fois. Une victoire par semaine.</p><div class="boss-health"><span id="boss-health-fill"></span></div><p id="boss-status" class="feature-sub">Le boss arrive…</p><button type="button" id="boss-hit" class="feature-button">Attaquer le boss</button></article>
+  <article class="feature-panel"><div class="eyebrow">EXPLORATION</div><h2>MONDE À <span>EXPLORER</span></h2><p class="feature-sub">Débloque les zones avec tes parties validées.</p><div id="world-map" class="world-map"></div></article>
+  <article class="feature-panel"><div class="eyebrow">CADEAU DE CONNEXION</div><h2>COFFRE <span>QUOTIDIEN</span></h2><p class="feature-sub">Ouvre un coffre chaque jour pour recevoir de l’XP.</p><div class="chest-art">▣</div><button type="button" id="daily-chest" class="feature-button">Ouvrir le coffre</button><p id="chest-status" class="feature-sub" aria-live="polite"></p></article>
+  <article class="feature-panel"><div class="eyebrow">DÉFI MULTI-JEUX</div><h2>MODE <span>TOURNOI</span></h2><p class="feature-sub">Valide 3 manches en jouant à des mini-jeux, puis réclame la récompense.</p><div class="tournament-track"><span id="tournament-progress">0 / 3 manches</span><b id="tournament-score">0 points</b></div><button type="button" id="tournament-start" class="feature-button">Démarrer / réinitialiser</button><button type="button" id="tournament-claim" class="feature-button secondary">Réclamer +50 XP</button><p id="tournament-status" class="feature-sub"></p></article>
+  <article class="feature-panel"><div class="eyebrow">SECRETS CACHÉS</div><h2>SUCCÈS <span>SECRETS</span></h2><p class="feature-sub">Certains exploits apparaissent seulement quand tu les débloques.</p><div id="secret-achievements" class="secret-list"></div></article>
+  <article class="feature-panel"><div class="eyebrow">TON PETIT ALLIÉ</div><h2>COMPAGNON <span>VIRTUEL</span></h2><div class="companion-card"><div id="companion-face" class="companion-face">🤖</div><div><b id="companion-name">Byte</b><p id="companion-level" class="feature-sub">Niveau 1 · énergie 100%</p></div></div><button type="button" id="companion-feed" class="feature-button">Nourrir · 20 XP</button><p id="companion-status" class="feature-sub">Ton compagnon grandit avec toi.</p></article>
+</section>
+
+
 <section class="bottom-banner"><div class="banner-icon">✦</div><div><h2>PRÊT À PASSER AU NIVEAU SUIVANT ?</h2><p>Choisis un jeu, lance une partie et essaie de battre ton record.</p></div><a href="#games">C'EST PARTI ↗</a></section>
 <footer><a class="brand" href="#"><span class="planet">◉</span> PLANET <b>GEEK</b></a><span>MINI-JEUX GRATUITS · FAIT POUR S'AMUSER</span><span>© <span id="year"></span> PLANET GEEK</span></footer>
 <div class="modal" id="game-modal" aria-hidden="true">
