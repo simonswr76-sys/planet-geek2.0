@@ -19,6 +19,7 @@
   <a href="#profile" title="Ouvrir le profil"><span aria-hidden="true">👤</span><b>Profil</b></a>
   <a href="#store" title="Ouvrir la boutique"><span aria-hidden="true">🛍️</span><b>Boutique</b></a>
   <a href="#locker" title="Ouvrir le casier"><span aria-hidden="true">🧰</span><b>Casier</b></a>
+  <a href="#season-pass" title="Ouvrir le pass de saison"><span aria-hidden="true">🏆</span><b>Pass</b></a>
   <a href="#arena" title="Jouer dans l’arène"><span aria-hidden="true">🌌</span><b>Arène</b></a>
   <a href="#stats" title="Voir les statistiques et bonus"><span aria-hidden="true">📊</span><b>Stats</b></a>
 </nav>
@@ -100,22 +101,7 @@
   <div class="empty-state" id="empty" hidden>Aucun jeu trouvé. Essaie un autre mot !</div>
 </main>
 
-<section class="hero">
-  <div class="hero-copy">
-    <div class="eyebrow"><span class="pulse"></span> ARCADE EN LIGNE · GRATUIT</div>
-    <h1>TON UNIVERS.<br><span>TES RÈGLES.</span></h1>
-    <p>Une planète pleine de mini-jeux. Choisis ton défi, bats ton record et amuse-toi !</p>
-    <a class="primary-btn" href="#games">EXPLORER LES JEUX <span>→</span></a>
-    <div class="hero-stats"><div><strong>19</strong><small>JEUX DISPONIBLES</small></div><i></i><div><strong>∞</strong><small>ENVIE DE REJOUER</small></div></div>
-  </div>
-  <div class="hero-art" aria-hidden="true">
-    <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-    <div class="big-planet"><div class="planet-shine"></div><div class="planet-ring"></div></div>
-    <div class="float-card card-a">✦ <span>ARCADE</span></div>
-    <div class="float-card card-b">▲ <span>LEVEL UP</span></div>
-    <div class="star s1">✦</div><div class="star s2">✧</div><div class="star s3">·</div>
-  </div>
-</section>
+
 <section id="store" class="pg-store" aria-label="Boutique Planet Geek">
  <div class="section-head"><div><div class="eyebrow">COSMÉTIQUES VIRTUELS</div><h2>BOUTIQUE <span>PLANET GEEK</span></h2></div><div class="count">ACHATS AVEC XP</div></div>
  <p class="feature-sub">Achète des objets virtuels avec tes XP, puis équipe-les dans l’arène. Aucun achat réel.</p>
@@ -157,6 +143,7 @@
   <p id="season-status" class="feature-sub" aria-live="polite">Les récompenses sont sauvegardées sur cet appareil.</p>
 </section>
 
+<div class="feature-section-heading"><div class="eyebrow">TON ESPACE PERSONNEL</div><h2>PROGRESSION, <span>RÉCOMPENSES & DÉFIS</span></h2><p>Tout ce qui concerne ton compte est regroupé ici.</p></div>
 <section id="stats" class="feature-grid" aria-label="Progression et défis">
   <article class="feature-panel"><div class="eyebrow">DÉFIS DU JOUR</div><h2>MISSIONS <span>QUOTIDIENNES</span></h2><p class="feature-sub">Chaque jour, de nouveaux objectifs à accomplir pour gagner de l’XP bonus.</p><div id="daily-missions" class="mission-list"></div><p id="mission-reset" class="feature-sub"></p></article>
   <article class="feature-panel"><div class="eyebrow">PERSONNALISE TON UNIVERS</div><h2>BOUTIQUE <span>XP</span></h2><p class="feature-sub">Achète des thèmes visuels avec tes XP. Les achats sont sauvegardés sur cet appareil.</p><div id="xp-shop" class="shop-list"></div><p id="shop-message" class="feature-sub" aria-live="polite"></p></article>
@@ -164,7 +151,7 @@
   <article class="feature-panel"><div class="eyebrow">TES STATISTIQUES</div><h2>RECORDS <span>PERSONNELS</span></h2><p class="feature-sub">Historique des parties validées depuis que tu as activé Planet Geek. Les scores de jeux non transmis ne sont pas inventés.</p><div id="personal-records" class="records-list"></div></article>
   <article class="feature-panel friend-panel"><div class="eyebrow">DÉFIS ENTRE AMIS</div><h2>DÉFIE UN <span>AMI</span></h2><p class="feature-sub">Crée un code avec ton XP et tes parties validées, puis envoie-le à un ami. Le classement est comparé manuellement, sans compte en ligne.</p><div class="friend-actions"><button type="button" id="make-challenge" class="feature-button">Créer mon code</button><input id="challenge-code" placeholder="Colle le code de ton ami" aria-label="Code de défi d'un ami"><button type="button" id="compare-challenge" class="feature-button secondary">Comparer</button></div><textarea id="my-challenge" readonly rows="2" placeholder="Ton code de défi apparaîtra ici"></textarea><p id="challenge-result" class="feature-sub" aria-live="polite"></p></article>
   <article class="feature-panel"><div class="eyebrow">TON IDENTITÉ</div><h2>RANG <span>GALACTIQUE</span></h2><div id="rank-card" class="rank-card"><b id="rank-name">Bronze</b><div class="rank-track"><span id="rank-fill"></span></div><small id="rank-desc">Continue à jouer pour progresser.</small></div></article>
-  <article class="feature-panel"><div class="eyebrow">OBJETS COSMÉTIQUES</div><h2>INVENTAIRE <span>DE SKINS</span></h2><p class="feature-sub">Achète et équipe des apparences avec tes XP.</p><div id="skin-inventory" class="skin-grid"></div></article>
+  <article id="locker" class="feature-panel"><div class="eyebrow">OBJETS COSMÉTIQUES</div><h2>INVENTAIRE <span>DE SKINS</span></h2><p class="feature-sub">Achète et équipe des apparences avec tes XP.</p><div id="skin-inventory" class="skin-grid"></div></article>
   <article class="feature-panel"><div class="eyebrow">ÉVÉNEMENT DE LA SEMAINE</div><h2>BOSS <span>GALACTIQUE</span></h2><p class="feature-sub">Affronte le boss en cliquant plusieurs fois. Une victoire par semaine.</p><div class="boss-health"><span id="boss-health-fill"></span></div><p id="boss-status" class="feature-sub">Le boss arrive…</p><button type="button" id="boss-hit" class="feature-button">Attaquer le boss</button></article>
   <article class="feature-panel"><div class="eyebrow">EXPLORATION</div><h2>MONDE À <span>EXPLORER</span></h2><p class="feature-sub">Débloque les zones avec tes parties validées.</p><div id="world-map" class="world-map"></div></article>
   <article class="feature-panel"><div class="eyebrow">CADEAU DE CONNEXION</div><h2>COFFRE <span>QUOTIDIEN</span></h2><p class="feature-sub">Ouvre un coffre chaque jour pour recevoir de l’XP.</p><div class="chest-art">▣</div><button type="button" id="daily-chest" class="feature-button">Ouvrir le coffre</button><p id="chest-status" class="feature-sub" aria-live="polite"></p></article>
