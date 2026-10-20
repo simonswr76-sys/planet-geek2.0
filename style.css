@@ -86,3 +86,74 @@ button:active {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ⭐ Favoris Planet Geek */
+.game-card {
+  position: relative;
+}
+
+.pg-fav-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  border: 1px solid #53658c;
+  border-radius: 12px;
+  padding: 8px 11px;
+  background: #111a31;
+  color: white;
+  cursor: pointer;
+}
+
+.pg-fav-btn.is-favorite {
+  background: #ffe08a;
+  color: #201600;
+  border-color: #ffe08a;
+}
+
+.pg-fav-btn:focus-visible,
+.pg-fav-toggle:focus-visible {
+  outline: 3px solid #35e7ff;
+  outline-offset: 3px;
+}
+
+.pg-fav-toggle {
+  border: 1px solid #35e7ff;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 10px 0;
+  background: #15233e;
+  color: white;
+  cursor: pointer;
+}
+
+body.pg-favorites-only .game-card:not(.is-favorite) {
+  display: none !important;
+}
+
+.pg-records {
+  margin: 24px 0;
+  padding: 18px;
+  background: #111a31;
+  border: 1px solid #35466c;
+  border-radius: 16px;
+  color: #eef3ff;
+}
+
+.pg-records h2 {
+  color: #35e7ff;
+}
+
+.pg-records li {
+  padding: 6px 0;
+}
+
+.pg-records button {
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg-fav-btn {
+    transition: none;
+  }
+}
