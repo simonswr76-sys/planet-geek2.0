@@ -254,3 +254,92 @@ body.pg-favorites-only .game-card:not(.is-favorite) {
     right: 10px;
   }
 }
+
+/* === PLANET GEEK : XP, NIVEAUX ET BADGES === */
+.pg-xp-panel {
+  margin: 24px 0;
+  padding: 20px;
+  color: #eef3ff;
+  background: linear-gradient(135deg, #111a31, #21163c);
+  border: 1px solid #35e7ff77;
+  border-radius: 18px;
+  box-shadow: 0 0 22px #35e7ff12;
+}
+
+.pg-xp-panel h2 {
+  color: #35e7ff;
+  margin-top: 0;
+}
+
+.pg-xp-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.pg-xp-level {
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+.pg-xp-bar {
+  height: 13px;
+  margin: 14px 0 8px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: #293653;
+}
+
+.pg-xp-fill {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #35e7ff, #bd65ff);
+  transition: width .4s ease;
+}
+
+.pg-xp-muted {
+  color: #b8c5e8;
+  font-size: .9rem;
+}
+
+.pg-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.pg-badge {
+  flex: 1 1 125px;
+  padding: 12px 8px;
+  text-align: center;
+  border: 1px solid #344567;
+  border-radius: 12px;
+  background: #182440;
+}
+
+.pg-badge.locked {
+  opacity: .45;
+  filter: grayscale(1);
+}
+
+.pg-badge-icon {
+  display: block;
+  font-size: 1.7rem;
+  margin-bottom: 5px;
+}
+
+.pg-xp-notice {
+  margin-top: 12px;
+  color: #35e7ff;
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg-xp-fill {
+    transition: none;
+  }
+}
