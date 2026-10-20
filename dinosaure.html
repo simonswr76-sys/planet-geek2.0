@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Neon Dino – Planet Geek</title>
+<style>
+:root{--cy:#00f0ff;--mg:#ff2bd6;--lm:#b6ff3b;--bg:#05060f}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0,#1a0f3d,var(--bg) 60%);color:#e8f6ff;font:600 16px/1.5 "Trebuchet MS",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:14px}
+h1{margin:0;font:900 clamp(24px,5vw,40px) "Courier New",monospace;color:#fff;letter-spacing:2px;text-shadow:0 0 8px var(--cy),0 0 24px var(--cy),0 0 40px var(--mg)}
+#wrap{position:relative;width:min(100%,800px);aspect-ratio:8/3;border:2px solid var(--cy);border-radius:12px;box-shadow:0 0 18px var(--cy),0 0 50px rgba(255,43,214,.35),inset 0 0 20px rgba(0,240,255,.2);overflow:hidden;touch-action:none;user-select:none;background:#080a1c}
+canvas{width:100%;height:100%;display:block}
+#ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;background:rgba(5,6,15,.72);backdrop-filter:blur(3px)}
+#ov.off{display:none}
+#ov h2{margin:0;font:900 clamp(26px,6vw,46px) "Courier New",monospace;color:var(--mg);text-shadow:0 0 10px var(--mg),0 0 30px var(--mg)}
+#ov p{margin:0 12px 8px;font-size:clamp(13px,2.6vw,17px)}
+button{font:900 clamp(15px,3vw,19px) "Courier New",monospace;color:var(--bg);background:var(--cy);border:0;border-radius:999px;padding:10px 28px;cursor:pointer;box-shadow:0 0 16px var(--cy);transition:transform .1s}
+button:hover{transform:scale(1.05)}button:active{transform:scale(.96)}
+button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+#mu{position:absolute;top:8px;left:8px;padding:4px 10px;font-size:16px;background:rgba(0,0,0,.45);color:#fff;box-shadow:none;border:1px solid var(--cy)}
+.hint{opacity:.7;font-size:14px;text-align:center;margin:0}
+</style></head><body>
+<h1>NEON DINO</h1>
+<div id="wrap">
+<canvas id="c" width="1600" height="600"></canvas>
+<button id="mu" aria-label="Son" title="Son">🔊</button>
+<div id="ov"><h2 id="t">Neon Dino</h2><p id="s">Espace, ↑ ou toucher l'écran pour sauter</p><button id="go">Jouer</button></div>
+</div>
+<p class="hint">Planet Geek · Espace / ↑ / W ou toucher l'écran pour sauter · Entrée pour rejouer</p>
+<script>
+const $=i=>document.getElementById(i),cv=$('c'),x=cv.getContext('2d');x.scale(2,2);
+const W=800,H=300,G=240,CY='#00f0ff',MG='#ff2bd6',LM='#b6ff3b';
+let st='ready',dist=0,dy=0,vy=0,obs=[],spawnIn=500,last=0,shake=0,flash=0,died=0,t=0,mute=false,best=0,ac,lastM=0;
+try{best=+localStorage.getItem('neondino')||0}catch(e){}
+const stars=Array.from({length:45},()=>({x:Math.random()*W,y:Math.random()*170,r:Math.random()*1.4+.4,p:Math.random()*6}));
+const score=()=>Math.floor(dist/10),pad=n=>String(n).padStart(5,'0');
+function snd(f,d,type='square',v=.06){if(mute)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=f;g.gain.value=v;g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d)}catch(e){}}
+function start(){if(st==='play')return;st='play';dist=0;dy=vy=0;obs=[];spawnIn=500;flash=0;lastM=0;$('ov').classList.add('off');$('go').blur();snd(660,.12)}
+function jump(){if(st!=='play'||dy>0)return;vy=820;snd(520,.12,'square',.05)}
+function die(){st='over';died=performance.now();shake=.3;snd(110,.4,'sawtooth',.12);const s=score(),nb=s>best;if(nb){best=s;try{localStorage.setItem('neondino',best)}catch(e){}}
+ $('t').textContent='Game Over';$('s').innerHTML='Score <b>'+s+'</b> · Record <b>'+best+'</b>'+(nb?'<br>🏆 Nouveau record !':'');$('go').textContent='Rejouer';$('ov').classList.remove('off')}
+function spawn(sp){const n=1+(Math.random()*3|0),hs=[];for(let i=0;i<n;i++)hs.push(38+Math.random()*30|0);obs.push({x:W+20,n,hs,w:n*26,h:Math.max(...hs)});spawnIn=sp*.75+Math.random()*sp*.8+n*26}
+function update(dt){const sc=score(),sp=320+Math.min(sc*.6,380);dist+=sp*dt;
+ if(dy>0||vy>0){vy-=2600*dt;dy+=vy*dt;if(dy<=0){dy=0;vy=0}}
+ spawnIn-=sp*dt;if(spawnIn<=0)spawn(sp);
+ obs.forEach(o=>o.x-=sp*dt);obs=obs.filter(o=>o.x+o.w>-10);
+ const a={x:68,y:G-dy-42,w:30,h:36};
+ for(const o of obs)if(a.x<o.x+o.w-4&&a.x+a.w>o.x+4&&a.y<G-2&&a.y+a.h>G-o.h+4){die();return}
+ const m=Math.floor(score()/100);if(m>lastM){lastM=m;flash=.5;snd(880,.15,'triangle',.08)}}
+function drawDino(){const px=60,py=G-dy-48,f=Math.floor(dist/35)%2;x.save();x.shadowColor=CY;x.shadowBlur=18;x.fillStyle=CY;
+ x.fillRect(px+8,py+14,26,22);x.fillRect(px,py+18,10,8);x.fillRect(px+24,py,22,16);x.fillRect(px+32,py+24,8,4);
+ const l1=dy>0?12:(f?12:6),l2=dy>0?12:(f?6:12);x.fillRect(px+12,py+36,8,l1);x.fillRect(px+24,py+36,8,l2);
+ x.shadowBlur=0;x.fillStyle='#05060f';x.fillRect(px+38,py+4,4,4);x.restore()}
+function drawCactus(o){x.save();x.shadowColor=LM;x.shadowBlur=14;x.fillStyle=LM;
+ o.hs.forEach((h,i)=>{const c=o.x+i*26;x.fillRect(c+7,G-h,12,h);x.fillRect(c,G-h*.62,7,6);x.fillRect(c,G-h*.62-12,6,12);x.fillRect(c+19,G-h*.48,7,6);x.fillRect(c+20,G-h*.48-12,6,12)});x.restore()}
+function draw(){x.save();if(shake>0)x.translate((Math.random()-.5)*8,(Math.random()-.5)*8);
+ let g=x.createLinearGradient(0,0,0,G);g.addColorStop(0,'#0a0626');g.addColorStop(1,'#2a0a45');x.fillStyle=g;x.fillRect(-10,-10,W+20,H+20);
+ stars.forEach(s=>{x.globalAlpha=.4+.6*Math.abs(Math.sin(t*1.5+s.p));x.fillStyle='#fff';x.fillRect((s.x-dist*.02+W*2)%W,s.y,s.r,s.r)});x.globalAlpha=1;
+ g=x.createLinearGradient(0,70,0,G);g.addColorStop(0,'rgba(255,43,214,.75)');g.addColorStop(1,'rgba(255,170,0,.65)');x.fillStyle=g;x.beginPath();x.arc(560,G,120,Math.PI,0);x.fill();
+ x.fillStyle='#2a0a45';for(let i=0;i<5;i++)x.fillRect(430,G-14-i*20,260,3+i);
+ x.strokeStyle=MG;x.shadowColor=MG;x.shadowBlur=14;x.lineWidth=2;x.beginPath();x.moveTo(0,G+1);x.lineTo(W,G+1);x.stroke();x.shadowBlur=0;
+ x.fillStyle='#0c0820';x.fillRect(0,G+2,W,H-G);x.strokeStyle='rgba(0,240,255,.25)';x.lineWidth=1;
+ for(let i=-1;i<22;i++){const gx=i*60-(dist%60);x.beginPath();x.moveTo(gx+30,G+2);x.lineTo((gx-W/2)*2.2+W/2+30,H);x.stroke()}
+ for(let i=1;i<4;i++){x.beginPath();x.moveTo(0,G+i*i*4+2);x.lineTo(W,G+i*i*4+2);x.stroke()}
+ obs.forEach(drawCactus);drawDino();
+ x.font='900 20px "Courier New",monospace';x.textAlign='right';x.shadowColor=flash>0?'#fff':CY;x.shadowBlur=10;
+ x.fillStyle='rgba(0,240,255,.55)';x.fillText('HI '+pad(best),W-130,32);x.fillStyle=flash>0?'#fff':CY;x.fillText(pad(score()),W-16,32);x.restore()}
+function loop(ts){const dt=Math.min((ts-last)/1000||0,.05);last=ts;t+=dt;if(flash>0)flash-=dt;if(shake>0)shake-=dt;if(st==='play')update(dt);draw();requestAnimationFrame(loop)}
+const press=()=>{if(st==='play')jump();else if(st==='ready'||performance.now()-died>400)start()};
+addEventListener('keydown',e=>{if(['Space','ArrowUp','KeyW'].includes(e.code)){e.preventDefault();if(!e.repeat)press()}else if(e.code==='Enter'){e.preventDefault();if(st!=='play')press()}});
+$('wrap').addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;if(st==='play')jump()});
+$('go').addEventListener('click',()=>{if(st!=='play')start()});
+$('mu').addEventListener('click',e=>{mute=!mute;e.target.textContent=mute?'🔇':'🔊';e.target.blur()});
+document.addEventListener('visibilitychange',()=>{last=performance.now()});
+requestAnimationFrame(loop);
+</script></body></html>
