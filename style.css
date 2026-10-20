@@ -61,38 +61,3 @@ html{scroll-behavior:smooth;scroll-padding-top:84px}
 
 /* Lobby, casier et monnaie virtuelle */
 .pg-lobby{max-width:1240px;margin:20px auto 30px;padding:clamp(22px,4vw,48px);min-height:300px;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;overflow:hidden;position:relative;border:1px solid #42e8ff55;border-radius:20px;background:radial-gradient(ellipse at 78% 45%,#563d9b77,transparent 42%),linear-gradient(120deg,#071323,#102746 65%,#10152e)}.lobby-copy h1{font-size:clamp(34px,5vw,58px);line-height:1;margin:12px 0}.lobby-copy h1 span{color:#42e8ff}.lobby-copy p{max-width:500px;color:#b6c8dd;line-height:1.65}.lobby-actions{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}.lobby-actions .primary-btn{display:inline-flex;align-items:center;text-decoration:none}.lobby-secondary{display:inline-flex;align-items:center;padding:12px 16px;border:1px solid #42e8ff66;border-radius:9px;color:#dffaff;text-decoration:none;font-weight:800;font-size:12px}.lobby-wallet{color:#a9c7e3;font-size:13px}.lobby-wallet strong{color:#42e8ff}.lobby-avatar{position:relative;min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}.lobby-avatar #lobby-avatar-icon{font-size:clamp(76px,10vw,120px);filter:drop-shadow(0 0 24px #42e8ff88);z-index:1;animation:lobby-float 3s ease-in-out infinite}.lobby-avatar span{font-weight:800;color:#fff}.lobby-avatar small{font-size:9px;letter-spacing:2px;color:#85a8c9}.avatar-orbit{position:absolute;width:220px;height:110px;border:2px solid #42e8ff66;border-radius:50%;transform:rotate(-25deg);box-shadow:0 0 30px #42e8ff22}.avatar-orbit:after{content:'✦';position:absolute;top:4px;right:20px;color:#ffcf66;font-size:22px}@keyframes lobby-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}.locker-section{margin-top:22px}.pg-locker-card{position:relative}.pg-locker-card .owned-label{color:#69f0c1;font-size:10px;font-weight:900}.pg-locker-card button:disabled{opacity:.7;cursor:default}.pg-arena-controls #pg-bot-mode{background:#b56bff;color:#10091f}@media(max-width:760px){.pg-lobby{margin:14px 10px;grid-template-columns:1fr;text-align:center}.lobby-copy p{margin-left:auto;margin-right:auto}.lobby-actions{justify-content:center}.lobby-avatar{min-height:180px}.avatar-orbit{width:170px;height:85px}}
-
-/* Organisation visuelle : navigation compacte, sections bien séparées */
-html { scroll-behavior: smooth; scroll-padding-top: 130px; }
-body { line-height: 1.55; }
-.topbar { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(18px); }
-.quick-dock { position: sticky; top: 72px; z-index: 90; display: flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; gap: 7px; padding: 10px clamp(12px, 3vw, 36px); }
-.quick-dock a { flex: 0 0 auto; min-width: 76px; }
-.quick-dock a:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid #42e8ff; outline-offset: 3px; }
-.pg-lobby { margin-bottom: 26px; }
-#games { max-width: 1440px; margin: 0 auto; }
-.section-head { scroll-margin-top: 140px; }
-.pg-store, .pg-arena-section, .profile-panel, .xp-panel, .season-pass-panel, .feature-section-heading, .feature-grid, .bottom-banner { scroll-margin-top: 140px; }
-.pg-store, .pg-arena-section, .profile-panel, .xp-panel, .season-pass-panel { max-width: 1360px; margin-left: auto; margin-right: auto; }
-.pg-store, .pg-arena-section, .season-pass-panel { margin-top: 28px; margin-bottom: 28px; }
-.feature-section-heading { max-width: 1300px; margin: 42px auto 14px; padding: 0 28px; }
-.feature-section-heading h2 { margin: 4px 0; font-size: clamp(21px, 3vw, 30px); }
-.feature-section-heading h2 span { color: var(--accent, #42e8ff); }
-.feature-section-heading p { margin: 4px 0 0; color: #9db0c8; }
-.feature-grid { align-items: stretch; gap: 18px; }
-.feature-panel { min-width: 0; height: 100%; border-radius: 18px; }
-.game-card { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
-.game-card:hover { transform: translateY(-3px); }
-.game-info { min-height: 112px; }
-.empty-state { margin: 22px 0; }
-footer { margin-top: 42px; }
-@media (max-width: 700px) {
-  html { scroll-padding-top: 125px; }
-  .topbar { position: relative; }
-  .quick-dock { top: 0; padding: 8px 12px; }
-  .quick-dock a { min-width: 66px; padding: 7px 8px; }
-  .pg-lobby { margin: 12px; }
-  .feature-section-heading { margin: 30px 15px 12px; padding: 0; }
-  .pg-store, .pg-arena-section, .season-pass-panel { margin: 18px 12px; }
-}
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
