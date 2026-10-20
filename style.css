@@ -120,3 +120,14 @@ html { scroll-padding-top: 100px; }
   .pg-store, .pg-arena-section, .profile-panel, .xp-panel, .season-pass-panel { margin: 12px 8px; padding: 14px; }
   .feature-section-heading { margin: 22px 12px 10px; }
 }
+
+
+/* Menu compact à trois barres */
+.menu-wrap{position:fixed;right:18px;top:88px;z-index:1200;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.menu-toggle{display:flex;align-items:center;gap:9px;padding:10px 12px;border:1px solid #42e8ff88;border-radius:12px;background:#071323f2;color:#dffaff;box-shadow:0 6px 24px #0008;cursor:pointer;backdrop-filter:blur(12px)}
+.hamburger-lines{display:flex;flex-direction:column;gap:4px;width:20px}.hamburger-lines i{display:block;height:2px;width:20px;border-radius:2px;background:#42e8ff;transition:transform .18s,opacity .18s}
+.menu-toggle[aria-expanded="true"] .hamburger-lines i:first-child{transform:translateY(6px) rotate(45deg)}.menu-toggle[aria-expanded="true"] .hamburger-lines i:nth-child(2){opacity:0}.menu-toggle[aria-expanded="true"] .hamburger-lines i:last-child{transform:translateY(-6px) rotate(-45deg)}
+.menu-toggle-label{font-size:10px;font-weight:900;letter-spacing:1.2px}
+.quick-dock[hidden]{display:none!important}.quick-dock{position:absolute!important;top:calc(100% + 8px)!important;right:0!important;left:auto!important;transform:none!important;display:flex;flex-direction:column!important;flex-wrap:nowrap!important;gap:4px!important;width:190px!important;max-width:min(86vw,230px)!important;max-height:70vh;overflow:auto!important;padding:7px!important;margin:0!important;border:1px solid #42e8ff66!important;border-radius:14px!important;background:#071323f5!important;box-shadow:0 12px 34px #0009!important;backdrop-filter:blur(14px)}
+.quick-dock a{display:flex!important;flex-direction:row!important;justify-content:flex-start!important;align-items:center!important;gap:10px!important;min-width:0!important;width:auto!important;flex:0 0 auto!important;padding:10px 12px!important;border-radius:9px!important;font-size:12px!important}.quick-dock a span{font-size:17px!important}.quick-dock a b{font-size:10px!important;white-space:nowrap!important}
+@media(max-width:700px){.menu-wrap{right:10px;top:70px}.menu-toggle{padding:9px 10px}.quick-dock{width:175px!important;max-height:65vh!important}body{padding-bottom:12px!important}}

@@ -13,16 +13,19 @@
   <div class="search-wrap"><span>⌕</span><input id="search" type="search" placeholder="Rechercher un jeu..." aria-label="Rechercher un jeu"></div>
   <a class="submit-link" href="#games">JOUER <span>↗</span></a>
 </header>
-<nav class="quick-dock" aria-label="Accès rapide">
-  <a href="#lobby" title="Ouvrir le lobby"><span aria-hidden="true">🚀</span><b>Lobby</b></a>
-  <a href="#games" title="Aller aux jeux"><span aria-hidden="true">🎮</span><b>Jeux</b></a>
-  <a href="#profile" title="Ouvrir le profil"><span aria-hidden="true">👤</span><b>Profil</b></a>
-  <a href="#store" title="Ouvrir la boutique"><span aria-hidden="true">🛍️</span><b>Boutique</b></a>
-  <a href="#locker" title="Ouvrir le casier"><span aria-hidden="true">🧰</span><b>Casier</b></a>
-  <a href="#season-pass" title="Ouvrir le pass de saison"><span aria-hidden="true">🏆</span><b>Pass</b></a>
-  <a href="#arena" title="Jouer dans l’arène"><span aria-hidden="true">🌌</span><b>Arène</b></a>
-  <a href="#stats" title="Voir les statistiques et bonus"><span aria-hidden="true">📊</span><b>Stats</b></a>
-</nav>
+<div class="menu-wrap">
+  <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="quick-dock" aria-label="Ouvrir le menu"><span class="hamburger-lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="menu-toggle-label">MENU</span></button>
+  <nav class="quick-dock" id="quick-dock" aria-label="Menu principal" hidden>
+    <a href="#lobby"><span aria-hidden="true">🚀</span><b>Lobby</b></a>
+    <a href="#games"><span aria-hidden="true">🎮</span><b>Jeux</b></a>
+    <a href="#profile"><span aria-hidden="true">👤</span><b>Profil</b></a>
+    <a href="#store"><span aria-hidden="true">🛍️</span><b>Boutique</b></a>
+    <a href="#locker"><span aria-hidden="true">🧰</span><b>Casier</b></a>
+    <a href="#season-pass"><span aria-hidden="true">🏆</span><b>Pass</b></a>
+    <a href="#arena"><span aria-hidden="true">🌌</span><b>Arène</b></a>
+    <a href="#stats"><span aria-hidden="true">📊</span><b>Stats</b></a>
+  </nav>
+</div>
 <section id="lobby" class="pg-lobby" aria-label="Lobby Planet Geek">
  <div class="lobby-copy"><div class="eyebrow">BIENVENUE DANS TON UNIVERS</div><h1>PLANET <span>LOBBY</span></h1><p>Prépare ton personnage, équipe tes cosmétiques et pars explorer l’arène.</p><div class="lobby-actions"><a class="primary-btn" href="#arena">JOUER MAINTENANT ↗</a><a class="lobby-secondary" href="#locker">OUVRIR MON CASIER</a></div><div class="lobby-wallet">✦ Solde virtuel : <strong id="lobby-xp">0 XP</strong></div></div>
  <div class="lobby-avatar" aria-label="Aperçu du personnage"><div class="avatar-orbit"></div><div id="lobby-avatar-icon">🧑‍🚀</div><span id="lobby-skin-name">Explorateur Pixel</span><small>APERÇU DU PERSONNAGE</small></div>
@@ -170,5 +173,8 @@
   </div>
 </div>
 <script src="games.js"></script><script src="app.js"></script>
+<script>
+(()=>{const btn=document.getElementById('menu-toggle');const menu=document.getElementById('quick-dock');if(!btn||!menu)return;const close=()=>{menu.hidden=true;btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','Ouvrir le menu')};btn.addEventListener('click',()=>{const opening=menu.hidden;menu.hidden=!opening;btn.setAttribute('aria-expanded',String(opening));btn.setAttribute('aria-label',opening?'Fermer le menu':'Ouvrir le menu')});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});document.addEventListener('click',e=>{if(!menu.hidden&&!menu.contains(e.target)&&!btn.contains(e.target))close()})})();
+</script>
 </body>
 </html>
