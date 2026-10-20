@@ -1,18 +1,18 @@
-# Planet Geek
+# Planet Geek — Édition complète
 
-Site de mini-jeux navigateur, avec profil, XP, boutique virtuelle, casier, arène prototype, pass de saison, missions, statistiques et défis.
+Site statique de mini-jeux pour GitHub Pages.
 
-## Fichiers
-- `index.html` : structure et sections du site
-- `style.css` : mise en page responsive et styles
-- `app.js` : progression, profil, boutique et interactions
-- `games.js` : mini-jeux
+## Mise en ligne
+1. Remplace les fichiers du dépôt par `index.html`, `style.css`, `app.js` et `games.js`.
+2. Fais un commit sur la branche publiée par GitHub Pages.
+3. Attends la publication puis recharge avec Ctrl+F5.
 
-## Publication GitHub Pages
-1. Décompressez l'archive.
-2. Remplacez les fichiers du dépôt par ceux du dossier `planet_geek`.
-3. Validez avec **Commit changes**.
-4. Attendez la publication GitHub Pages puis rechargez avec `Ctrl + F5`.
+## Contenu
+- Navigation compacte avec menu à trois barres
+- Recherche sans accents et filtres par catégorie
+- Mini-jeux, profil, progression, boutique, casier et arène
+- Pass de saison, missions quotidiennes, coffre, boss, exploration et tournoi
+- Défis hebdomadaires avec récompenses en XP et pièces PG
+- Données locales dans le navigateur ; pas de compte serveur ni de multijoueur en ligne
 
-## À savoir
-La progression est stockée localement dans le navigateur. L'arène est un prototype jouable dans le navigateur, sans multijoueur en ligne.
+Les récompenses sont virtuelles et ne correspondent à aucune valeur monétaire réelle.

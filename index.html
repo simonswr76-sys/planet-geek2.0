@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#071323">
+<meta name="description" content="Planet Geek : mini-jeux gratuits, défis, XP, pièces PG, boutique virtuelle et progression. Joue et améliore ton profil !">
+<meta name="color-scheme" content="dark">
 <title>Planet Geek — Mini-jeux gratuits</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -30,6 +32,7 @@
  <div class="lobby-copy"><div class="eyebrow">BIENVENUE DANS TON UNIVERS</div><h1>PLANET <span>LOBBY</span></h1><p>Prépare ton personnage, équipe tes cosmétiques et pars explorer l’arène.</p><div class="lobby-actions"><a class="primary-btn" href="#arena">JOUER MAINTENANT ↗</a><a class="lobby-secondary" href="#locker">OUVRIR MON CASIER</a></div><div class="lobby-wallet">✦ Solde virtuel : <strong id="lobby-xp">0 XP</strong></div></div>
  <div class="lobby-avatar" aria-label="Aperçu du personnage"><div class="avatar-orbit"></div><div id="lobby-avatar-icon">🧑‍🚀</div><span id="lobby-skin-name">Explorateur Pixel</span><small>APERÇU DU PERSONNAGE</small></div>
 </section>
+<section class="season-notice" aria-label="État de Planet Geek"><span class="live-dot"></span><strong>PLANET GEEK EST EN LIGNE</strong><span>Mini-jeux · Défis · Boutique · Progression</span><a href="#stats">Voir les défis ↓</a></section>
 <main id="games">
   <div class="section-head"><div><div class="eyebrow">SÉLECTION PLANET GEEK</div><h2>CHOISIS TON <span>JEU</span></h2></div><div class="count"><span id="visible-count">29</span> MINI-JEUX</div></div>
   <nav class="filters" aria-label="Catégories">
@@ -154,7 +157,7 @@
 </section>
 
 <section id="season-pass" class="season-pass-panel" aria-label="Pass de saison">
-  <div class="season-pass-heading"><div><div class="eyebrow">SAISON 01 · EXPLORATION COSMIQUE</div><h2>PASS DE <span>SAISON</span></h2><p>Joue aux mini-jeux pour avancer dans le pass et réclamer des récompenses gratuites.</p></div><div class="season-emblem" aria-hidden="true">✦</div></div>
+  <div class="season-pass-heading"><div><div class="eyebrow">SAISON 02 · GALAXIE EN EXPANSION</div><h2>PASS DE <span>SAISON</span></h2><p>Joue aux mini-jeux pour avancer dans le pass et réclamer tes récompenses gratuites de la saison.</p></div><div class="season-emblem" aria-hidden="true">✦</div></div>
   <div class="season-progress-line"><div><strong id="season-tier-label">Palier 1 / 5</strong><small id="season-progress-label">0 / 1 parties validées</small></div><div class="season-track"><span id="season-progress-fill"></span></div></div>
   <div id="season-rewards" class="season-rewards"></div>
   <p id="season-status" class="feature-sub" aria-live="polite">Les récompenses sont sauvegardées sur cet appareil.</p>
@@ -163,6 +166,7 @@
 <div class="feature-section-heading"><div class="eyebrow">TON ESPACE PERSONNEL</div><h2>PROGRESSION, <span>RÉCOMPENSES & DÉFIS</span></h2><p>Tout ce qui concerne ton compte est regroupé ici.</p></div>
 <section id="stats" class="feature-grid" aria-label="Progression et défis">
   <article class="feature-panel"><div class="eyebrow">DÉFIS DU JOUR</div><h2>MISSIONS <span>QUOTIDIENNES</span></h2><p class="feature-sub">Chaque jour, de nouveaux objectifs à accomplir pour gagner de l’XP bonus.</p><div id="daily-missions" class="mission-list"></div><p id="mission-reset" class="feature-sub"></p></article>
+  <article class="feature-panel weekly-panel"><div class="eyebrow">OBJECTIFS HEBDOMADAIRES</div><h2>DÉFIS DE LA <span>SEMAINE</span></h2><p class="feature-sub">Trois objectifs renouvelés chaque semaine. Termine-les pour gagner des pièces PG et de l’XP.</p><div id="weekly-missions" class="mission-list"></div><p id="weekly-status" class="feature-sub" aria-live="polite"></p></article>
   <article class="feature-panel"><div class="eyebrow">PERSONNALISE TON UNIVERS</div><h2>BOUTIQUE <span>XP</span></h2><p class="feature-sub">Achète des thèmes visuels avec tes XP. Les achats sont sauvegardés sur cet appareil.</p><div id="xp-shop" class="shop-list"></div><p id="shop-message" class="feature-sub" aria-live="polite"></p></article>
   <article class="feature-panel"><div class="eyebrow">TES EXPLOITS</div><h2>COLLECTION DE <span>BADGES</span></h2><div id="badge-collection" class="badge-collection"></div></article>
   <article class="feature-panel"><div class="eyebrow">TES STATISTIQUES</div><h2>RECORDS <span>PERSONNELS</span></h2><p class="feature-sub">Historique des parties validées depuis que tu as activé Planet Geek. Les scores de jeux non transmis ne sont pas inventés.</p><div id="personal-records" class="records-list"></div></article>

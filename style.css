@@ -143,3 +143,15 @@ html { scroll-padding-top: 100px; }
 .game-card[hidden]{display:none!important}
 @media(max-width:1000px){.pg-level-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:700px){.pg-progression{margin:20px 12px 32px;padding:15px;border-radius:16px}.pg-level-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.pg-level-grid article{padding:11px}.pg-level-grid article b{font-size:12px}.pg-level-grid article small{font-size:11px}}
+
+
+/* Edition complète : cohérence visuelle, missions hebdomadaires et navigation responsive */
+:root{scroll-behavior:smooth;scroll-padding-top:88px}
+.season-notice{max-width:1240px;margin:16px auto 28px;padding:11px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid #23435c;border-radius:12px;background:linear-gradient(90deg,#0c1c31,#11152a);color:#a9c1d8;font-size:11px;letter-spacing:.3px}
+.season-notice strong{color:#e9faff;letter-spacing:1px}.season-notice a{margin-left:auto;color:#42e8ff;text-decoration:none;font-weight:800}.live-dot{width:8px;height:8px;border-radius:50%;background:#5af0ad;box-shadow:0 0 12px #5af0ad;flex:0 0 auto}
+.weekly-panel{border-color:#3b3b70;background:linear-gradient(145deg,#111b36,#17122b)}
+.mission-item{gap:12px}.mission-item button{white-space:nowrap}
+.feature-panel h2{line-height:1.12}.feature-sub{line-height:1.55}
+button,a{-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #42e8ff;outline-offset:3px}
+@media(max-width:700px){.season-notice{margin:12px 12px 22px;padding:10px 12px;gap:8px}.season-notice span:not(.live-dot){font-size:10px}.season-notice a{margin-left:0}.section-head{gap:12px}.feature-grid{gap:12px}}
+@media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
