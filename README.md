@@ -41,3 +41,8 @@ Les cartes et le lancement des deux jeux sont déjà intégrés dans `index.html
 - Le bouton « Terminer la partie · +10 XP » dans la fenêtre d’un jeu ajoute 10 XP une seule fois par ouverture de partie.
 - Le tableau affiche l’XP, le niveau, la progression et les badges.
 - Les données restent sur le même navigateur/appareil ; elles ne sont pas synchronisées entre appareils.
+
+## Profil joueur et XP
+- Le profil permet de choisir un pseudo (jusqu'à 18 caractères), sauvegardé dans le navigateur.
+- Le niveau, l'XP totale, les parties validées et les badges sont synchronisés avec le système Planet XP.
+- Les données sont locales au navigateur/appareil et ne se synchronisent pas entre appareils.

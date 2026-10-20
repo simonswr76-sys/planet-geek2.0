@@ -2,6 +2,9 @@
 const modal=document.getElementById('game-modal'), close=document.getElementById('close-modal');
 let current='racer';
 const XP_KEY='planetGeekProgressV1';
+const PROFILE_KEY='planetGeekProfileV1';
+const readProfile=()=>{try{return JSON.parse(localStorage.getItem(PROFILE_KEY))||{name:'Joueur Planet Geek'}}catch{return {name:'Joueur Planet Geek'}}};
+let profile=readProfile();
 const readXP=()=>{try{return JSON.parse(localStorage.getItem(XP_KEY))||{xp:0,games:0,completed:[]}}catch{return {xp:0,games:0,completed:[]}}};
 let xpState=readXP(), claimedThisRound=false;
 const levelFor=xp=>Math.floor(Math.sqrt(Math.max(0,xp)/100))+1;
@@ -11,9 +14,16 @@ function renderXP(){
  document.getElementById('xp-next-label').textContent='Progression vers le niveau '+(level+1);document.getElementById('xp-progress-text').textContent=progress+' / '+needed+' XP';document.getElementById('xp-progress-fill').style.width=Math.min(100,progress/needed*100)+'%';
  const defs=[['first', 'Première partie',games>=1],['five','5 parties',games>=5],['ten','10 parties',games>=10],['level5','Niveau 5',level>=5],['xp500','500 XP',xp>=500]];
  document.getElementById('xp-badges').innerHTML=defs.map(([id,label,ok])=>'<span class="xp-badge '+(ok?'unlocked':'locked')+'">'+(ok?'✦ ':'🔒 ')+label+(ok?' ✓':'')+'</span>').join('');
+ const displayName=(profile.name||'Joueur Planet Geek').trim()||'Joueur Planet Geek';
+ document.getElementById('profile-name-display').textContent=displayName;
+ document.getElementById('profile-avatar').textContent=displayName.split(/\s+/).slice(0,2).map(part=>part.charAt(0).toUpperCase()).join('')||'PG';
+ document.getElementById('profile-level').textContent=level;
+ document.getElementById('profile-xp').textContent=xp+' XP';
 }
 function saveXP(){localStorage.setItem(XP_KEY,JSON.stringify(xpState));renderXP();}
 function claimXP(){if(claimedThisRound){document.getElementById('game-help').textContent='XP déjà récupérée pour cette partie !';return;}xpState.xp=(Number(xpState.xp)||0)+10;xpState.games=(Number(xpState.games)||0)+1;xpState.completed=Array.isArray(xpState.completed)?xpState.completed:[];xpState.completed.push({game:current,date:new Date().toISOString()});claimedThisRound=true;saveXP();document.getElementById('claim-xp').disabled=true;document.getElementById('claim-xp').textContent='✓ XP RÉCUPÉRÉE';document.getElementById('game-help').textContent='+10 XP ajoutés à ton profil !';}
+document.getElementById('profile-name').value=profile.name||'';
+document.getElementById('profile-form').addEventListener('submit',e=>{e.preventDefault();const name=document.getElementById('profile-name').value.trim().replace(/\s+/g,' ');if(name.length<2)return;profile={name:name.slice(0,18)};localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));renderXP();document.getElementById('profile-name').value=profile.name;});
 renderXP();
 function openGame(game){current=game;claimedThisRound=false;window.currentGame=game;document.getElementById('claim-xp').disabled=false;document.getElementById('claim-xp').textContent='✓ TERMINER LA PARTIE · +10 XP';modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';PlanetGames.launch(game);}
 function shut(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';document.getElementById('game-host').innerHTML='';}

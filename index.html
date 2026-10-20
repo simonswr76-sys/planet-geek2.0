@@ -29,6 +29,20 @@
     <div class="star s1">✦</div><div class="star s2">✧</div><div class="star s3">·</div>
   </div>
 </section>
+<section class="profile-panel" aria-label="Profil du joueur">
+  <div class="profile-avatar" id="profile-avatar" aria-hidden="true">PG</div>
+  <div class="profile-main">
+    <div class="eyebrow">TON ESPACE JOUEUR</div>
+    <h2 id="profile-name-display">Joueur Planet Geek</h2>
+    <p>Personnalise ton pseudo et suis ta progression.</p>
+    <form id="profile-form" class="profile-form">
+      <label for="profile-name">Pseudo</label>
+      <input id="profile-name" name="profile-name" maxlength="18" minlength="2" placeholder="Entre ton pseudo" autocomplete="nickname" required>
+      <button type="submit" class="profile-save">Enregistrer</button>
+    </form>
+  </div>
+  <div class="profile-level"><small>NIVEAU</small><strong id="profile-level">1</strong><span id="profile-xp">0 XP</span></div>
+</section>
 <section class="xp-panel" aria-label="Progression XP">
   <div class="xp-title"><div class="eyebrow">TON AVANCÉE</div><h2>PLANET <span>XP</span></h2><p>Joue, gagne de l’XP et débloque des badges !</p></div>
   <div class="xp-stats"><div><small>XP TOTALE</small><strong id="xp-total">0 XP</strong></div><div><small>NIVEAU</small><strong id="xp-level">1</strong></div><div><small>PARTIES VALIDÉES</small><strong id="xp-games">0</strong></div></div>
