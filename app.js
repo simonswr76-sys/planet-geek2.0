@@ -196,3 +196,97 @@ document.getElementById('year').textContent=new Date().getFullYear();
 
   renderRecords();
 })();
+
+/* === MENU PRINCIPAL PLANET GEEK === */
+(() => {
+  if (document.querySelector(".pg-menu-button")) return;
+
+  const button = document.createElement("button");
+  button.className = "pg-menu-button";
+  button.type = "button";
+  button.setAttribute("aria-label", "Ouvrir le menu");
+  button.setAttribute("aria-expanded", "false");
+  button.setAttribute("aria-controls", "pg-main-menu");
+  button.innerHTML = "<span></span><span></span><span></span>";
+
+  const menu = document.createElement("nav");
+  menu.className = "pg-menu";
+  menu.id = "pg-main-menu";
+  menu.hidden = true;
+  menu.setAttribute("aria-label", "Menu principal");
+
+  menu.innerHTML = `
+    <h2>PLANET GEEK</h2>
+    <a href="#accueil" data-pg-action="home">🎮 Accueil</a>
+    <button type="button" data-pg-action="favorites">⭐ Mes favoris</button>
+    <a href="#pg-records">🏆 Meilleurs scores</a>
+    <button type="button" data-pg-action="settings">⚙️ Paramètres</button>
+  `;
+
+  document.body.append(button, menu);
+
+  function closeMenu() {
+    menu.hidden = true;
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-label", "Ouvrir le menu");
+  }
+
+  button.addEventListener("click", () => {
+    const open = menu.hidden;
+    menu.hidden = !open;
+    button.setAttribute("aria-expanded", String(open));
+    button.setAttribute(
+      "aria-label",
+      open ? "Fermer le menu" : "Ouvrir le menu"
+    );
+  });
+
+  menu.addEventListener("click", event => {
+    const action = event.target.closest("[data-pg-action]")
+      ?.dataset.pgAction;
+
+    if (!action) {
+      if (event.target.closest("a")) closeMenu();
+      return;
+    }
+
+    if (action === "home") {
+      document.body.classList.remove("pg-favorites-only");
+    }
+
+    if (action === "favorites") {
+      const toggle = document.querySelector(".pg-fav-toggle");
+      if (toggle) {
+        if (!document.body.classList.contains("pg-favorites-only")) {
+          toggle.click();
+        }
+        document.querySelector(".game-card.is-favorite")
+          ?.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else {
+        alert("Le système de favoris n'est pas encore installé.");
+      }
+    }
+
+    if (action === "settings") {
+      alert("Paramètres : utilise les réglages de ton navigateur pour le moment.");
+    }
+
+    closeMenu();
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") closeMenu();
+  });
+
+  document.addEventListener("click", event => {
+    if (!menu.contains(event.target) && !button.contains(event.target)) {
+      closeMenu();
+    }
+  });
+
+  const records = document.querySelector(".pg-records");
+  if (records) records.id = "pg-records";
+
+  const home = document.querySelector("header");
+  if (home && !home.id) home.id = "accueil";
+})();
