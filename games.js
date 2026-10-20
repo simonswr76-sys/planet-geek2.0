@@ -18,7 +18,7 @@ function canvasGame(name, instructions, setup) {
 }
 function racer(){
  canvasGame('Neon Racer','Utilise ← → ou A / D pour changer de voie. Sur téléphone, touche à gauche ou à droite.',(c,x)=>{
- let lane=1,obs=[],score=0,over=false,tick=0,xpGiven=false;
+ let lane=1,obs=[],score=0,over=false,tick=0;
  function draw(){
   x.fillStyle='#071222';x.fillRect(0,0,720,390);
   x.fillStyle='#102641';x.beginPath();x.moveTo(180,0);x.lineTo(540,0);x.lineTo(680,390);x.lineTo(40,390);x.closePath();x.fill();
@@ -31,10 +31,6 @@ function racer(){
   obs=obs.filter(o=>{if(o.y>280&&o.y<335&&o.lane===lane)over=true;return o.y<420;});
   if(!over)score++;
   x.fillStyle='#f4fbff';x.font='bold 19px Orbitron';x.fillText('SCORE '+Math.floor(score/5),22,35);
-   if(over && !xpGiven){
-  xpGiven = true;
-  window.PlanetXP?.completeGame('racer', Math.floor(score/5));
-}
   if(over){x.fillStyle='#030918bb';x.fillRect(0,0,720,390);x.fillStyle='#ff79d6';x.textAlign='center';x.font='bold 34px Orbitron';x.fillText('CRASH !',360,175);x.fillStyle='white';x.font='18px Rajdhani';x.fillText('Score : '+Math.floor(score/5)+' · Recommence pour rejouer',360,215);x.textAlign='left';}
   tick++;
  }
@@ -63,14 +59,11 @@ function jumper(){
 }
 function blaster(){
  canvasGame('Star Blaster','Déplace-toi avec ← → ou A / D. Esquive les météorites. Sur téléphone, touche à gauche ou à droite.',(c,x)=>{
-let px=350,rocks=[],score=0,t=0,over=false,xpGiven=false;
+ let px=350,rocks=[],score=0,t=0,over=false;
  function draw(){
  x.fillStyle='#050b20';x.fillRect(0,0,720,390);
  for(let i=0;i<65;i++){x.fillStyle=i%4?'#6ceeff':'#d7aaff';x.fillRect((i*71)%720,(i*43+t*.7)%390,2,2);}
- if(over && !xpGiven){
-  xpGiven = true;
-  window.PlanetXP?.completeGame('blaster', Math.floor(score/4));
-}if(!over&&t%28===0)rocks.push({x:20+Math.random()*680,y:-20,r:8+Math.random()*12,v:2+Math.random()*2});
+ if(!over&&t%28===0)rocks.push({x:20+Math.random()*680,y:-20,r:8+Math.random()*12,v:2+Math.random()*2});
  rocks.forEach(r=>{r.y+=r.v;x.fillStyle='#ff6a94';x.shadowColor='#ff477f';x.shadowBlur=12;x.beginPath();x.arc(r.x,r.y,r.r,0,7);x.fill();x.shadowBlur=0;if(Math.abs(r.x-px)<r.r+15&&r.y>320&&r.y<365)over=true;});
  rocks=rocks.filter(r=>r.y<420);x.fillStyle='#4aeaff';x.shadowColor='#4aeaff';x.shadowBlur=16;x.beginPath();x.moveTo(px,315);x.lineTo(px-19,358);x.lineTo(px,350);x.lineTo(px+19,358);x.closePath();x.fill();x.shadowBlur=0;
  if(!over)score++;x.fillStyle='white';x.font='bold 18px Orbitron';x.fillText('SCORE '+Math.floor(score/4),20,30);
@@ -175,10 +168,48 @@ function reaction(){
  b.onclick=()=>{if(mode==='ready'||mode==='done'||mode==='early'){mode='wait';b.textContent='ATTENDS LE VERT…';b.style.background='#4b2440';b.style.borderColor='#ff5ac8';s.textContent='PRÉPARE-TOI';timer=setTimeout(()=>{mode='go';start=performance.now();b.textContent='MAINTENANT !';b.style.background='#087b5b';b.style.borderColor='#66ffb7';s.textContent='CLIQUE !'},900+Math.random()*2800)}else if(mode==='wait'){clearTimeout(timer);mode='early';b.textContent='TROP TÔT ! RECOMMENCE';b.style.background='#4b182b';s.textContent='FAIS ATTENTION';}else if(mode==='go'){const ms=Math.round(performance.now()-start);mode='done';b.textContent=ms+' ms · REJOUER';b.style.background='#10243d';s.textContent=ms<250?'RÉFLEXES ÉCLAIR !':ms<400?'BIEN JOUÉ !':'ESSAIE DE FAIRE MIEUX !'}};cleanup=()=>clearTimeout(timer);
 }
 
+
+function neonPong(){
+ canvasGame('Neon Pong','Déplace ta raquette avec ↑ ↓ ou W / S. Premier à 5 points !',(c,x)=>{
+  let py=150,ai=150,bx=360,by=195,vx=4,vy=2,player=0,cpu=0,over=false;
+  function resetBall(dir){bx=360;by=195;vx=4*dir;vy=Math.random()>.5?2:-2;}
+  function draw(){
+   x.fillStyle='#050b20';x.fillRect(0,0,720,390);
+   x.strokeStyle='#ffffff55';x.setLineDash([10,10]);x.beginPath();x.moveTo(360,0);x.lineTo(360,390);x.stroke();x.setLineDash([]);
+   x.fillStyle='#4aeaff';x.shadowColor='#4aeaff';x.shadowBlur=15;x.fillRect(25,py,12,90);
+   x.fillStyle='#ff5ac8';x.shadowColor='#ff5ac8';x.fillRect(683,ai,12,90);
+   x.fillStyle='white';x.shadowBlur=12;x.beginPath();x.arc(bx,by,9,0,Math.PI*2);x.fill();x.shadowBlur=0;
+   x.textAlign='center';x.font='bold 32px sans-serif';x.fillStyle='#4aeaff';x.fillText(player,300,45);x.fillStyle='#ff5ac8';x.fillText(cpu,420,45);
+   if(!over){
+    bx+=vx;by+=vy;ai+=(by-45-ai)*.055;ai=Math.max(0,Math.min(300,ai));
+    if(by<9||by>381)vy=-vy;
+    if(bx<37&&bx>20&&by>py&&by<py+90){vx=Math.abs(vx)*1.04;vy+=(by-(py+45))*.08;}
+    if(bx>680&&bx<698&&by>ai&&by<ai+90){vx=-Math.abs(vx)*1.04;vy+=(by-(ai+45))*.08;}
+    if(bx<0){cpu++;if(cpu>=5)over=true;else resetBall(1);}
+    if(bx>720){player++;if(player>=5)over=true;else resetBall(-1);}
+   }else{
+    x.fillStyle='#030918dd';x.fillRect(80,130,560,120);x.fillStyle=player>=5?'#4aeaff':'#ff5ac8';x.font='bold 30px sans-serif';x.fillText(player>=5?'TU AS GAGNÉ !':'L’ORDINATEUR A GAGNÉ',360,180);x.fillStyle='white';x.font='18px sans-serif';x.fillText('Clique sur RECOMMENCER pour rejouer',360,215);
+   }
+   x.textAlign='left';
+  }
+  return {draw,key:(k)=>{if(k==='ArrowUp'||k==='w')py=Math.max(0,py-24);if(k==='ArrowDown'||k==='s')py=Math.min(300,py+24);},pointer:(px,pyClick)=>{py=Math.max(0,Math.min(300,pyClick-45));}};
+ });
+}
+
+function blockMaster(){
+ const size=8;let grid=Array.from({length:size},()=>Array(size).fill(0));let score=0,selected=null,shapes=[[[0,0]],[[0,0],[1,0]],[[0,0],[1,0],[2,0]],[[0,0],[0,1],[1,0],[1,1]],[[0,0],[1,0],[2,0],[1,1]]];
+ host.innerHTML='<div class="score-line" id="blocks-score">SCORE 0</div><div id="blocks-board" style="display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;max-width:440px;margin:15px auto"></div><p class="game-note">Choisis une pièce, puis clique sur une case pour la placer. Complète une ligne ou une colonne !</p><div id="blocks-pieces" style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap"></div><p id="blocks-message" class="game-note">Choisis une pièce pour commencer.</p>';
+ const board=host.querySelector('#blocks-board'),line=host.querySelector('#blocks-score'),pieces=host.querySelector('#blocks-pieces'),message=host.querySelector('#blocks-message');
+ function makePieces(){pieces.innerHTML='';selected=null;for(let n=0;n<3;n++){const shape=shapes[Math.floor(Math.random()*shapes.length)],b=document.createElement('button');b.type='button';b.textContent=shape.map(()=> '■').join(' ');b.style.cssText='padding:10px;background:#10243d;color:#4aeaff;border:1px solid #4aeaff;border-radius:8px;cursor:pointer';b.onclick=()=>{selected={shape,button:b};pieces.querySelectorAll('button').forEach(q=>q.style.outline='');b.style.outline='2px solid #ff5ac8';message.textContent='Clique sur le plateau pour placer la pièce.';};pieces.appendChild(b);}}
+ function render(){board.innerHTML='';grid.forEach((row,y)=>row.forEach((v,z)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Ligne '+(y+1)+', colonne '+(z+1));b.style.cssText='aspect-ratio:1;min-width:0;padding:0;border-radius:4px;border:1px solid #25415c;background:'+(v?'#4aeaff':'#0b1830')+';cursor:pointer';b.onclick=()=>place(z,y);board.appendChild(b);}));line.textContent='SCORE '+score;}
+ function place(z,y){if(!selected){message.textContent='Choisis d’abord une pièce en dessous du plateau.';return;}const shape=selected.shape,cells=shape.map(([dx,dy])=>[z+dx,y+dy]);if(cells.some(([xx,yy])=>xx>=size||yy>=size||grid[yy][xx])){message.textContent='La pièce ne rentre pas ici. Essaie une autre case.';return;}cells.forEach(([xx,yy])=>grid[yy][xx]=1);score+=cells.length;const rows=[];for(let yy=0;yy<size;yy++)if(grid[yy].every(Boolean))rows.push(yy);const cols=[];for(let xx=0;xx<size;xx++)if(grid.every(r=>r[xx]))cols.push(xx);score+=(rows.length+cols.length)*10;rows.forEach(yy=>grid[yy].fill(0));cols.forEach(xx=>grid.forEach(r=>r[xx]=0));selected=null;makePieces();render();message.textContent=(rows.length+cols.length)?'Bien joué ! Ligne(s) complétée(s) !':'Pièce placée ! Continue.';}
+ makePieces();render();cleanup=()=>{};
+}
+
 function launch(game){
- cleanup(); title.textContent=({racer:'Neon Racer',jumper:'Pixel Jumper',blaster:'Star Blaster',memory:'Memory Matrix',mahjong:'Mahjong Neon',snake:'Snake Neon',ttt:'Tic Tac Toe',reaction:'Reflex Rush'})[game]||'Jeu';
- help.textContent=({racer:'Évite les obstacles !',jumper:'Grimpe le plus haut possible !',blaster:'Survis dans l’espace !',memory:'Retrouve toutes les paires !',mahjong:'Associe les tuiles libres et passe les 3 niveaux !',snake:'Mange les étoiles et bats ton record !',ttt:'Aligne trois symboles contre l’IA.',reaction:'Teste ta vitesse de réaction !'})[game]||'Amuse-toi bien !';
- ({racer, jumper, blaster, memory, mahjong, snake, ttt:tictactoe, reaction})[game]?.();
+ cleanup(); title.textContent=({racer:'Neon Racer',jumper:'Pixel Jumper',blaster:'Star Blaster',memory:'Memory Matrix',mahjong:'Mahjong Neon',snake:'Snake Neon',ttt:'Tic Tac Toe',reaction:'Reflex Rush',pong:'Neon Pong',blocks:'Block Master'})[game]||'Jeu';
+ help.textContent=({racer:'Évite les obstacles !',jumper:'Grimpe le plus haut possible !',blaster:'Survis dans l’espace !',memory:'Retrouve toutes les paires !',mahjong:'Associe les tuiles libres et passe les 3 niveaux !',snake:'Mange les étoiles et bats ton record !',ttt:'Aligne trois symboles contre l’IA.',reaction:'Teste ta vitesse de réaction !',pong:'Bats l’ordinateur au ping-pong !',blocks:'Place les blocs et complète les lignes !'})[game]||'Amuse-toi bien !';
+ ({racer, jumper, blaster, memory, mahjong, snake, ttt:tictactoe, reaction, pong:neonPong, blocks:blockMaster})[game]?.();
 }
 window.PlanetGames={launch,restart:()=>{const game=window.currentGame;if(game)launch(game);}};
 window.addEventListener('beforeunload',()=>cleanup());

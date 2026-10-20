@@ -29,8 +29,14 @@
     <div class="star s1">✦</div><div class="star s2">✧</div><div class="star s3">·</div>
   </div>
 </section>
+<section class="xp-panel" aria-label="Progression XP">
+  <div class="xp-title"><div class="eyebrow">TON AVANCÉE</div><h2>PLANET <span>XP</span></h2><p>Joue, gagne de l’XP et débloque des badges !</p></div>
+  <div class="xp-stats"><div><small>XP TOTALE</small><strong id="xp-total">0 XP</strong></div><div><small>NIVEAU</small><strong id="xp-level">1</strong></div><div><small>PARTIES VALIDÉES</small><strong id="xp-games">0</strong></div></div>
+  <div class="xp-progress"><div class="xp-progress-label"><span id="xp-next-label">Progression vers le niveau 2</span><span id="xp-progress-text">0 / 100 XP</span></div><div class="xp-track"><div id="xp-progress-fill"></div></div></div>
+  <div class="xp-badges" id="xp-badges"><span class="xp-badge locked">🔒 Première partie</span><span class="xp-badge locked">🔒 5 parties</span><span class="xp-badge locked">🔒 10 parties</span><span class="xp-badge locked">🔒 Niveau 5</span><span class="xp-badge locked">🔒 500 XP</span></div>
+</section>
 <main id="games">
-  <div class="section-head"><div><div class="eyebrow">SÉLECTION PLANET GEEK</div><h2>CHOISIS TON <span>JEU</span></h2></div><div class="count"><span id="visible-count">8</span> MINI-JEUX</div></div>
+  <div class="section-head"><div><div class="eyebrow">SÉLECTION PLANET GEEK</div><h2>CHOISIS TON <span>JEU</span></h2></div><div class="count"><span id="visible-count">10</span> MINI-JEUX</div></div>
   <nav class="filters" aria-label="Catégories">
     <button class="filter active" data-category="Tous">✦ Tous les jeux</button>
     <button class="filter" data-category="Course">🏁 Course</button>
@@ -79,6 +85,16 @@
       <div class="game-info"><div><h3>Reflex Rush</h3><p>Clique dès que le bouton devient vert et mesure tes réflexes.</p></div><button class="play-btn" data-game="reaction" aria-label="Jouer à Reflex Rush">▶</button></div>
       <div class="card-foot"><span>✹ ARCADE</span><span>SOURIS / TACTILE</span></div>
     </article>
+    <article class="game-card" data-category="Arcade" data-name="Neon Pong">
+      <div class="game-cover cover-blaster"><div class="cover-label">ARCADE</div><div class="space-stars">●　·　●　·　●</div><div class="ship">◉</div><span class="cover-symbol">↔</span></div>
+      <div class="game-info"><div><h3>Neon Pong</h3><p>Affronte l’ordinateur dans un duel de ping-pong.</p></div><button class="play-btn" data-game="pong" aria-label="Jouer à Neon Pong">▶</button></div>
+      <div class="card-foot"><span>✹ ARCADE</span><span>FLÈCHES / TACTILE</span></div>
+    </article>
+    <article class="game-card" data-category="Réflexion" data-name="Block Master">
+      <div class="game-cover cover-memory"><div class="cover-label">RÉFLEXION</div><div class="memory-art"><span>■</span><span>■</span><span>◆</span><span>■</span></div><span class="cover-symbol">▦</span></div>
+      <div class="game-info"><div><h3>Block Master</h3><p>Place les blocs et complète des lignes pour marquer des points.</p></div><button class="play-btn" data-game="blocks" aria-label="Jouer à Block Master">▶</button></div>
+      <div class="card-foot"><span>◇ RÉFLEXION</span><span>SOURIS / TACTILE</span></div>
+    </article>
   </div>
   <div class="empty-state" id="empty" hidden>Aucun jeu trouvé. Essaie un autre mot !</div>
 </main>
@@ -87,23 +103,9 @@
 <div class="modal" id="game-modal" aria-hidden="true">
   <div class="modal-panel"><div class="modal-head"><div><div class="eyebrow">PLANET GEEK ARCADE</div><h2 id="modal-title">Jeu</h2></div><button id="close-modal" class="close-btn" aria-label="Fermer">✕</button></div>
     <div id="game-host" class="game-host"></div>
-    <div class="modal-bottom"><span id="game-help">Amuse-toi bien !</span><button id="restart-game" class="restart-btn">↻ RECOMMENCER</button></div>
+    <div class="modal-bottom"><span id="game-help">Amuse-toi bien !</span><div class="modal-actions"><button id="claim-xp" class="claim-xp-btn">✓ TERMINER LA PARTIE · +10 XP</button><button id="restart-game" class="restart-btn">↻ RECOMMENCER</button></div></div>
   </div>
 </div>
 <script src="games.js"></script><script src="app.js"></script>
-  
-<a href="coffre.html" style="
-  display:inline-block;
-  padding:12px 22px;
-  background:linear-gradient(90deg,#22d3ee,#8b5cf6);
-  color:#07111f;
-  font-weight:bold;
-  text-decoration:none;
-  border-radius:10px;
-  font-family:Arial,sans-serif;
-">
-  🔐 Le Coffre Caché
-</a>
-
 </body>
 </html>

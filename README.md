@@ -26,3 +26,18 @@ Un petit site arcade responsive en HTML, CSS et JavaScript, sans framework et sa
 
 
 Jeux inclus : Neon Racer, Pixel Jumper, Star Blaster, Memory Matrix, Mahjong Neon, Snake Neon, Tic Tac Toe et Reflex Rush.
+
+
+## Nouveaux jeux ajoutés
+
+- **Neon Pong** : duel contre l’ordinateur, déplacement avec les flèches haut/bas ou W/S; souris/tactile pris en charge.
+- **Block Master** : choisis une pièce puis clique sur le plateau pour la placer; complète les lignes ou colonnes pour gagner des points.
+
+Les cartes et le lancement des deux jeux sont déjà intégrés dans `index.html` et `games.js`.
+
+
+## Système Planet XP
+- La progression est enregistrée dans le navigateur avec `localStorage` (clé `planetGeekProgressV1`).
+- Le bouton « Terminer la partie · +10 XP » dans la fenêtre d’un jeu ajoute 10 XP une seule fois par ouverture de partie.
+- Le tableau affiche l’XP, le niveau, la progression et les badges.
+- Les données restent sur le même navigateur/appareil ; elles ne sont pas synchronisées entre appareils.
