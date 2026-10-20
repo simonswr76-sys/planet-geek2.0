@@ -157,3 +157,100 @@ body.pg-favorites-only .game-card:not(.is-favorite) {
     transition: none;
   }
 }
+
+/* === MENU PLANET GEEK === */
+.pg-menu-button {
+  position: fixed;
+  top: 16px;
+  right: 18px;
+  z-index: 10001;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #35e7ff88;
+  border-radius: 12px;
+  background: #111a31;
+  cursor: pointer;
+  box-shadow: 0 0 15px #35e7ff22;
+}
+
+.pg-menu-button span {
+  width: 23px;
+  height: 3px;
+  background: #35e7ff;
+  border-radius: 5px;
+  transition: transform .2s, opacity .2s;
+}
+
+.pg-menu-button[aria-expanded="true"] span:first-child {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.pg-menu-button[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.pg-menu-button[aria-expanded="true"] span:last-child {
+  transform: translateY(-9px) rotate(-45deg);
+}
+
+.pg-menu {
+  position: fixed;
+  top: 74px;
+  right: 18px;
+  z-index: 10000;
+  width: min(270px, calc(100vw - 36px));
+  padding: 14px;
+  background: #10182e;
+  border: 1px solid #35e7ff88;
+  border-radius: 16px;
+  box-shadow: 0 0 28px #35e7ff22;
+}
+
+.pg-menu[hidden] {
+  display: none;
+}
+
+.pg-menu h2 {
+  color: #35e7ff;
+  font-size: 1.1rem;
+  margin: 4px 8px 12px;
+}
+
+.pg-menu a,
+.pg-menu button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 5px 0;
+  text-align: left;
+  text-decoration: none;
+  color: #eef3ff;
+  background: #1b2744;
+  border: 1px solid #344567;
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.pg-menu a:hover,
+.pg-menu button:hover {
+  border-color: #35e7ff;
+  background: #243654;
+}
+
+@media (max-width: 600px) {
+  .pg-menu-button {
+    top: 10px;
+    right: 10px;
+  }
+
+  .pg-menu {
+    top: 66px;
+    right: 10px;
+  }
+}
