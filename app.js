@@ -23,7 +23,7 @@ function renderXP(){
  const badges=badgeDefs().map(b=>`<span class="xp-badge ${b.ok?'unlocked':'locked'}">${b.ok?'✦ ':'🔒 '}${b.label}${b.ok?' ✓':''}</span>`);
  document.getElementById('xp-badges').innerHTML=badges.slice(0,5).join('');
  const name=(profile.name||'Joueur Planet Geek').trim()||'Joueur Planet Geek';document.getElementById('profile-name-display').textContent=name;document.getElementById('profile-avatar').textContent=name.split(/\s+/).slice(0,2).map(x=>x[0].toUpperCase()).join('')||'PG';document.getElementById('profile-level').textContent=level;document.getElementById('profile-xp').textContent=xp+' XP';
- renderMissions();renderShop();renderBadges();renderRecords();if(typeof renderExtras==='function')renderExtras();
+ renderMissions();renderShop();renderBadges();renderRecords();if(typeof renderExtras==='function')renderExtras();if(typeof renderSeasonPass==='function')renderSeasonPass();
 }
 function badgeDefs(){const xp=xpNow(),games=gamesNow(),level=levelFor(xp),todayCount=completionsToday().length;let mahjong={completed:[]};try{mahjong=JSON.parse(localStorage.getItem('planetGeekMahjongV2')||'{"completed":[]}')}catch{};const levels=Array.isArray(mahjong.completed)?mahjong.completed.length:0;return [
 {id:'first',label:'Première partie',icon:'🎮',ok:games>=1},{id:'five',label:'5 parties',icon:'🕹️',ok:games>=5},{id:'ten',label:'10 parties',icon:'🏅',ok:games>=10},{id:'level5',label:'Niveau 5',icon:'🚀',ok:level>=5},{id:'xp500',label:'500 XP',icon:'💎',ok:xp>=500},{id:'daily3',label:'3 parties aujourd’hui',icon:'📅',ok:todayCount>=3},{id:'mahjong5',label:'5 niveaux de Mahjong',icon:'🀄',ok:levels>=5},{id:'shopper',label:'Premier achat',icon:'🛍️',ok:shop.owned.length>1},{id:'explorer',label:'10 jeux différents',icon:'🌌',ok:new Set(xpState.completed.map(x=>x.game)).size>=10},{id:'xp1000',label:'1000 XP',icon:'👑',ok:xp>=1000}
@@ -47,6 +47,27 @@ function compareChallenge(){const raw=document.getElementById('challenge-code').
 document.getElementById('profile-name').value=profile.name||'';
 document.getElementById('profile-form').addEventListener('submit',e=>{e.preventDefault();const name=document.getElementById('profile-name').value.trim().replace(/\s+/g,' ');if(name.length<2)return;profile={name:name.slice(0,18)};write(PROFILE_KEY,profile);renderXP();document.getElementById('profile-name').value=profile.name;});
 document.getElementById('make-challenge').addEventListener('click',makeChallenge);document.getElementById('compare-challenge').addEventListener('click',compareChallenge);
+// Pass de saison : paliers gratuits basés sur les parties validées.
+const SEASON_KEY='planetGeekSeasonPassV1';
+let seasonState=read(SEASON_KEY,{claimed:[]});
+const seasonTiers=[
+ {id:1,need:1,reward:15,label:'Départ cosmique',icon:'🚀'},
+ {id:2,need:3,reward:25,label:'Explorateur',icon:'🪐'},
+ {id:3,need:5,reward:40,label:'Chasseur d’étoiles',icon:'🌟'},
+ {id:4,need:8,reward:60,label:'Pilote galactique',icon:'🛸'},
+ {id:5,need:12,reward:100,label:'Légende cosmique',icon:'👑'}
+];
+function renderSeasonPass(){
+ const games=gamesNow(),next=seasonTiers.find(t=>games<t.need),tier=seasonTiers.filter(t=>games>=t.need).length;
+ const current=next||seasonTiers[seasonTiers.length-1];
+ document.getElementById('season-tier-label').textContent='Palier '+Math.min(5,tier+1)+' / 5';
+ document.getElementById('season-progress-label').textContent=next?`${games} / ${next.need} parties validées`:'Pass terminé ! Toutes les étapes sont débloquées.';
+ const previous=next?seasonTiers[seasonTiers.indexOf(next)-1]?.need||0:12;
+ document.getElementById('season-progress-fill').style.width=next?Math.min(100,Math.max(0,(games-previous)/(next.need-previous)*100))+'%':'100%';
+ document.getElementById('season-rewards').innerHTML=seasonTiers.map(t=>{const unlocked=games>=t.need,claimed=seasonState.claimed.includes(t.id);return `<article class="season-reward ${unlocked?'unlocked':''} ${claimed?'claimed':''}"><span class="season-reward-icon">${t.icon}</span><small>PALIER ${t.id}</small><b>${t.label}</b><strong>+${t.reward} XP</strong><button type="button" data-season-claim="${t.id}" ${!unlocked||claimed?'disabled':''}>${claimed?'RÉCUPÉRÉ':unlocked?'RÉCLAMER':'🔒 '+t.need+' parties'}</button></article>`}).join('');
+ document.querySelectorAll('[data-season-claim]').forEach(btn=>btn.addEventListener('click',()=>{const t=seasonTiers.find(x=>x.id===Number(btn.dataset.seasonClaim));if(!t||gamesNow()<t.need||seasonState.claimed.includes(t.id))return;seasonState.claimed.push(t.id);xpState.xp=xpNow()+t.reward;write(SEASON_KEY,seasonState);write(XP_KEY,xpState);renderSeasonPass();renderXP();document.getElementById('season-status').textContent=`Récompense récupérée : +${t.reward} XP !`;}));
+}
+
 // Extensions de progression : toutes les données restent sauvegardées localement.
 const EXT_KEY='planetGeekExtendedV1';
 let ext=read(EXT_KEY,{chest:'',bossWeek:'',bossHP:5,tournament:null,companion:{level:1,energy:100,xp:0},skins:['pixel'],equippedSkin:'pixel',secretSeen:[]});
@@ -76,6 +97,7 @@ document.getElementById('tournament-claim').addEventListener('click',()=>{const 
 document.getElementById('companion-feed').addEventListener('click',()=>{const c=ext.companion;if(xpNow()<20||c.energy>=100)return;xpState.xp=xpNow()-20;c.energy=Math.min(100,c.energy+25);c.xp+=25;if(c.xp>=100){c.level++;c.xp-=100;}write(XP_KEY,xpState);saveExt();renderXP();});
 
 renderExtras();
+renderSeasonPass();
 renderXP();
 function openGame(game){current=game;claimedThisRound=false;window.currentGame=game;document.getElementById('claim-xp').disabled=false;document.getElementById('claim-xp').textContent='✓ TERMINER LA PARTIE · +10 XP';modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';PlanetGames.launch(game);}
 function shut(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';document.getElementById('game-host').innerHTML='';}
