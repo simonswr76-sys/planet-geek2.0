@@ -12,3 +12,77 @@
 /* Mahjong visibility safeguards */
 .mahjong-board .mahjong-tile:disabled{opacity:.62;color:#12304a;background:linear-gradient(145deg,#e4e2d2,#a9c9c2)}
 .mahjong-board .mahjong-tile.removed{visibility:hidden}
+
+/* === PLANET GEEK : AMÉLIORATION VISUELLE === */
+
+/* Défilement fluide */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Cartes de jeux plus modernes */
+.game-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(53, 231, 255, 0.22);
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* Effet néon au survol */
+.game-card:hover {
+  transform: translateY(-6px);
+  border-color: #35e7ff;
+  box-shadow:
+    0 0 12px rgba(53, 231, 255, 0.25),
+    0 0 28px rgba(189, 101, 255, 0.16);
+}
+
+/* Boutons plus dynamiques */
+button {
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+button:hover {
+  filter: brightness(1.2);
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+/* Recherche plus visible */
+#search {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#search:focus {
+  outline: none;
+  border-color: #35e7ff;
+  box-shadow: 0 0 12px rgba(53, 231, 255, 0.3);
+}
+
+/* Images et contenu qui ne débordent pas */
+.game-card img {
+  max-width: 100%;
+}
+
+/* Téléphones : animations plus légères */
+@media (max-width: 600px) {
+  .game-card:hover {
+    transform: none;
+  }
+}
+
+/* Respecte les préférences de réduction d'animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
