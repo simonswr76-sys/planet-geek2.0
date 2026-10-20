@@ -16,7 +16,9 @@
 <nav class="quick-dock" aria-label="Accès rapide">
   <a href="#games" title="Aller aux jeux"><span aria-hidden="true">🎮</span><b>Jeux</b></a>
   <a href="#profile" title="Ouvrir le profil"><span aria-hidden="true">👤</span><b>Profil</b></a>
-  <a href="#stats" title="Voir les statistiques et bonus"><span aria-hidden="true">📊</span><b>Stats & bonus</b></a>
+  <a href="#store" title="Ouvrir la boutique"><span aria-hidden="true">🛍️</span><b>Boutique</b></a>
+  <a href="#arena" title="Jouer dans l’arène"><span aria-hidden="true">🌌</span><b>Arène</b></a>
+  <a href="#stats" title="Voir les statistiques et bonus"><span aria-hidden="true">📊</span><b>Stats</b></a>
 </nav>
 <main id="games">
   <div class="section-head"><div><div class="eyebrow">SÉLECTION PLANET GEEK</div><h2>CHOISIS TON <span>JEU</span></h2></div><div class="count"><span id="visible-count">19</span> MINI-JEUX</div></div>
@@ -107,6 +109,19 @@
     <div class="float-card card-b">▲ <span>LEVEL UP</span></div>
     <div class="star s1">✦</div><div class="star s2">✧</div><div class="star s3">·</div>
   </div>
+</section>
+<section id="store" class="pg-store" aria-label="Boutique Planet Geek">
+ <div class="section-head"><div><div class="eyebrow">COSMÉTIQUES VIRTUELS</div><h2>BOUTIQUE <span>PLANET GEEK</span></h2></div><div class="count">ACHATS AVEC XP</div></div>
+ <p class="feature-sub">Achète des objets virtuels avec tes XP, puis équipe-les dans l’arène. Aucun achat réel.</p>
+ <div id="pg-store-balance" class="pg-balance">Chargement du solde…</div>
+ <div id="pg-store-items" class="pg-store-grid"></div><p id="pg-store-status" class="feature-sub" aria-live="polite"></p>
+</section>
+<section id="arena" class="pg-arena-section" aria-label="Arène jouable Planet Geek">
+ <div class="section-head"><div><div class="eyebrow">TON PERSONNAGE, TES OBJETS</div><h2>PLANET <span>ARENA</span></h2></div><div class="count">PROTO JOUABLE</div></div>
+ <p class="feature-sub">Déplace ton personnage dans l’arène, équipe tes cosmétiques et lance une emote. Clavier : WASD ou flèches. Mobile : utilise les commandes.</p>
+ <div class="pg-arena-wrap"><canvas id="pg-arena" width="900" height="430" aria-label="Arène de jeu vue du dessus"></canvas><div class="pg-arena-hud"><span id="pg-arena-skin">Skin : Explorateur</span><span id="pg-arena-emote">Prêt à jouer !</span></div></div>
+ <div class="pg-arena-controls"><button type="button" id="pg-emote">💃 Danser</button><button type="button" id="pg-music">♫ Musique : activer</button><button type="button" id="pg-reset-player">↻ Recentrer</button><div class="pg-mobile-pad"><button type="button" data-move="up">▲</button><div><button type="button" data-move="left">◀</button><button type="button" data-move="down">▼</button><button type="button" data-move="right">▶</button></div></div></div>
+ <p class="feature-sub">C’est un mini-jeu navigateur original, pas Fortnite : il fonctionne sans téléchargement et les achats sont uniquement cosmétiques.</p>
 </section>
 <section id="profile" class="profile-panel" aria-label="Profil du joueur">
   <div class="profile-avatar" id="profile-avatar" aria-hidden="true">PG</div>
