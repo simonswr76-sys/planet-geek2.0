@@ -69,3 +69,19 @@ Les cartes et le lancement des deux jeux sont déjà intégrés dans `index.html
 3. Envoyer les cinq fichiers de ce dossier en remplaçant les versions correspondantes.
 4. Cliquer sur **Commit changes**.
 5. Attendre la publication GitHub Pages puis recharger le site avec Ctrl+F5.
+
+
+## Nouveautés progression (édition enrichie)
+
+- Rangs Bronze, Argent, Or, Platine, Diamant et Légende selon l'XP.
+- Inventaire de skins avec achat et équipement.
+- Boss hebdomadaire jouable au clic, récompense de 75 XP à la victoire.
+- Monde à explorer avec zones déverrouillées selon le nombre de parties validées.
+- Statistiques supplémentaires : jeux distincts, parties du jour, série de jours et XP moyenne par partie.
+- Coffre quotidien donnant une récompense aléatoire de 25 à 50 XP.
+- Tournoi local en 3 manches, avec 50 XP à réclamer.
+- Succès secrets qui se révèlent en les débloquant.
+- Compagnon virtuel à nourrir avec 20 XP ; il gagne des niveaux.
+- Mise en page responsive pour mobiles et tablettes.
+
+**À savoir :** les données sont stockées dans le navigateur avec `localStorage` : elles ne sont pas synchronisées entre appareils. Le boss, le tournoi et les récompenses sont des mécaniques locales, pas du multijoueur en ligne. Les scores détaillés ne peuvent être affichés que si chaque mini-jeu les transmet.
