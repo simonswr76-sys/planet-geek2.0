@@ -18,7 +18,7 @@ function canvasGame(name, instructions, setup) {
 }
 function racer(){
  canvasGame('Neon Racer','Utilise ← → ou A / D pour changer de voie. Sur téléphone, touche à gauche ou à droite.',(c,x)=>{
- let lane=1,obs=[],score=0,over=false,tick=0;
+ let lane=1,obs=[],score=0,over=false,tick=0,xpGiven=false;
  function draw(){
   x.fillStyle='#071222';x.fillRect(0,0,720,390);
   x.fillStyle='#102641';x.beginPath();x.moveTo(180,0);x.lineTo(540,0);x.lineTo(680,390);x.lineTo(40,390);x.closePath();x.fill();
@@ -31,6 +31,10 @@ function racer(){
   obs=obs.filter(o=>{if(o.y>280&&o.y<335&&o.lane===lane)over=true;return o.y<420;});
   if(!over)score++;
   x.fillStyle='#f4fbff';x.font='bold 19px Orbitron';x.fillText('SCORE '+Math.floor(score/5),22,35);
+   if(over && !xpGiven){
+  xpGiven = true;
+  window.PlanetXP?.completeGame('racer', Math.floor(score/5));
+}
   if(over){x.fillStyle='#030918bb';x.fillRect(0,0,720,390);x.fillStyle='#ff79d6';x.textAlign='center';x.font='bold 34px Orbitron';x.fillText('CRASH !',360,175);x.fillStyle='white';x.font='18px Rajdhani';x.fillText('Score : '+Math.floor(score/5)+' · Recommence pour rejouer',360,215);x.textAlign='left';}
   tick++;
  }
@@ -59,11 +63,14 @@ function jumper(){
 }
 function blaster(){
  canvasGame('Star Blaster','Déplace-toi avec ← → ou A / D. Esquive les météorites. Sur téléphone, touche à gauche ou à droite.',(c,x)=>{
- let px=350,rocks=[],score=0,t=0,over=false;
+let px=350,rocks=[],score=0,t=0,over=false,xpGiven=false;
  function draw(){
  x.fillStyle='#050b20';x.fillRect(0,0,720,390);
  for(let i=0;i<65;i++){x.fillStyle=i%4?'#6ceeff':'#d7aaff';x.fillRect((i*71)%720,(i*43+t*.7)%390,2,2);}
- if(!over&&t%28===0)rocks.push({x:20+Math.random()*680,y:-20,r:8+Math.random()*12,v:2+Math.random()*2});
+ if(over && !xpGiven){
+  xpGiven = true;
+  window.PlanetXP?.completeGame('blaster', Math.floor(score/4));
+}if(!over&&t%28===0)rocks.push({x:20+Math.random()*680,y:-20,r:8+Math.random()*12,v:2+Math.random()*2});
  rocks.forEach(r=>{r.y+=r.v;x.fillStyle='#ff6a94';x.shadowColor='#ff477f';x.shadowBlur=12;x.beginPath();x.arc(r.x,r.y,r.r,0,7);x.fill();x.shadowBlur=0;if(Math.abs(r.x-px)<r.r+15&&r.y>320&&r.y<365)over=true;});
  rocks=rocks.filter(r=>r.y<420);x.fillStyle='#4aeaff';x.shadowColor='#4aeaff';x.shadowBlur=16;x.beginPath();x.moveTo(px,315);x.lineTo(px-19,358);x.lineTo(px,350);x.lineTo(px+19,358);x.closePath();x.fill();x.shadowBlur=0;
  if(!over)score++;x.fillStyle='white';x.font='bold 18px Orbitron';x.fillText('SCORE '+Math.floor(score/4),20,30);
