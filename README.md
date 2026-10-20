@@ -46,3 +46,10 @@ Les cartes et le lancement des deux jeux sont déjà intégrés dans `index.html
 - Le profil permet de choisir un pseudo (jusqu'à 18 caractères), sauvegardé dans le navigateur.
 - Le niveau, l'XP totale, les parties validées et les badges sont synchronisés avec le système Planet XP.
 - Les données sont locales au navigateur/appareil et ne se synchronisent pas entre appareils.
+
+
+## Nouveautés
+- 4 nouveaux jeux : Dino Dash, Flappy Rocket, Brick Breaker et Critter Pop.
+- Mahjong solitaire : 100 niveaux, niveaux suivants déverrouillés en terminant le précédent, indices, annulation, mélange et sauvegarde automatique locale de la partie et des niveaux.
+- La progression XP et le profil existants restent inclus.
+- La progression est stockée dans le navigateur (localStorage) : elle n'est pas synchronisée entre appareils et peut être perdue si les données du navigateur sont effacées.

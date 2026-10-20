@@ -82,60 +82,37 @@ function memory(){
 }
 
 function mahjong(){
- let level=1,tiles=[],selected=null,moves=0,removed=0;
- const symbols=['龍','竹','發','中','萬','東','南','西','北','白','春','秋','梅','蘭','菊','鳥'];
- host.innerHTML='<div class="mahjong-toolbar"><div class="score-line" id="mahjong-status">NIVEAU 1 · COUPS 0</div><label class="level-progress">Niveau <select class="level-select" id="mahjong-level"><option value="1">1 · Débutant</option><option value="2">2 · Intermédiaire</option><option value="3">3 · Expert</option></select></label><button type="button" id="mahjong-shuffle">↻ Nouvelle partie</button></div><div id="mahjong-board" class="mahjong-board" aria-label="Plateau de Mahjong"></div><div id="mahjong-message" class="game-note">Clique sur deux tuiles identiques qui ont un côté libre. Les tuiles grisées sont bloquées.</div>';
- const board=host.querySelector('#mahjong-board'),status=host.querySelector('#mahjong-status'),message=host.querySelector('#mahjong-message'),levelSelect=host.querySelector('#mahjong-level');
- function start(l){
-  level=l;levelSelect.value=String(l);moves=0;removed=0;selected=null;
-  const count=[24,32,40][l-1], pairs=[];
-  for(let i=0;i<count/2;i++){const sym=symbols[i%symbols.length];pairs.push(sym,sym);}
-  // Shuffle pair order, but keep the board fully visible in a simple grid.
-  for(let i=pairs.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pairs[i],pairs[j]]=[pairs[j],pairs[i]];}
-  tiles=pairs.map((sym,i)=>({id:i,sym,removed:false,row:Math.floor(i/8),col:i%8}));
-  message.textContent='Associe les tuiles identiques. Commence par les bords : une tuile est libre si son côté gauche OU droit est ouvert.';
-  render();
+ const SAVE='planetGeekMahjongV2', TOTAL=100, symbols=['龍','竹','發','中','萬','東','南','西','北','白','春','秋','梅','蘭','菊','鳥','🀄','🀙','🀐','🀄'];
+ let saved={unlocked:1,completed:[],level:1,tiles:null,moves:0};
+ try{saved={...saved,...JSON.parse(localStorage.getItem(SAVE)||'{}')}}catch{}
+ let level=Math.max(1,Math.min(TOTAL,Number(saved.level)||1)),tiles=[],selected=null,moves=0,removed=0,undoStack=[];
+ host.innerHTML='<div class="mahjong-toolbar"><div class="score-line" id="mahjong-status"></div><label class="level-progress">Niveau <select class="level-select" id="mahjong-level"></select></label><button type="button" id="mahjong-hint">💡 Indice</button><button type="button" id="mahjong-undo">↶ Annuler</button><button type="button" id="mahjong-shuffle">↻ Mélanger</button></div><div class="mahjong-subline" id="mahjong-progress"></div><div id="mahjong-board" class="mahjong-board mahjong-classic" aria-label="Plateau de Mahjong solitaire"></div><div id="mahjong-message" class="game-note">Retire toutes les paires identiques. Une tuile est libre si elle n’est pas recouverte et si au moins un côté (gauche ou droite) est ouvert.</div>';
+ const board=host.querySelector('#mahjong-board'),status=host.querySelector('#mahjong-status'),message=host.querySelector('#mahjong-message'),levelSelect=host.querySelector('#mahjong-level'),progress=host.querySelector('#mahjong-progress');
+ function layout(){let out=[],id=0;const shapes=[ [4,7],[2,9],[1,10],[0,11],[0,11],[1,10],[2,9],[4,7] ];shapes.forEach(([lo,hi],row)=>{for(let col=lo;col<=hi;col++)out.push({id:id++,row,col,layer:0});});
+ // classic layered centre: 4 tiles on level 1 and one raised central tile
+ [[4,2],[5,2],[6,5],[7,5]].forEach(([col,row])=>out.push({id:id++,row,col,layer:1}));
+ // add four lower central tiles to complete 72 tiles
+ [[5,3],[6,3],[5,4],[6,4]].forEach(([col,row])=>out.push({id:id++,row,col,layer:1}));
+ return out;
  }
- function free(t){
-  if(t.removed)return false;
-  const left=tiles.some(o=>!o.removed&&o.row===t.row&&o.col===t.col-1);
-  const right=tiles.some(o=>!o.removed&&o.row===t.row&&o.col===t.col+1);
-  return !left||!right;
+ function save(){try{localStorage.setItem(SAVE,JSON.stringify({unlocked:Math.max(1,Number(saved.unlocked)||1),completed:saved.completed||[],level:saved.level||level,tiles:removed===tiles.length?null:tiles.map(t=>({...t})),moves}))}catch{}}
+ function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+ function free(t){if(t.removed)return false;const covered=tiles.some(o=>!o.removed&&o.layer>t.layer&&Math.abs(o.col-t.col)<1&&Math.abs(o.row-t.row)<1);if(covered)return false;const left=tiles.some(o=>!o.removed&&o.layer===t.layer&&o.row===t.row&&o.col===t.col-1);const right=tiles.some(o=>!o.removed&&o.layer===t.layer&&o.row===t.row&&o.col===t.col+1);return !left||!right;}
+ function pairsAvailable(){const f=tiles.filter(t=>!t.removed&&free(t));for(let i=0;i<f.length;i++)for(let j=i+1;j<f.length;j++)if(f[i].sym===f[j].sym)return true;return false;}
+ function renderLevels(){levelSelect.innerHTML='';for(let i=1;i<=TOTAL;i++){const op=document.createElement('option');op.value=i;op.textContent='Niveau '+i+(saved.completed.includes(i)?' ✓':i>(saved.unlocked||1)?' 🔒':'');op.disabled=i>(saved.unlocked||1);levelSelect.appendChild(op);}levelSelect.value=String(level);progress.textContent='Progression : '+(saved.completed||[]).length+' / '+TOTAL+' niveaux terminés · Sauvegarde automatique';}
+ function start(l,restore=false){level=Math.max(1,Math.min(TOTAL,l));selected=null;undoStack=[];
+  if(restore&&saved.tiles&&saved.level===level){tiles=saved.tiles.map(t=>({...t}));moves=Number(saved.moves)||0;removed=tiles.filter(t=>t.removed).length;}
+  else {const coords=layout();let pairs=[];for(let i=0;i<coords.length/2;i++){let sym=symbols[(i*7+level*3)%symbols.length];pairs.push(sym,sym);}shuffle(pairs);tiles=coords.map((t,i)=>({...t,sym:pairs[i],removed:false}));moves=0;removed=0;saved.level=level;}
+  renderLevels();render();save();
  }
- function render(){
-  board.innerHTML='';
-  board.style.gridTemplateColumns='repeat(8, minmax(0, 1fr))';
-  tiles.forEach(t=>{
-   const b=document.createElement('button');
-   b.type='button';
-   b.className='mahjong-tile'+(t.removed?' removed':'')+(!t.removed&&!free(t)?' blocked':'')+(selected===t.id?' selected':'');
-   b.textContent=t.removed?'':t.sym;
-   b.setAttribute('aria-label',t.removed?'Tuile retirée':'Tuile '+t.sym+(free(t)?', libre':', bloquée'));
-   b.disabled=t.removed||!free(t);
-   b.addEventListener('click',()=>choose(t));
-   board.appendChild(b);
-  });
-  status.textContent='NIVEAU '+level+' · COUPS '+moves+' · TUILES '+(tiles.length-removed)+' / '+tiles.length;
-  if(removed===tiles.length){
-   message.innerHTML='<div class="mahjong-win">NIVEAU TERMINÉ !</div><button type="button" id="mahjong-next" class="restart-btn">'+(level<3?'NIVEAU SUIVANT →':'REJOUER ↻')+'</button>';
-   host.querySelector('#mahjong-next').onclick=()=>start(level<3?level+1:1);
-  }
- }
- function choose(t){
-  if(selected===null){selected=t.id;message.textContent='Tuile sélectionnée : '+t.sym+'. Choisis la même tuile sur un bord libre.';render();return;}
-  const first=tiles.find(o=>o.id===selected);
-  if(first&&first.id!==t.id&&first.sym===t.sym&&free(first)&&free(t)){
-   first.removed=true;t.removed=true;removed+=2;moves++;selected=null;
-   message.textContent='Bien joué ! Continue à associer les tuiles identiques.';render();
-  }else{
-   selected=t.id;message.textContent=first&&first.sym===t.sym?'Ces tuiles ne sont pas libres. Choisis une tuile de bord.':'Ce ne sont pas les mêmes tuiles. Essaie encore !';render();
-  }
- }
- levelSelect.addEventListener('change',()=>start(Number(levelSelect.value)));
- host.querySelector('#mahjong-shuffle').addEventListener('click',()=>start(level));
- start(1);cleanup=()=>{};
+ function render(){board.innerHTML='';board.style.height='350px';tiles.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='mahjong-tile mahjong-real'+(t.removed?' removed':'')+(!t.removed&&!free(t)?' blocked':'')+(selected===t.id?' selected':'');b.textContent=t.removed?'':t.sym;b.setAttribute('aria-label',t.removed?'Tuile retirée':'Tuile '+t.sym+(free(t)?', libre':', bloquée'));b.disabled=t.removed||!free(t);b.style.left=(Math.max(0,t.col)*34+Math.max(0,t.layer)*9)+'px';b.style.top=(Math.max(0,t.row)*37-Math.max(0,t.layer)*10)+'px';b.style.zIndex=String(t.layer*10+t.row);b.onclick=()=>choose(t);board.appendChild(b);});status.textContent='NIVEAU '+level+' / '+TOTAL+' · PAIRES '+Math.floor(removed/2)+' / '+tiles.length/2+' · COUPS '+moves;}
+ function choose(t){if(!free(t))return;if(selected===null){selected=t.id;render();return;}const first=tiles.find(o=>o.id===selected);if(first&&first.id!==t.id&&first.sym===t.sym&&free(first)){undoStack.push(tiles.map(o=>({...o})));first.removed=true;t.removed=true;removed+=2;moves++;selected=null;message.textContent='Bien joué ! Deux tuiles retirées.';if(removed===tiles.length){if(!saved.completed.includes(level))saved.completed.push(level);saved.unlocked=Math.max(saved.unlocked||1,Math.min(TOTAL,level+1));saved.tiles=null;saved.level=level<TOTAL?level+1:1;render();renderLevels();save();message.innerHTML='<div class="mahjong-win">NIVEAU '+level+' TERMINÉ !</div><button type="button" id="mahjong-next" class="restart-btn">'+(level<TOTAL?'NIVEAU SUIVANT →':'RECOMMENCER LES 100 NIVEAUX ↻')+'</button>';host.querySelector('#mahjong-next').onclick=()=>start(level<TOTAL?level+1:1);return;}}
+ else {selected=t.id;message.textContent=first&&first.id!==t.id?'Ces tuiles ne correspondent pas. Choisis deux tuiles identiques libres.':'Tuile sélectionnée.';}render();save();if(removed<tiles.length&&!pairsAvailable())message.textContent='Plus de paire disponible : utilise Mélanger pour continuer.';}
+ levelSelect.addEventListener('change',()=>start(Number(levelSelect.value)));host.querySelector('#mahjong-shuffle').onclick=()=>{const remaining=shuffle(tiles.filter(t=>!t.removed));let pairs=[];for(let i=0;i<remaining.length/2;i++)pairs.push(remaining[i].sym,remaining[i].sym);shuffle(pairs);remaining.forEach((t,i)=>t.sym=pairs[i]);selected=null;message.textContent='Tuiles restantes mélangées.';render();save();};
+ host.querySelector('#mahjong-hint').onclick=()=>{const f=tiles.filter(t=>!t.removed&&free(t));let pair=null;for(let i=0;i<f.length&&!pair;i++)for(let j=i+1;j<f.length;j++)if(f[i].sym===f[j].sym){pair=[f[i],f[j]];break;}if(pair){selected=pair[0].id;render();message.textContent='Indice : cherche les deux tuiles entourées.';setTimeout(()=>{if(host.contains(board)){selected=pair[1].id;render();}},700);}else message.textContent='Aucune paire libre. Essaie Mélanger.';};
+ host.querySelector('#mahjong-undo').onclick=()=>{if(!undoStack.length){message.textContent='Aucun coup à annuler.';return;}tiles=undoStack.pop();removed=tiles.filter(t=>t.removed).length;moves=Math.max(0,moves-1);selected=null;render();save();message.textContent='Dernier coup annulé.';};
+ start(level,!!(saved.tiles&&saved.level===level));
 }
-
 
 function snake(){
  host.innerHTML='<div class="score-line" id="snake-score">SCORE 0 · NIVEAU 1</div><canvas class="game-canvas" width="600" height="360"></canvas><div class="game-note">Utilise les flèches du clavier pour diriger le serpent et manger les étoiles. Évite les murs et ton corps.</div>';
@@ -206,10 +183,17 @@ function blockMaster(){
  makePieces();render();cleanup=()=>{};
 }
 
+function dinoDash(){
+ canvasGame('Dino Dash','Espace / ↑ pour sauter. Sur téléphone, touche le jeu pour sauter. Tiens le plus longtemps possible !',(c,x)=>{let y=300,vy=0,ground=true,obs=[],score=0,t=0,over=false;function jump(){if(ground&&!over){vy=-11;ground=false;}if(over){y=300;vy=0;ground=true;obs=[];score=0;t=0;over=false;}}return {key:k=>{if(k===' '||k==='ArrowUp'||k==='w')jump();},pointer:jump,draw:()=>{x.fillStyle='#101a2c';x.fillRect(0,0,720,390);x.fillStyle='#192d3a';x.fillRect(0,320,720,70);x.strokeStyle='#6affb6';x.lineWidth=3;x.beginPath();x.moveTo(0,320);x.lineTo(720,320);x.stroke();for(let i=0;i<7;i++){x.fillStyle='#7fdda5';x.fillRect((i*123-t*2)%720,65+(i%3)*28,3,3);}if(!over&&t%58===0)obs.push({x:740,w:20+Math.random()*18,h:25+Math.random()*25});obs.forEach(o=>{o.x-=5+score/250;x.fillStyle='#6affb6';x.fillRect(o.x,320-o.h,o.w,o.h);x.fillRect(o.x+5,300-o.h,6,10);if(o.x<92&&o.x+o.w>55&&y+25>320-o.h)over=true;});obs=obs.filter(o=>o.x>-50);if(!ground){vy+=.55;y+=vy;if(y>=300){y=300;vy=0;ground=true;}}x.fillStyle='#ffe47a';x.fillRect(55,y,35,25);x.fillStyle='#101a2c';x.fillRect(79,y+5,5,5);if(!over)score++;x.fillStyle='white';x.font='bold 20px Orbitron';x.fillText('SCORE '+Math.floor(score/5),20,30);if(over){x.fillStyle='#020816cc';x.fillRect(0,0,720,390);x.textAlign='center';x.fillStyle='#6affb6';x.font='bold 32px Orbitron';x.fillText('FIN DE COURSE',360,175);x.fillStyle='white';x.font='18px Rajdhani';x.fillText('Score '+Math.floor(score/5)+' · touche pour recommencer',360,215);x.textAlign='left';}t++;}}});
+}
+function flappyRocket(){canvasGame('Flappy Rocket','Espace ou clic pour voler. Passe entre les portails !',(c,x)=>{let py=190,v=0,gates=[],score=0,t=0,over=false;function flap(){if(over){py=190;v=0;gates=[];score=0;t=0;over=false;}else v=-6.2;}return {key:k=>{if(k===' '||k==='ArrowUp')flap();},pointer:flap,draw:()=>{x.fillStyle='#080f2b';x.fillRect(0,0,720,390);for(let i=0;i<60;i++){x.fillStyle='#6ceeff';x.fillRect((i*97)%720,(i*59)%390,2,2);}if(!over&&t%90===0){let gapY=70+Math.random()*210;gates.push({x:740,gap:gapY,passed:false});}v+=.28;py+=v;gates.forEach(g=>{g.x-=3;x.fillStyle='#a78bfa';x.fillRect(g.x,0,42,g.gap-65);x.fillRect(g.x,g.gap+65,42,390-g.gap-65);if(g.x<85&&g.x+42>55&&(py<g.gap-65||py>g.gap+65))over=true;if(!g.passed&&g.x<55){score++;g.passed=true;}});gates=gates.filter(g=>g.x>-50);x.fillStyle='#ffe47a';x.beginPath();x.arc(70,py,13,0,7);x.fill();if(py<0||py>390)over=true;x.fillStyle='white';x.font='bold 20px Orbitron';x.fillText('PORTAILS '+score,20,30);if(over){x.fillStyle='#020816cc';x.fillRect(0,0,720,390);x.textAlign='center';x.fillStyle='#ffe47a';x.font='bold 32px Orbitron';x.fillText('MISSION ÉCHOUÉE',360,175);x.fillStyle='white';x.font='18px Rajdhani';x.fillText('Score '+score+' · touche pour recommencer',360,215);x.textAlign='left';}t++;}}});}
+function brickBreaker(){canvasGame('Brick Breaker','Déplace la raquette avec ← → ou la souris. Casse toutes les briques !',(c,x)=>{let px=310,bx=360,by=280,vx=3,vy=-3,bricks=[],score=0,over=false;function reset(){px=310;bx=360;by=280;vx=3;vy=-3;score=0;over=false;bricks=[];for(let r=0;r<5;r++)for(let col=0;col<10;col++)bricks.push({x:28+col*67,y:45+r*25,alive:true,h:r});}reset();return {key:(k)=>{if(k==='ArrowLeft'||k==='a')px=Math.max(0,px-28);if(k==='ArrowRight'||k==='d')px=Math.min(630,px+28);},pointer:xpos=>px=Math.max(0,Math.min(630,xpos-45)),draw:()=>{x.fillStyle='#071222';x.fillRect(0,0,720,390);bricks.forEach(b=>{if(b.alive){x.fillStyle=['#4aeaff','#a78bfa','#ff5ac8','#ffe47a','#ff6680'][b.h];x.fillRect(b.x,b.y,60,16);}});x.fillStyle='#4aeaff';x.fillRect(px,350,90,12);x.fillStyle='white';x.beginPath();x.arc(bx,by,7,0,7);x.fill();if(!over){bx+=vx;by+=vy;if(bx<7||bx>713)vx*=-1;if(by<7)vy*=-1;if(by>340&&by<365&&bx>px&&bx<px+90)vy=-Math.abs(vy);if(by>390)over=true;bricks.forEach(b=>{if(b.alive&&bx>b.x&&bx<b.x+60&&by>b.y&&by<b.y+16){b.alive=false;vy*=-1;score+=10;}});if(bricks.every(b=>!b.alive))over=true;}x.fillStyle='white';x.font='bold 18px Orbitron';x.fillText('SCORE '+score,20,28);if(over){x.fillStyle='#020816cc';x.fillRect(0,0,720,390);x.textAlign='center';x.fillStyle='#4aeaff';x.font='bold 30px Orbitron';x.fillText(bricks.every(b=>!b.alive)?'BRAVO !':'FIN DE PARTIE',360,175);x.fillStyle='white';x.font='18px Rajdhani';x.fillText('Score '+score+' · bouton Recommencer pour rejouer',360,215);x.textAlign='left';}}};});}
+function whackMole(){host.innerHTML='<div class="score-line" id="mole-score">SCORE 0 · TEMPS 30</div><div class="mole-grid" id="mole-grid"></div><p class="game-note">Clique sur les créatures qui apparaissent avant qu’elles disparaissent !</p><button class="restart-btn" id="mole-start">▶ Démarrer</button>';const line=host.querySelector('#mole-score'),grid=host.querySelector('#mole-grid'),start=host.querySelector('#mole-start');let score=0,time=30,timer=null,active=-1,playing=false;const holes=[];for(let i=0;i<9;i++){const b=document.createElement('button');b.className='mole-hole';b.textContent='';b.onclick=()=>{if(playing&&i===active){score+=10;active=-1;paint();}};grid.appendChild(b);holes.push(b);}function paint(){holes.forEach((b,i)=>{b.textContent=i===active?'🦎':'·';b.classList.toggle('mole-active',i===active);});line.textContent='SCORE '+score+' · TEMPS '+time;}function end(){playing=false;clearInterval(timer);active=-1;paint();line.textContent='TERMINÉ ! SCORE '+score+' · Clique sur Démarrer pour rejouer.';}start.onclick=()=>{clearInterval(timer);score=0;time=30;playing=true;active=Math.floor(Math.random()*9);paint();timer=setInterval(()=>{time--;active=Math.floor(Math.random()*9);paint();if(time<=0)end();},750);};cleanup=()=>{clearInterval(timer);};paint();}
+
 function launch(game){
- cleanup(); title.textContent=({racer:'Neon Racer',jumper:'Pixel Jumper',blaster:'Star Blaster',memory:'Memory Matrix',mahjong:'Mahjong Neon',snake:'Snake Neon',ttt:'Tic Tac Toe',reaction:'Reflex Rush',pong:'Neon Pong',blocks:'Block Master'})[game]||'Jeu';
- help.textContent=({racer:'Évite les obstacles !',jumper:'Grimpe le plus haut possible !',blaster:'Survis dans l’espace !',memory:'Retrouve toutes les paires !',mahjong:'Associe les tuiles libres et passe les 3 niveaux !',snake:'Mange les étoiles et bats ton record !',ttt:'Aligne trois symboles contre l’IA.',reaction:'Teste ta vitesse de réaction !',pong:'Bats l’ordinateur au ping-pong !',blocks:'Place les blocs et complète les lignes !'})[game]||'Amuse-toi bien !';
- ({racer, jumper, blaster, memory, mahjong, snake, ttt:tictactoe, reaction, pong:neonPong, blocks:blockMaster})[game]?.();
+ cleanup(); title.textContent=({racer:'Neon Racer',jumper:'Pixel Jumper',blaster:'Star Blaster',memory:'Memory Matrix',mahjong:'Mahjong Neon',dino:'Dino Dash',flappy:'Flappy Rocket',bricks:'Brick Breaker',mole:'Critter Pop',snake:'Snake Neon',ttt:'Tic Tac Toe',reaction:'Reflex Rush',pong:'Neon Pong',blocks:'Block Master'})[game]||'Jeu';
+ help.textContent=({racer:'Évite les obstacles !',jumper:'Grimpe le plus haut possible !',blaster:'Survis dans l’espace !',memory:'Retrouve toutes les paires !',mahjong:'Mahjong solitaire avec 100 niveaux et sauvegarde automatique.',dino:'Saute par-dessus les obstacles et bats ton record.',flappy:'Passe entre les portails sans les toucher.',bricks:'Casse toutes les briques avec la balle.',mole:'Attrape les créatures avant la fin du temps.',snake:'Mange les étoiles et bats ton record !',ttt:'Aligne trois symboles contre l’IA.',reaction:'Teste ta vitesse de réaction !',pong:'Bats l’ordinateur au ping-pong !',blocks:'Place les blocs et complète les lignes !'})[game]||'Amuse-toi bien !';
+ ({racer, jumper, blaster, memory, mahjong, dino:dinoDash, flappy:flappyRocket, bricks:brickBreaker, mole:whackMole, snake, ttt:tictactoe, reaction, pong:neonPong, blocks:blockMaster})[game]?.();
 }
 window.PlanetGames={launch,restart:()=>{const game=window.currentGame;if(game)launch(game);}};
 window.addEventListener('beforeunload',()=>cleanup());
