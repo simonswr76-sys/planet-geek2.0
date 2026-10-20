@@ -14,12 +14,18 @@
   <a class="submit-link" href="#games">JOUER <span>↗</span></a>
 </header>
 <nav class="quick-dock" aria-label="Accès rapide">
+  <a href="#lobby" title="Ouvrir le lobby"><span aria-hidden="true">🚀</span><b>Lobby</b></a>
   <a href="#games" title="Aller aux jeux"><span aria-hidden="true">🎮</span><b>Jeux</b></a>
   <a href="#profile" title="Ouvrir le profil"><span aria-hidden="true">👤</span><b>Profil</b></a>
   <a href="#store" title="Ouvrir la boutique"><span aria-hidden="true">🛍️</span><b>Boutique</b></a>
+  <a href="#locker" title="Ouvrir le casier"><span aria-hidden="true">🧰</span><b>Casier</b></a>
   <a href="#arena" title="Jouer dans l’arène"><span aria-hidden="true">🌌</span><b>Arène</b></a>
   <a href="#stats" title="Voir les statistiques et bonus"><span aria-hidden="true">📊</span><b>Stats</b></a>
 </nav>
+<section id="lobby" class="pg-lobby" aria-label="Lobby Planet Geek">
+ <div class="lobby-copy"><div class="eyebrow">BIENVENUE DANS TON UNIVERS</div><h1>PLANET <span>LOBBY</span></h1><p>Prépare ton personnage, équipe tes cosmétiques et pars explorer l’arène.</p><div class="lobby-actions"><a class="primary-btn" href="#arena">JOUER MAINTENANT ↗</a><a class="lobby-secondary" href="#locker">OUVRIR MON CASIER</a></div><div class="lobby-wallet">✦ Solde virtuel : <strong id="lobby-xp">0 XP</strong></div></div>
+ <div class="lobby-avatar" aria-label="Aperçu du personnage"><div class="avatar-orbit"></div><div id="lobby-avatar-icon">🧑‍🚀</div><span id="lobby-skin-name">Explorateur Pixel</span><small>APERÇU DU PERSONNAGE</small></div>
+</section>
 <main id="games">
   <div class="section-head"><div><div class="eyebrow">SÉLECTION PLANET GEEK</div><h2>CHOISIS TON <span>JEU</span></h2></div><div class="count"><span id="visible-count">19</span> MINI-JEUX</div></div>
   <nav class="filters" aria-label="Catégories">
@@ -120,7 +126,7 @@
  <div class="section-head"><div><div class="eyebrow">TON PERSONNAGE, TES OBJETS</div><h2>PLANET <span>ARENA</span></h2></div><div class="count">PROTO JOUABLE</div></div>
  <p class="feature-sub">Déplace ton personnage dans l’arène, équipe tes cosmétiques et lance une emote. Clavier : WASD ou flèches. Mobile : utilise les commandes.</p>
  <div class="pg-arena-wrap"><canvas id="pg-arena" width="900" height="430" aria-label="Arène de jeu vue du dessus"></canvas><div class="pg-arena-hud"><span id="pg-arena-skin">Skin : Explorateur</span><span id="pg-arena-emote">Prêt à jouer !</span></div></div>
- <div class="pg-arena-controls"><button type="button" id="pg-emote">💃 Danser</button><button type="button" id="pg-music">♫ Musique : activer</button><button type="button" id="pg-reset-player">↻ Recentrer</button><div class="pg-mobile-pad"><button type="button" data-move="up">▲</button><div><button type="button" data-move="left">◀</button><button type="button" data-move="down">▼</button><button type="button" data-move="right">▶</button></div></div></div>
+ <div class="pg-arena-controls"><button type="button" id="pg-emote">💃 Danser</button><button type="button" id="pg-music">♫ Musique : activer</button><button type="button" id="pg-reset-player">↻ Recentrer</button><button type="button" id="pg-bot-mode">🤖 Défi contre bot : OFF</button><div class="pg-mobile-pad"><button type="button" data-move="up">▲</button><div><button type="button" data-move="left">◀</button><button type="button" data-move="down">▼</button><button type="button" data-move="right">▶</button></div></div></div>
  <p class="feature-sub">C’est un mini-jeu navigateur original, pas Fortnite : il fonctionne sans téléchargement et les achats sont uniquement cosmétiques.</p>
 </section>
 <section id="profile" class="profile-panel" aria-label="Profil du joueur">
