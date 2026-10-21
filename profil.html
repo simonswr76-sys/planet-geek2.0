@@ -8,101 +8,123 @@
 <meta name="color-scheme" content="dark">
 <title>Planet Geek — Profil</title>
 <link rel="stylesheet" href="style.css">
-
 <style id="planet-geek-multipage">
+/* Planet Geek — grande mise à jour multipage */
+body[data-page] { min-height:100vh; }
+body[data-page] .quick-dock a[aria-current="page"]{
+  color:var(--cyan);border-color:rgba(66,232,255,.65);
+  background:linear-gradient(135deg,rgba(66,232,255,.13),rgba(167,107,255,.14));
+  box-shadow:0 0 18px rgba(66,232,255,.12);
+}
+body[data-page] .quick-dock a { transition:transform .18s ease,border-color .18s ease,background .18s ease; }
+body[data-page] .quick-dock a:hover { transform:translateY(-2px); }
+body[data-page] .topbar { position:relative; z-index:20; }
+body[data-page] .menu-wrap { position:relative; z-index:19; }
+body[data-page] .page-welcome {
+  margin:18px auto 0;max-width:1400px;padding:12px 20px;
+  color:#c8d8f2;font-size:14px;letter-spacing:.04em;
+}
+body[data-page] .page-welcome strong { color:var(--cyan); }
+body[data-page] .daily-login-card {
+  margin:0 0 22px;padding:20px;border-radius:16px;
+  border:1px solid rgba(66,232,255,.28);
+  background:radial-gradient(ellipse at 100% 0%,rgba(167,107,255,.16),transparent 55%),linear-gradient(135deg,#0b1c32,#10172d);
+  box-shadow:0 12px 38px rgba(0,0,0,.2);
+}
+body[data-page] .daily-login-head {display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+body[data-page] .daily-login-title {font-family:Orbitron,sans-serif;font-size:clamp(17px,2vw,22px);font-weight:800}
+body[data-page] .daily-login-sub {color:var(--muted);font-size:15px;margin-top:5px}
+body[data-page] .daily-login-rewards {display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+body[data-page] .daily-login-reward {border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:#071528;color:#e8f7ff;font-weight:700}
+body[data-page] .daily-login-btn {
+  border:1px solid #42e8ff88;border-radius:9px;padding:11px 16px;
+  color:#04111e;background:linear-gradient(100deg,#42e8ff,#a76bff);
+  font-weight:900;cursor:pointer;box-shadow:0 0 22px #42e8ff18;
+}
+body[data-page] .daily-login-btn:disabled {opacity:.55;cursor:default;filter:grayscale(.4)}
+body[data-page] .daily-login-status {font-size:14px;color:#a9c5e5;min-height:20px}
+body[data-page] .pg-page-heading {padding:28px 0 12px}
+body[data-page] .pg-page-heading .eyebrow {color:var(--cyan);font-weight:900;letter-spacing:.18em;font-size:11px}
+body[data-page] .pg-page-heading h1 {font-family:Orbitron,sans-serif;line-height:1.15;font-size:clamp(25px,4vw,38px);margin:7px 0}
+body[data-page] .pg-page-heading p {color:var(--muted);margin:0}
 body[data-page="accueil"] #games,
 body[data-page="accueil"] #progression-planet,
 body[data-page="accueil"] #store,
 body[data-page="accueil"] #arena,
 body[data-page="accueil"] #profile,
 body[data-page="accueil"] #season-pass,
-body[data-page="accueil"] #stats {display:none!important}
-body[data-page="accueil"] #lobby {display:grid!important}
-body[data-page="accueil"] .season-notice {display:flex!important}
-body[data-page="accueil"] .bottom-banner {display:none!important}
-
+body[data-page="accueil"] #stats,
+body[data-page="accueil"] #locker {display:none!important}
 body[data-page="jeux"] #lobby,
-body[data-page="jeux"] .season-notice,
 body[data-page="jeux"] #progression-planet,
 body[data-page="jeux"] #store,
 body[data-page="jeux"] #arena,
 body[data-page="jeux"] #profile,
 body[data-page="jeux"] #season-pass,
 body[data-page="jeux"] #stats,
-body[data-page="jeux"] .bottom-banner {display:none!important}
+body[data-page="jeux"] #locker {display:none!important}
 body[data-page="jeux"] #games {display:block!important}
-
 body[data-page="profil"] #lobby,
-body[data-page="profil"] .season-notice,
 body[data-page="profil"] #games,
 body[data-page="profil"] #store,
 body[data-page="profil"] #arena,
 body[data-page="profil"] #season-pass,
 body[data-page="profil"] #stats,
-body[data-page="profil"] .bottom-banner {display:none!important}
+body[data-page="profil"] #locker {display:none!important}
 body[data-page="profil"] #profile,
 body[data-page="profil"] #progression-planet {display:block!important}
-
 body[data-page="boutique"] #lobby,
-body[data-page="boutique"] .season-notice,
 body[data-page="boutique"] #games,
 body[data-page="boutique"] #progression-planet,
 body[data-page="boutique"] #arena,
 body[data-page="boutique"] #profile,
 body[data-page="boutique"] #season-pass,
 body[data-page="boutique"] #stats,
-body[data-page="boutique"] .bottom-banner {display:none!important}
+body[data-page="boutique"] #locker {display:none!important}
 body[data-page="boutique"] #store {display:block!important}
-
 body[data-page="casier"] #lobby,
-body[data-page="casier"] .season-notice,
 body[data-page="casier"] #games,
 body[data-page="casier"] #progression-planet,
 body[data-page="casier"] #store,
 body[data-page="casier"] #arena,
 body[data-page="casier"] #season-pass,
-body[data-page="casier"] #stats,
-body[data-page="casier"] .bottom-banner {display:none!important}
+body[data-page="casier"] #stats {display:none!important}
 body[data-page="casier"] #profile {display:block!important}
-
+body[data-page="casier"] #locker {display:block!important}
 body[data-page="pass"] #lobby,
-body[data-page="pass"] .season-notice,
 body[data-page="pass"] #games,
 body[data-page="pass"] #progression-planet,
 body[data-page="pass"] #store,
 body[data-page="pass"] #arena,
 body[data-page="pass"] #profile,
 body[data-page="pass"] #stats,
-body[data-page="pass"] .bottom-banner {display:none!important}
+body[data-page="pass"] #locker {display:none!important}
 body[data-page="pass"] #season-pass {display:block!important}
-
 body[data-page="arene"] #lobby,
-body[data-page="arene"] .season-notice,
 body[data-page="arene"] #games,
 body[data-page="arene"] #progression-planet,
 body[data-page="arene"] #store,
 body[data-page="arene"] #profile,
 body[data-page="arene"] #season-pass,
 body[data-page="arene"] #stats,
-body[data-page="arene"] .bottom-banner {display:none!important}
+body[data-page="arene"] #locker {display:none!important}
 body[data-page="arene"] #arena {display:block!important}
-
 body[data-page="stats"] #lobby,
-body[data-page="stats"] .season-notice,
 body[data-page="stats"] #games,
 body[data-page="stats"] #store,
 body[data-page="stats"] #arena,
 body[data-page="stats"] #profile,
 body[data-page="stats"] #season-pass,
-body[data-page="stats"] .bottom-banner {display:none!important}
+body[data-page="stats"] #locker {display:none!important}
 body[data-page="stats"] #stats,
 body[data-page="stats"] #progression-planet {display:block!important}
-
-@media(max-width:700px){
-  .quick-dock{max-width:calc(100vw - 24px)}
+@media(max-width:760px){
+ body[data-page] .topbar{height:auto;min-height:72px;flex-wrap:wrap;padding:14px 16px;gap:12px}
+ body[data-page] .search-wrap{order:3;width:100%;max-width:none}
+ body[data-page] .daily-login-card{padding:15px}
+ body[data-page] .page-welcome{padding:10px 16px}
 }
 </style>
-
 </head>
 <body data-page="profil">
 <header class="topbar">
@@ -124,10 +146,10 @@ body[data-page="stats"] #progression-planet {display:block!important}
   </nav>
 </div>
 <section id="lobby" class="pg-lobby" aria-label="Lobby Planet Geek">
- <div class="lobby-copy"><div class="eyebrow">BIENVENUE DANS TON UNIVERS</div><h1>PLANET <span>LOBBY</span></h1><p>Prépare ton personnage, équipe tes cosmétiques et pars explorer l’arène.</p><div class="lobby-actions"><a class="primary-btn" href="arene.html">JOUER MAINTENANT ↗</a><a class="lobby-secondary" href="casier.html">OUVRIR MON CASIER</a></div><div class="lobby-wallet">✦ Solde virtuel : <strong id="lobby-xp">0 XP</strong></div></div>
+ <div class="lobby-copy"><div class="eyebrow">BIENVENUE DANS TON UNIVERS</div><h1>PLANET <span>LOBBY</span></h1><p>Prépare ton personnage, équipe tes cosmétiques et pars explorer l’arène.</p><div class="lobby-actions"><a class="primary-btn" href="#arena">JOUER MAINTENANT ↗</a><a class="lobby-secondary" href="#locker">OUVRIR MON CASIER</a></div><div class="lobby-wallet">✦ Solde virtuel : <strong id="lobby-xp">0 XP</strong></div></div>
  <div class="lobby-avatar" aria-label="Aperçu du personnage"><div class="avatar-orbit"></div><div id="lobby-avatar-icon">🧑‍🚀</div><span id="lobby-skin-name">Explorateur Pixel</span><small>APERÇU DU PERSONNAGE</small></div>
 </section>
-<section class="season-notice" aria-label="État de Planet Geek"><span class="live-dot"></span><strong>PLANET GEEK EST EN LIGNE</strong><span>Mini-jeux · Défis · Boutique · Progression</span><a href="stats.html">Voir les défis ↓</a></section>
+<section class="season-notice" aria-label="État de Planet Geek"><span class="live-dot"></span><strong>PLANET GEEK EST EN LIGNE</strong><span>Mini-jeux · Défis · Boutique · Progression</span><a href="#stats">Voir les défis ↓</a></section>
 <main id="games">
   <div class="section-head"><div><div class="eyebrow">SÉLECTION PLANET GEEK</div><h2>CHOISIS TON <span>JEU</span></h2></div><div class="count"><span id="visible-count">29</span> MINI-JEUX</div></div>
   <nav class="filters" aria-label="Catégories">
@@ -279,7 +301,7 @@ body[data-page="stats"] #progression-planet {display:block!important}
 </section>
 
 
-<section class="bottom-banner"><div class="banner-icon">✦</div><div><h2>PRÊT À PASSER AU NIVEAU SUIVANT ?</h2><p>Choisis un jeu, lance une partie et essaie de battre ton record.</p></div><a href="jeux.html">C'EST PARTI ↗</a></section>
+<section class="bottom-banner"><div class="banner-icon">✦</div><div><h2>PRÊT À PASSER AU NIVEAU SUIVANT ?</h2><p>Choisis un jeu, lance une partie et essaie de battre ton record.</p></div><a href="#games">C'EST PARTI ↗</a></section>
 <footer><a class="brand" href="#"><span class="planet">◉</span> PLANET <b>GEEK</b></a><span>MINI-JEUX GRATUITS · FAIT POUR S'AMUSER</span><span>© <span id="year"></span> PLANET GEEK</span></footer>
 <div class="modal" id="game-modal" aria-hidden="true">
   <div class="modal-panel"><div class="modal-head"><div><div class="eyebrow">PLANET GEEK ARCADE</div><h2 id="modal-title">Jeu</h2></div><button id="close-modal" class="close-btn" aria-label="Fermer">✕</button></div>
@@ -288,6 +310,7 @@ body[data-page="stats"] #progression-planet {display:block!important}
   </div>
 </div>
 <script src="games.js"></script><script src="app.js"></script>
+<script src="upgrade.js"></script>
 <script>
 (()=>{const btn=document.getElementById('menu-toggle');const menu=document.getElementById('quick-dock');if(!btn||!menu)return;const close=()=>{menu.hidden=true;btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','Ouvrir le menu')};btn.addEventListener('click',()=>{const opening=menu.hidden;menu.hidden=!opening;btn.setAttribute('aria-expanded',String(opening));btn.setAttribute('aria-label',opening?'Fermer le menu':'Ouvrir le menu')});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});document.addEventListener('click',e=>{if(!menu.hidden&&!menu.contains(e.target)&&!btn.contains(e.target))close()})})();
 </script>

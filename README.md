@@ -22,7 +22,10 @@ Les récompenses sont virtuelles et ne correspondent à aucune valeur monétaire
 Ouvre `vol-un-oeuf.html` depuis le site. Le jeu utilise Three.js chargé depuis un CDN, donc une connexion Internet est nécessaire pour les graphismes 3D. Les pièces et améliorations sont sauvegardées dans le navigateur.
 
 
-## Navigation multipage
-Le site est organisé en pages séparées : Accueil, Jeux, Profil, Boutique, Casier, Pass, Arène et Stats.
-Les fichiers JavaScript, CSS, mini-jeux et la page `vol-un-oeuf.html` sont conservés.
-Les données déjà enregistrées restent dans le stockage local du navigateur : elles ne sont pas synchronisées entre appareils.
+## Grande mise à jour Planet Geek
+- Navigation séparée : Accueil, Jeux, Profil, Boutique, Casier, Pass, Arène et Statistiques.
+- Style gaming néon bleu/violet conservé et ajustements responsive.
+- Récompense quotidienne : +50 XP et +25 pièces PG, avec bonus de série progressif plafonné à +100 pièces.
+- Les jeux, le moteur de mini-jeux, le Pass et son compte à rebours existants sont conservés.
+- Les données restent enregistrées dans le navigateur via localStorage. Il n'y a pas de serveur ni de synchronisation en ligne.
+- Hébergement : GitHub Pages. Garder tous les fichiers du ZIP dans le même dossier.
