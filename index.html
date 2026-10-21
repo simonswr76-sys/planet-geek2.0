@@ -8,31 +8,52 @@
 <meta name="color-scheme" content="dark">
 <title>Planet Geek — Mini-jeux gratuits</title>
 <link rel="stylesheet" href="style.css">
+
+<style id="planet-geek-multipage">
+body[data-page="accueil"] #games,
+body[data-page="accueil"] #progression-planet,
+body[data-page="accueil"] #store,
+body[data-page="accueil"] #arena,
+body[data-page="accueil"] #profile,
+body[data-page="accueil"] #season-pass,
+body[data-page="accueil"] #stats,
+body[data-page="accueil"] .bottom-banner { display:none !important; }
+body[data-page="accueil"] #lobby,
+body[data-page="accueil"] .season-notice { display:block; }
+body[data-page="accueil"] .pg-lobby { display:grid; }
+body[data-page="accueil"] .season-notice { display:flex; }
+body[data-page="jeux"] #games { display:block; }
+body[data-page="profil"] #profile, body[data-page="casier"] #profile, body[data-page="profil"] #progression-planet, body[data-page="stats"] #progression-planet { display:block; }
+body[data-page="stats"] #stats { display:grid; }
+body[data-page="boutique"] #store, body[data-page="pass"] #season-pass, body[data-page="arene"] #arena { display:block; }
+body[data-page="casier"] #profile { display:block; }
+body[data-page="accueil"] .bottom-banner { display:none !important; }
+</style>
 </head>
-<body>
+<body data-page="accueil">
 <header class="topbar">
   <a class="brand" href="#" aria-label="Planet Geek accueil"><span class="planet">◉</span> PLANET <b>GEEK</b></a>
   <div class="search-wrap" role="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Jeu, catégorie, mot-clé…" aria-label="Rechercher par nom, catégorie ou description" autocomplete="off"><button id="clear-search" type="button" aria-label="Effacer la recherche" title="Effacer" hidden>×</button></div>
-  <a class="submit-link" href="#games">JOUER <span>↗</span></a>
+  <a class="submit-link" href="jeux.html">JOUER <span>↗</span></a>
 </header>
 <div class="menu-wrap">
   <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="quick-dock" aria-label="Ouvrir le menu"><span class="hamburger-lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="menu-toggle-label">MENU</span></button>
   <nav class="quick-dock" id="quick-dock" aria-label="Menu principal" hidden>
-    <a href="#lobby"><span aria-hidden="true">🚀</span><b>Lobby</b></a>
-    <a href="#games"><span aria-hidden="true">🎮</span><b>Jeux</b></a>
-    <a href="#profile"><span aria-hidden="true">👤</span><b>Profil</b></a>
-    <a href="#store"><span aria-hidden="true">🛍️</span><b>Boutique</b></a>
-    <a href="#locker"><span aria-hidden="true">🧰</span><b>Casier</b></a>
-    <a href="#season-pass"><span aria-hidden="true">🏆</span><b>Pass</b></a>
-    <a href="#arena"><span aria-hidden="true">🌌</span><b>Arène</b></a>
-    <a href="#stats"><span aria-hidden="true">📊</span><b>Stats</b></a>
+    <a href="index.html"><span aria-hidden="true">🚀</span><b>Accueil</b></a>
+    <a href="jeux.html"><span aria-hidden="true">🎮</span><b>Jeux</b></a>
+    <a href="profil.html"><span aria-hidden="true">👤</span><b>Profil</b></a>
+    <a href="boutique.html"><span aria-hidden="true">🛍️</span><b>Boutique</b></a>
+    <a href="casier.html"><span aria-hidden="true">🧰</span><b>Casier</b></a>
+    <a href="pass.html"><span aria-hidden="true">🏆</span><b>Pass</b></a>
+    <a href="arene.html"><span aria-hidden="true">🌌</span><b>Arène</b></a>
+    <a href="stats.html"><span aria-hidden="true">📊</span><b>Stats</b></a>
   </nav>
 </div>
 <section id="lobby" class="pg-lobby" aria-label="Lobby Planet Geek">
- <div class="lobby-copy"><div class="eyebrow">BIENVENUE DANS TON UNIVERS</div><h1>PLANET <span>LOBBY</span></h1><p>Prépare ton personnage, équipe tes cosmétiques et pars explorer l’arène.</p><div class="lobby-actions"><a class="primary-btn" href="#arena">JOUER MAINTENANT ↗</a><a class="lobby-secondary" href="#locker">OUVRIR MON CASIER</a></div><div class="lobby-wallet">✦ Solde virtuel : <strong id="lobby-xp">0 XP</strong></div></div>
+ <div class="lobby-copy"><div class="eyebrow">BIENVENUE DANS TON UNIVERS</div><h1>PLANET <span>LOBBY</span></h1><p>Prépare ton personnage, équipe tes cosmétiques et pars explorer l’arène.</p><div class="lobby-actions"><a class="primary-btn" href="jeux.html">JOUER MAINTENANT ↗</a><a class="lobby-secondary" href="casier.html">OUVRIR MON CASIER</a></div><div class="lobby-wallet">✦ Solde virtuel : <strong id="lobby-xp">0 XP</strong></div></div>
  <div class="lobby-avatar" aria-label="Aperçu du personnage"><div class="avatar-orbit"></div><div id="lobby-avatar-icon">🧑‍🚀</div><span id="lobby-skin-name">Explorateur Pixel</span><small>APERÇU DU PERSONNAGE</small></div>
 </section>
-<section class="season-notice" aria-label="État de Planet Geek"><span class="live-dot"></span><strong>PLANET GEEK EST EN LIGNE</strong><span>Mini-jeux · Défis · Boutique · Progression</span><a href="#stats">Voir les défis ↓</a></section>
+<section class="season-notice" aria-label="État de Planet Geek"><span class="live-dot"></span><strong>PLANET GEEK EST EN LIGNE</strong><span>Mini-jeux · Défis · Boutique · Progression</span><a href="stats.html">Voir les défis ↓</a></section>
 <main id="games">
   <div class="section-head"><div><div class="eyebrow">SÉLECTION PLANET GEEK</div><h2>CHOISIS TON <span>JEU</span></h2></div><div class="count"><span id="visible-count">29</span> MINI-JEUX</div></div>
   <nav class="filters" aria-label="Catégories">

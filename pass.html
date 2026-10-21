@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#071323">
+<meta name="description" content="Planet Geek : mini-jeux gratuits, défis, XP, pièces PG, boutique virtuelle et progression. Joue et améliore ton profil !">
+<meta name="color-scheme" content="dark">
+<title>Planet Geek — Mini-jeux gratuits</title>
+<link rel="stylesheet" href="style.css">
+
+<style id="planet-geek-multipage">
+body[data-page="pass"] #lobby,
+body[data-page="pass"] .season-notice,
+body[data-page="pass"] #games,
+body[data-page="pass"] #progression-planet,
+body[data-page="pass"] #store,
+body[data-page="pass"] #arena,
+body[data-page="pass"] #profile,
+body[data-page="pass"] #stats,
+body[data-page="pass"] .bottom-banner { display:none !important; }
+body[data-page="pass"] #season-pass { display:block; }
+body[data-page="accueil"] .pg-lobby { display:grid; }
+body[data-page="accueil"] .season-notice { display:flex; }
+body[data-page="jeux"] #games { display:block; }
+body[data-page="profil"] #profile, body[data-page="casier"] #profile, body[data-page="profil"] #progression-planet, body[data-page="stats"] #progression-planet { display:block; }
+body[data-page="stats"] #stats { display:grid; }
+body[data-page="boutique"] #store, body[data-page="pass"] #season-pass, body[data-page="arene"] #arena { display:block; }
+body[data-page="casier"] #profile { display:block; }
+body[data-page="accueil"] .bottom-banner { display:none !important; }
+</style>
+</head>
+<body data-page="pass">
+<header class="topbar">
+  <a class="brand" href="#" aria-label="Planet Geek accueil"><span class="planet">◉</span> PLANET <b>GEEK</b></a>
+  <div class="search-wrap" role="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Jeu, catégorie, mot-clé…" aria-label="Rechercher par nom, catégorie ou description" autocomplete="off"><button id="clear-search" type="button" aria-label="Effacer la recherche" title="Effacer" hidden>×</button></div>
+  <a class="submit-link" href="jeux.html">JOUER <span>↗</span></a>
+</header>
+<div class="menu-wrap">
+  <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="quick-dock" aria-label="Ouvrir le menu"><span class="hamburger-lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="menu-toggle-label">MENU</span></button>
+  <nav class="quick-dock" id="quick-dock" aria-label="Menu principal" hidden>
+    <a href="index.html"><span aria-hidden="true">🚀</span><b>Accueil</b></a>
+    <a href="jeux.html"><span aria-hidden="true">🎮</span><b>Jeux</b></a>
+    <a href="profil.html"><span aria-hidden="true">👤</span><b>Profil</b></a>
+    <a href="boutique.html"><span aria-hidden="true">🛍️</span><b>Boutique</b></a>
+    <a href="casier.html"><span aria-hidden="true">🧰</span><b>Casier</b></a>
+    <a href="pass.html"><span aria-hidden="true">🏆</span><b>Pass</b></a>
+    <a href="arene.html"><span aria-hidden="true">🌌</span><b>Arène</b></a>
+    <a href="stats.html"><span aria-hidden="true">📊</span><b>Stats</b></a>
+  </nav>
+</div>
+<section id="lobby" class="pg-lobby" aria-label="Lobby Planet Geek">
+ <div class="lobby-copy"><div class="eyebrow">BIENVENUE DANS TON UNIVERS</div><h1>PLANET <span>LOBBY</span></h1><p>Prépare ton personnage, équipe tes cosmétiques et pars explorer l’arène.</p><div class="lobby-actions"><a class="primary-btn" href="jeux.html">JOUER MAINTENANT ↗</a><a class="lobby-secondary" href="casier.html">OUVRIR MON CASIER</a></div><div class="lobby-wallet">✦ Solde virtuel : <strong id="lobby-xp">0 XP</strong></div></div>
+ <div class="lobby-avatar" aria-label="Aperçu du personnage"><div class="avatar-orbit"></div><div id="lobby-avatar-icon">🧑‍🚀</div><span id="lobby-skin-name">Explorateur Pixel</span><small>APERÇU DU PERSONNAGE</small></div>
+</section>
+<section class="season-notice" aria-label="État de Planet Geek"><span class="live-dot"></span><strong>PLANET GEEK EST EN LIGNE</strong><span>Mini-jeux · Défis · Boutique · Progression</span><a href="stats.html">Voir les défis ↓</a></section>
+<main id="games">
+  <div class="section-head"><div><div class="eyebrow">SÉLECTION PLANET GEEK</div><h2>CHOISIS TON <span>JEU</span></h2></div><div class="count"><span id="visible-count">29</span> MINI-JEUX</div></div>
+  <nav class="filters" aria-label="Catégories">
+    <button class="filter active" data-category="Tous">✦ Tous les jeux</button>
+    <button class="filter" data-category="Course">🏁 Course</button>
+    <button class="filter" data-category="Plateforme">⬆ Plateforme</button>
+    <button class="filter" data-category="Arcade">✹ Arcade</button>
+    <button class="filter" data-category="Réflexion">◇ Réflexion</button>
+  </nav>
+  <div class="game-grid" id="game-grid">
+    <article class="game-card" data-category="Course" data-name="Neon Racer">
+      <div class="game-cover cover-racer"><div class="cover-label">COURSE</div><div class="road"><div class="road-lines"></div><div class="car">▰</div></div><span class="cover-symbol">⚡</span></div>
+      <div class="game-info"><div><h3>Neon Racer</h3><p>Évite les obstacles et tiens le plus longtemps possible.</p></div><button class="play-btn" data-game="racer" aria-label="Jouer à Neon Racer">▶</button></div>
+      <div class="card-foot"><span>🏁 COURSE</span><span>CLAVIER / TACTILE</span></div>
+    </article>
+    <article class="game-card" data-category="Plateforme" data-name="Pixel Jumper">
+      <div class="game-cover cover-jumper"><div class="cover-label">PLATEFORME</div><div class="pixel-sun"></div><div class="platform p1"></div><div class="platform p2"></div><div class="pixel-person">▟</div><span class="cover-symbol">↑</span></div>
+      <div class="game-info"><div><h3>Pixel Jumper</h3><p>Saute de plateforme en plateforme et grimpe le plus haut.</p></div><button class="play-btn" data-game="jumper" aria-label="Jouer à Pixel Jumper">▶</button></div>
+      <div class="card-foot"><span>⬆ PLATEFORME</span><span>ESPACE / TACTILE</span></div>
+    </article>
+    <article class="game-card" data-category="Arcade" data-name="Star Blaster">
+      <div class="game-cover cover-blaster"><div class="cover-label">ARCADE</div><div class="space-stars">✦　·　✧　·　✦</div><div class="ship">▲</div><div class="laser"></div><span class="cover-symbol">✹</span></div>
+      <div class="game-info"><div><h3>Star Blaster</h3><p>Déplace ton vaisseau et esquive les météorites.</p></div><button class="play-btn" data-game="blaster" aria-label="Jouer à Star Blaster">▶</button></div>
+      <div class="card-foot"><span>✹ ARCADE</span><span>FLÈCHES / TACTILE</span></div>
+    </article>
+    <article class="game-card" data-category="Réflexion" data-name="Memory Matrix">
+      <div class="game-cover cover-memory"><div class="cover-label">RÉFLEXION</div><div class="memory-art"><span>?</span><span>✦</span><span>?</span><span>◆</span></div><span class="cover-symbol">◇</span></div>
+      <div class="game-info"><div><h3>Memory Matrix</h3><p>Retourne les cartes et retrouve toutes les paires.</p></div><button class="play-btn" data-game="memory" aria-label="Jouer à Memory Matrix">▶</button></div>
+      <div class="card-foot"><span>◇ RÉFLEXION</span><span>SOURIS / TACTILE</span></div>
+    </article>
+    <article class="game-card" data-category="Réflexion" data-name="Mahjong Neon">
+      <div class="game-cover cover-mahjong"><div class="cover-label">RÉFLEXION</div><div class="mahjong-art"><span>龍</span><span>竹</span><span>發</span><span>中</span></div><span class="cover-symbol">◆</span></div>
+      <div class="game-info"><div><h3>Mahjong Neon</h3><p>Associe les tuiles libres et vide le plateau. Plusieurs niveaux !</p></div><button class="play-btn" data-game="mahjong" aria-label="Jouer à Mahjong Neon">▶</button></div>
+      <div class="card-foot"><span>◇ RÉFLEXION</span><span>SOURIS / TACTILE</span></div>
+    </article>
+    <article class="game-card" data-category="Arcade" data-name="Snake Neon">
+      <div class="game-cover cover-blaster"><div class="cover-label">ARCADE</div><div class="space-stars">●　●　●　●</div><div class="ship">〰</div><span class="cover-symbol">🐍</span></div>
+      <div class="game-info"><div><h3>Snake Neon</h3><p>Mange les étoiles, grandis et bats ton record.</p></div><button class="play-btn" data-game="snake" aria-label="Jouer à Snake Neon">▶</button></div>
+      <div class="card-foot"><span>✹ ARCADE</span><span>FLÈCHES</span></div>
+    </article>
+    <article class="game-card" data-category="Réflexion" data-name="Tic Tac Toe">
+      <div class="game-cover cover-memory"><div class="cover-label">RÉFLEXION</div><div class="memory-art"><span>X</span><span>O</span><span>X</span><span>O</span></div><span class="cover-symbol">✕</span></div>
+      <div class="game-info"><div><h3>Tic Tac Toe</h3><p>Aligne trois symboles contre une petite IA.</p></div><button class="play-btn" data-game="ttt" aria-label="Jouer à Tic Tac Toe">▶</button></div>
+      <div class="card-foot"><span>◇ RÉFLEXION</span><span>SOURIS / TACTILE</span></div>
+    </article>
+    <article class="game-card" data-category="Arcade" data-name="Reflex Rush">
+      <div class="game-cover cover-racer"><div class="cover-label">RÉFLEXES</div><div class="road"><div class="road-lines"></div><div class="car">⚡</div></div><span class="cover-symbol">⏱</span></div>
+      <div class="game-info"><div><h3>Reflex Rush</h3><p>Clique dès que le bouton devient vert et mesure tes réflexes.</p></div><button class="play-btn" data-game="reaction" aria-label="Jouer à Reflex Rush">▶</button></div>
+      <div class="card-foot"><span>✹ ARCADE</span><span>SOURIS / TACTILE</span></div>
+    </article>
+    <article class="game-card" data-category="Arcade" data-name="Neon Pong">
+      <div class="game-cover cover-blaster"><div class="cover-label">ARCADE</div><div class="space-stars">●　·　●　·　●</div><div class="ship">◉</div><span class="cover-symbol">↔</span></div>
+      <div class="game-info"><div><h3>Neon Pong</h3><p>Affronte l’ordinateur dans un duel de ping-pong.</p></div><button class="play-btn" data-game="pong" aria-label="Jouer à Neon Pong">▶</button></div>
+      <div class="card-foot"><span>✹ ARCADE</span><span>FLÈCHES / TACTILE</span></div>
+    </article>
+    <article class="game-card" data-category="Réflexion" data-name="Block Master">
+      <div class="game-cover cover-memory"><div class="cover-label">RÉFLEXION</div><div class="memory-art"><span>■</span><span>■</span><span>◆</span><span>■</span></div><span class="cover-symbol">▦</span></div>
+      <div class="game-info"><div><h3>Block Master</h3><p>Place les blocs et complète des lignes pour marquer des points.</p></div><button class="play-btn" data-game="blocks" aria-label="Jouer à Block Master">▶</button></div>
+      <div class="card-foot"><span>◇ RÉFLEXION</span><span>SOURIS / TACTILE</span></div>
+    </article>
+    <article class="game-card" data-category="Arcade" data-name="Dino Dash"><div class="game-cover cover-dino"><div class="cover-label">AVENTURE</div><div class="dino-art">🦖</div><span class="cover-symbol">☄</span></div><div class="game-info"><div><h3>Dino Dash</h3><p>Un dinosaure, des obstacles et un record à battre.</p></div><button class="play-btn" data-game="dino" aria-label="Jouer à Dino Dash">▶</button></div><div class="card-foot"><span>🦖 AVENTURE</span><span>ESPACE / TACTILE</span></div></article>
+    <article class="game-card" data-category="Arcade" data-name="Flappy Rocket"><div class="game-cover cover-flappy"><div class="cover-label">ARCADE</div><div class="flappy-art">🚀</div><span class="cover-symbol">✦</span></div><div class="game-info"><div><h3>Flappy Rocket</h3><p>Fais voler ta fusée entre les portails.</p></div><button class="play-btn" data-game="flappy" aria-label="Jouer à Flappy Rocket">▶</button></div><div class="card-foot"><span>✹ ARCADE</span><span>ESPACE / CLIC</span></div></article>
+    <article class="game-card" data-category="Arcade" data-name="Brick Breaker"><div class="game-cover cover-bricks"><div class="cover-label">ARCADE</div><div class="bricks-art">▦ ▦ ▦</div><span class="cover-symbol">◉</span></div><div class="game-info"><div><h3>Brick Breaker</h3><p>Casse les briques avec une balle rebondissante.</p></div><button class="play-btn" data-game="bricks" aria-label="Jouer à Brick Breaker">▶</button></div><div class="card-foot"><span>✹ ARCADE</span><span>FLÈCHES / SOURIS</span></div></article>
+    <article class="game-card" data-category="Réflexion" data-name="Critter Pop"><div class="game-cover cover-mole"><div class="cover-label">RÉFLEXES</div><div class="mole-art">🦎 🦎</div><span class="cover-symbol">⏱</span></div><div class="game-info"><div><h3>Critter Pop</h3><p>Attrape les créatures pendant les 30 secondes.</p></div><button class="play-btn" data-game="mole" aria-label="Jouer à Critter Pop">▶</button></div><div class="card-foot"><span>⚡ RÉFLEXES</span><span>SOURIS / TACTILE</span></div></article>
+
+    <article class="game-card" data-category="Arcade" data-name="Space Invaders"><div class="game-cover cover-invaders"><div class="cover-label">ARCADE</div><div class="newgame-art">▾ ▾ ▾</div><span class="cover-symbol">✹</span></div><div class="game-info"><div><h3>Space Invaders</h3><p>Défends la planète contre une vague d’aliens.</p></div><button class="play-btn" data-game="invaders" aria-label="Jouer à Space Invaders">▶</button></div><div class="card-foot"><span>✹ ARCADE</span><span>FLÈCHES / ESPACE</span></div></article>
+    <article class="game-card" data-category="Réflexion" data-name="Math Sprint"><div class="game-cover cover-math"><div class="cover-label">RAPIDITÉ</div><div class="newgame-art">7 × 8</div><span class="cover-symbol">＋</span></div><div class="game-info"><div><h3>Math Sprint</h3><p>Résous un maximum de calculs en 30 secondes.</p></div><button class="play-btn" data-game="math" aria-label="Jouer à Math Sprint">▶</button></div><div class="card-foot"><span>◇ RÉFLEXION</span><span>SOURIS / CLAVIER</span></div></article>
+    <article class="game-card" data-category="Réflexion" data-name="Color Tap"><div class="game-cover cover-color"><div class="cover-label">RÉFLEXES</div><div class="newgame-art">●</div><span class="cover-symbol">◉</span></div><div class="game-info"><div><h3>Color Tap</h3><p>Clique uniquement quand la couleur demandée apparaît.</p></div><button class="play-btn" data-game="color" aria-label="Jouer à Color Tap">▶</button></div><div class="card-foot"><span>⚡ RÉFLEXES</span><span>SOURIS / TACTILE</span></div></article>
+    <article class="game-card" data-category="Arcade" data-name="Orbit Catch"><div class="game-cover cover-orbit"><div class="cover-label">ARCADE</div><div class="newgame-art">✦ ◉ ✦</div><span class="cover-symbol">◎</span></div><div class="game-info"><div><h3>Orbit Catch</h3><p>Attrape les étoiles et évite les météores.</p></div><button class="play-btn" data-game="orbit" aria-label="Jouer à Orbit Catch">▶</button></div><div class="card-foot"><span>✹ ARCADE</span><span>FLÈCHES / TACTILE</span></div></article>
+    <article class="game-card" data-category="Plateforme" data-name="Cave Explorer"><div class="game-cover cover-cave"><div class="cover-label">EXPLORATION</div><div class="newgame-art">⛏ ◆</div><span class="cover-symbol">⬡</span></div><div class="game-info"><div><h3>Cave Explorer</h3><p>Explore la grotte, collecte des cristaux et évite les pièges.</p></div><button class="play-btn" data-game="cave" aria-label="Jouer à Cave Explorer">▶</button></div><div class="card-foot"><span>⬆ EXPLORATION</span><span>FLÈCHES / ESPACE</span></div></article>
+    <article class="game-card" data-category="Arcade" data-name="Gem Rush"><div class="game-cover cover-orbit"><div class="cover-label">COLLECTE</div><div class="newgame-art">💎 ✦</div><span class="cover-symbol">◆</span></div><div class="game-info"><div><h3>Gem Rush</h3><p>Ramasse un maximum de gemmes avant la fin du chrono.</p></div><button class="play-btn" data-game="gemrush" aria-label="Jouer à Gem Rush">▶</button></div><div class="card-foot"><span>✦ ARCADE</span><span>SOURIS / TACTILE</span></div></article>
+    <article class="game-card" data-category="Arcade" data-name="Meteor Zero"><div class="game-cover cover-blaster"><div class="cover-label">SURVIE</div><div class="newgame-art">☄ ☄</div><span class="cover-symbol">✦</span></div><div class="game-info"><div><h3>Meteor Zero</h3><p>Esquive les météores et tiens le plus longtemps possible.</p></div><button class="play-btn" data-game="meteorzero" aria-label="Jouer à Meteor Zero">▶</button></div><div class="card-foot"><span>☄ SURVIE</span><span>FLÈCHES / A-D</span></div></article>
+    <article class="game-card" data-category="Réflexion" data-name="Quiz Flash"><div class="game-cover cover-math"><div class="cover-label">CERVEAU</div><div class="newgame-art">? + ?</div><span class="cover-symbol">＋</span></div><div class="game-info"><div><h3>Quiz Flash</h3><p>Enchaîne les calculs et bats ton meilleur score.</p></div><button class="play-btn" data-game="quizflash" aria-label="Jouer à Quiz Flash">▶</button></div><div class="card-foot"><span>◇ RÉFLEXION</span><span>CLAVIER / TACTILE</span></div></article>
+    <article class="game-card" data-category="Arcade" data-name="Panier Stellaire"><div class="game-cover cover-flappy"><div class="cover-label">COLLECTE</div><div class="newgame-art">⭐ 🧺</div><span class="cover-symbol">✦</span></div><div class="game-info"><div><h3>Panier Stellaire</h3><p>Attrape les étoiles qui tombent sans les laisser passer.</p></div><button class="play-btn" data-game="panierstellar" aria-label="Jouer à Panier Stellaire">▶</button></div><div class="card-foot"><span>✹ ARCADE</span><span>SOURIS / FLÈCHES</span></div></article>
+    <article class="game-card" data-category="Réflexion" data-name="Mémoire Cosmique"><div class="game-cover cover-memory"><div class="cover-label">MÉMOIRE</div><div class="memory-art"><span>●</span><span>◆</span><span>■</span><span>●</span></div><span class="cover-symbol">◎</span></div><div class="game-info"><div><h3>Mémoire Cosmique</h3><p>Mémorise les couleurs et répète des séquences de plus en plus longues.</p></div><button class="play-btn" data-game="memoirecosmique" aria-label="Jouer à Mémoire Cosmique">▶</button></div><div class="card-foot"><span>◇ MÉMOIRE</span><span>SOURIS / TACTILE</span></div></article>
+  </div>
+  <div class="empty-state" id="empty" hidden>Aucun jeu trouvé. Essaie un autre mot !</div>
+</main>
+
+
+<section id="progression-planet" class="pg-progression" aria-label="Progression et défis">
+ <div class="section-head"><div><div class="eyebrow">CONTINUE À JOUER</div><h2>LES PALIERS <span>PLANÈTE</span></h2></div><div class="count">20 DÉFIS</div></div>
+ <p class="feature-sub">Chaque palier te donne un objectif simple pour varier les jeux et faire progresser ton profil. Les défis sont des objectifs à suivre, pas des récompenses en ligne.</p>
+ <div class="pg-level-grid">
+  <article><span>01</span><b>Premier lancement</b><small>Lance un mini-jeu</small></article><article><span>02</span><b>Échauffement</b><small>Joue à 3 parties</small></article><article><span>03</span><b>Explorateur</b><small>Essaie 5 jeux différents</small></article><article><span>04</span><b>Collectionneur</b><small>Visite la boutique</small></article><article><span>05</span><b>Régulier</b><small>Termine 10 parties</small></article><article><span>06</span><b>Réflexes rapides</b><small>Essaie un jeu de réflexes</small></article><article><span>07</span><b>Esprit logique</b><small>Joue à un jeu de réflexion</small></article><article><span>08</span><b>Voyageur</b><small>Explore 10 jeux différents</small></article><article><span>09</span><b>Premier achat</b><small>Débloque un objet virtuel</small></article><article><span>10</span><b>Vétéran</b><small>Atteins le niveau 10</small></article><article><span>11</span><b>Marathon</b><small>Joue à 20 parties</small></article><article><span>12</span><b>As de l’arcade</b><small>Essaie 5 jeux d’arcade</small></article><article><span>13</span><b>Détective</b><small>Utilise la recherche</small></article><article><span>14</span><b>Personnalisation</b><small>Équipe un objet du casier</small></article><article><span>15</span><b>Champion</b><small>Atteins le niveau 20</small></article><article><span>16</span><b>Grand explorateur</b><small>Essaie 15 jeux différents</small></article><article><span>17</span><b>Collection complète</b><small>Débloque 3 objets</small></article><article><span>18</span><b>Habitué</b><small>Termine 50 parties</small></article><article><span>19</span><b>Élite</b><small>Atteins le niveau 30</small></article><article><span>20</span><b>Légende PG</b><small>Continue vers le niveau 50</small></article>
+ </div>
+</section>
+
+
+<section id="store" class="pg-store" aria-label="Boutique Planet Geek">
+ <div class="section-head"><div><div class="eyebrow">COSMÉTIQUES VIRTUELS</div><h2>BOUTIQUE <span>PLANET GEEK</span></h2></div><div class="count">ACHATS AVEC XP</div></div>
+ <p class="feature-sub">Achète des objets virtuels avec tes XP, puis équipe-les dans l’arène. Aucun achat réel.</p>
+ <div id="pg-store-balance" class="pg-balance">Chargement du solde…</div>
+ <div id="pg-store-items" class="pg-store-grid"></div><p id="pg-store-status" class="feature-sub" aria-live="polite"></p>
+</section>
+<section id="arena" class="pg-arena-section" aria-label="Arène jouable Planet Geek">
+ <div class="section-head"><div><div class="eyebrow">TON PERSONNAGE, TES OBJETS</div><h2>PLANET <span>ARENA</span></h2></div><div class="count">PROTO JOUABLE</div></div>
+ <p class="feature-sub">Déplace ton personnage dans l’arène, équipe tes cosmétiques et lance une emote. Clavier : WASD ou flèches. Mobile : utilise les commandes.</p>
+ <div class="pg-arena-wrap"><canvas id="pg-arena" width="900" height="430" aria-label="Arène de jeu vue du dessus"></canvas><div class="pg-arena-hud"><span id="pg-arena-skin">Skin : Explorateur</span><span id="pg-arena-emote">Prêt à jouer !</span></div></div>
+ <div class="pg-arena-controls"><button type="button" id="pg-emote">💃 Danser</button><button type="button" id="pg-music">♫ Musique : activer</button><button type="button" id="pg-reset-player">↻ Recentrer</button><button type="button" id="pg-bot-mode">🤖 Défi contre bot : OFF</button><div class="pg-mobile-pad"><button type="button" data-move="up">▲</button><div><button type="button" data-move="left">◀</button><button type="button" data-move="down">▼</button><button type="button" data-move="right">▶</button></div></div></div>
+ <p class="feature-sub">C’est un mini-jeu navigateur original, pas Fortnite : il fonctionne sans téléchargement et les achats sont uniquement cosmétiques.</p>
+</section>
+<section id="profile" class="profile-panel" aria-label="Profil du joueur">
+  <div class="profile-avatar" id="profile-avatar" aria-hidden="true">PG</div>
+  <div class="profile-main">
+    <div class="eyebrow">TON ESPACE JOUEUR</div>
+    <h2 id="profile-name-display">Joueur Planet Geek</h2>
+    <p>Personnalise ton pseudo et suis ta progression.</p>
+    <form id="profile-form" class="profile-form">
+      <label for="profile-name">Pseudo</label>
+      <input id="profile-name" name="profile-name" maxlength="18" minlength="2" placeholder="Entre ton pseudo" autocomplete="nickname" required>
+      <button type="submit" class="profile-save">Enregistrer</button>
+    </form>
+  </div>
+  <div class="profile-level"><small>NIVEAU</small><strong id="profile-level">1</strong><span id="profile-xp">0 XP</span></div>
+</section>
+<section class="xp-panel" aria-label="Progression XP">
+  <div class="xp-title"><div class="eyebrow">TON AVANCÉE</div><h2>PLANET <span>XP</span></h2><p>Joue, gagne de l’XP et débloque des badges !</p></div>
+  <div class="xp-stats"><div><small>XP TOTALE</small><strong id="xp-total">0 XP</strong></div><div><small>NIVEAU</small><strong id="xp-level">1</strong></div><div><small>PARTIES VALIDÉES</small><strong id="xp-games">0</strong></div><div><small>PIÈCES PG</small><strong id="pg-coins">0 ◈</strong></div></div>
+  <div class="xp-progress"><div class="xp-progress-label"><span id="xp-next-label">Progression vers le niveau 2</span><span id="xp-progress-text">0 / 100 XP</span></div><div class="xp-track"><div id="xp-progress-fill"></div></div></div>
+  <div class="xp-badges" id="xp-badges"><span class="xp-badge locked">🔒 Première partie</span><span class="xp-badge locked">🔒 5 parties</span><span class="xp-badge locked">🔒 10 parties</span><span class="xp-badge locked">🔒 Niveau 5</span><span class="xp-badge locked">🔒 500 XP</span></div>
+</section>
+
+<section id="season-pass" class="season-pass-panel" aria-label="Pass de saison">
+  <div class="season-pass-heading"><div><div class="eyebrow">SAISON 02 · GALAXIE EN EXPANSION</div><h2>PASS DE <span>SAISON</span></h2><p>Joue aux mini-jeux pour avancer dans le pass et réclamer tes récompenses gratuites de la saison.</p></div><div class="season-emblem" aria-hidden="true">✦</div></div>
+  <div class="season-progress-line"><div><strong id="season-tier-label">Palier 1 / 5</strong><small id="season-progress-label">0 / 1 parties validées</small></div><div class="season-track"><span id="season-progress-fill"></span></div></div>
+  <div id="season-rewards" class="season-rewards"></div>
+  <p id="season-status" class="feature-sub" aria-live="polite">Les récompenses sont sauvegardées sur cet appareil.</p>
+</section>
+
+<div class="feature-section-heading"><div class="eyebrow">TON ESPACE PERSONNEL</div><h2>PROGRESSION, <span>RÉCOMPENSES & DÉFIS</span></h2><p>Tout ce qui concerne ton compte est regroupé ici.</p></div>
+<section id="stats" class="feature-grid" aria-label="Progression et défis">
+  <article class="feature-panel"><div class="eyebrow">DÉFIS DU JOUR</div><h2>MISSIONS <span>QUOTIDIENNES</span></h2><p class="feature-sub">Chaque jour, de nouveaux objectifs à accomplir pour gagner de l’XP bonus.</p><div id="daily-missions" class="mission-list"></div><p id="mission-reset" class="feature-sub"></p></article>
+  <article class="feature-panel weekly-panel"><div class="eyebrow">OBJECTIFS HEBDOMADAIRES</div><h2>DÉFIS DE LA <span>SEMAINE</span></h2><p class="feature-sub">Trois objectifs renouvelés chaque semaine. Termine-les pour gagner des pièces PG et de l’XP.</p><div id="weekly-missions" class="mission-list"></div><p id="weekly-status" class="feature-sub" aria-live="polite"></p></article>
+  <article class="feature-panel"><div class="eyebrow">PERSONNALISE TON UNIVERS</div><h2>BOUTIQUE <span>XP</span></h2><p class="feature-sub">Achète des thèmes visuels avec tes XP. Les achats sont sauvegardés sur cet appareil.</p><div id="xp-shop" class="shop-list"></div><p id="shop-message" class="feature-sub" aria-live="polite"></p></article>
+  <article class="feature-panel"><div class="eyebrow">TES EXPLOITS</div><h2>COLLECTION DE <span>BADGES</span></h2><div id="badge-collection" class="badge-collection"></div></article>
+  <article class="feature-panel"><div class="eyebrow">TES STATISTIQUES</div><h2>RECORDS <span>PERSONNELS</span></h2><p class="feature-sub">Historique des parties validées depuis que tu as activé Planet Geek. Les scores de jeux non transmis ne sont pas inventés.</p><div id="personal-records" class="records-list"></div></article>
+  <article class="feature-panel friend-panel"><div class="eyebrow">DÉFIS ENTRE AMIS</div><h2>DÉFIE UN <span>AMI</span></h2><p class="feature-sub">Crée un code avec ton XP et tes parties validées, puis envoie-le à un ami. Le classement est comparé manuellement, sans compte en ligne.</p><div class="friend-actions"><button type="button" id="make-challenge" class="feature-button">Créer mon code</button><input id="challenge-code" placeholder="Colle le code de ton ami" aria-label="Code de défi d'un ami"><button type="button" id="compare-challenge" class="feature-button secondary">Comparer</button></div><textarea id="my-challenge" readonly rows="2" placeholder="Ton code de défi apparaîtra ici"></textarea><p id="challenge-result" class="feature-sub" aria-live="polite"></p></article>
+  <article class="feature-panel"><div class="eyebrow">TON IDENTITÉ</div><h2>RANG <span>GALACTIQUE</span></h2><div id="rank-card" class="rank-card"><b id="rank-name">Bronze</b><div class="rank-track"><span id="rank-fill"></span></div><small id="rank-desc">Continue à jouer pour progresser.</small></div></article>
+  <article id="locker" class="feature-panel"><div class="eyebrow">OBJETS COSMÉTIQUES</div><h2>INVENTAIRE <span>DE SKINS</span></h2><p class="feature-sub">Achète et équipe des apparences avec tes XP.</p><div id="skin-inventory" class="skin-grid"></div></article>
+  <article class="feature-panel"><div class="eyebrow">ÉVÉNEMENT DE LA SEMAINE</div><h2>BOSS <span>GALACTIQUE</span></h2><p class="feature-sub">Affronte le boss en cliquant plusieurs fois. Une victoire par semaine.</p><div class="boss-health"><span id="boss-health-fill"></span></div><p id="boss-status" class="feature-sub">Le boss arrive…</p><button type="button" id="boss-hit" class="feature-button">Attaquer le boss</button></article>
+  <article class="feature-panel"><div class="eyebrow">EXPLORATION</div><h2>MONDE À <span>EXPLORER</span></h2><p class="feature-sub">Débloque les zones avec tes parties validées.</p><div id="world-map" class="world-map"></div></article>
+  <article class="feature-panel"><div class="eyebrow">CADEAU DE CONNEXION</div><h2>COFFRE <span>QUOTIDIEN</span></h2><p class="feature-sub">Ouvre un coffre chaque jour pour recevoir de l’XP.</p><div class="chest-art">▣</div><button type="button" id="daily-chest" class="feature-button">Ouvrir le coffre</button><p id="chest-status" class="feature-sub" aria-live="polite"></p></article>
+  <article class="feature-panel"><div class="eyebrow">DÉFI MULTI-JEUX</div><h2>MODE <span>TOURNOI</span></h2><p class="feature-sub">Valide 3 manches en jouant à des mini-jeux, puis réclame la récompense.</p><div class="tournament-track"><span id="tournament-progress">0 / 3 manches</span><b id="tournament-score">0 points</b></div><button type="button" id="tournament-start" class="feature-button">Démarrer / réinitialiser</button><button type="button" id="tournament-claim" class="feature-button secondary">Réclamer +50 XP</button><p id="tournament-status" class="feature-sub"></p></article>
+  <article class="feature-panel"><div class="eyebrow">SECRETS CACHÉS</div><h2>SUCCÈS <span>SECRETS</span></h2><p class="feature-sub">Certains exploits apparaissent seulement quand tu les débloques.</p><div id="secret-achievements" class="secret-list"></div></article>
+  <article class="feature-panel"><div class="eyebrow">TON PETIT ALLIÉ</div><h2>COMPAGNON <span>VIRTUEL</span></h2><div class="companion-card"><div id="companion-face" class="companion-face">🤖</div><div><b id="companion-name">Byte</b><p id="companion-level" class="feature-sub">Niveau 1 · énergie 100%</p></div></div><button type="button" id="companion-feed" class="feature-button">Nourrir · 20 XP</button><p id="companion-status" class="feature-sub">Ton compagnon grandit avec toi.</p></article>
+</section>
+
+
+<section class="bottom-banner"><div class="banner-icon">✦</div><div><h2>PRÊT À PASSER AU NIVEAU SUIVANT ?</h2><p>Choisis un jeu, lance une partie et essaie de battre ton record.</p></div><a href="#games">C'EST PARTI ↗</a></section>
+<footer><a class="brand" href="#"><span class="planet">◉</span> PLANET <b>GEEK</b></a><span>MINI-JEUX GRATUITS · FAIT POUR S'AMUSER</span><span>© <span id="year"></span> PLANET GEEK</span></footer>
+<div class="modal" id="game-modal" aria-hidden="true">
+  <div class="modal-panel"><div class="modal-head"><div><div class="eyebrow">PLANET GEEK ARCADE</div><h2 id="modal-title">Jeu</h2></div><button id="close-modal" class="close-btn" aria-label="Fermer">✕</button></div>
+    <div id="game-host" class="game-host"></div>
+    <div class="modal-bottom"><span id="game-help">Amuse-toi bien !</span><div class="modal-actions"><button id="claim-xp" class="claim-xp-btn">✓ TERMINER LA PARTIE · +10 XP</button><button id="restart-game" class="restart-btn">↻ RECOMMENCER</button></div></div>
+  </div>
+</div>
+<script src="games.js"></script><script src="app.js"></script>
+<script>
+(()=>{const btn=document.getElementById('menu-toggle');const menu=document.getElementById('quick-dock');if(!btn||!menu)return;const close=()=>{menu.hidden=true;btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','Ouvrir le menu')};btn.addEventListener('click',()=>{const opening=menu.hidden;menu.hidden=!opening;btn.setAttribute('aria-expanded',String(opening));btn.setAttribute('aria-label',opening?'Fermer le menu':'Ouvrir le menu')});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});document.addEventListener('click',e=>{if(!menu.hidden&&!menu.contains(e.target)&&!btn.contains(e.target))close()})})();
+</script>
+</body>
+</html>
