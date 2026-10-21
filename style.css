@@ -155,3 +155,13 @@ html { scroll-padding-top: 100px; }
 button,a{-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #42e8ff;outline-offset:3px}
 @media(max-width:700px){.season-notice{margin:12px 12px 22px;padding:10px 12px;gap:8px}.season-notice span:not(.live-dot){font-size:10px}.season-notice a{margin-left:0}.section-head{gap:12px}.feature-grid{gap:12px}}
 @media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* Compte à rebours du pass de saison */
+.season-countdown{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:18px 0 22px;padding:16px 18px;border:1px solid #57dff766;border-radius:14px;background:linear-gradient(110deg,#102b49ee,#24164bee);box-shadow:0 10px 28px #02061755}
+.season-countdown-icon{font-size:28px;filter:drop-shadow(0 0 8px #63e9ff88)}
+.season-countdown div{display:grid;gap:4px}
+.season-countdown div small{font-size:10px;letter-spacing:.15em;font-weight:800;color:#9ddfff}
+.season-countdown div strong{font-size:clamp(17px,2.6vw,24px);font-variant-numeric:tabular-nums;color:#fff;letter-spacing:.04em}
+.season-countdown-note{margin-left:auto;color:#b7c7e8;font-size:12px}
+@media(max-width:560px){.season-countdown{gap:10px;padding:13px}.season-countdown-note{width:100%;margin-left:38px}}

@@ -155,3 +155,24 @@ document.getElementById('pg-reset-player').addEventListener('click',()=>{x=450;y
 document.getElementById('pg-music').addEventListener('click',()=>{try{if(!musicOn){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw Error();audio=new AC();let osc=audio.createOscillator(),gain=audio.createGain();osc.type='triangle';osc.frequency.value=220;gain.gain.value=.025;osc.connect(gain);gain.connect(audio.destination);osc.start();musicOn=true;document.getElementById('pg-music').textContent='♫ Couper la musique';document.getElementById('pg-arena-emote').textContent='Musique originale activée.';}else{audio?.close();audio=null;musicOn=false;document.getElementById('pg-music').textContent='♫ Musique : activer';}}catch{document.getElementById('pg-arena-emote').textContent='Audio non disponible sur ce navigateur.'}});
 window.addEventListener('storage',e=>{if(e.key===KEY)render()});render();loop();
 })();
+
+
+// Compte à rebours commun : une saison dure 30 jours à partir de cette date de référence.
+(function initSeasonCountdown(){
+ const output=document.getElementById('season-countdown');
+ if(!output)return;
+ const SEASON_LENGTH=30*24*60*60*1000;
+ const SEASON_ANCHOR=Date.UTC(2026,9,21,0,0,0);
+ function update(){
+  const now=Date.now();
+  const elapsed=Math.max(0,now-SEASON_ANCHOR);
+  const next=SEASON_ANCHOR+(Math.floor(elapsed/SEASON_LENGTH)+1)*SEASON_LENGTH;
+  let remaining=Math.max(0,next-now);
+  const days=Math.floor(remaining/86400000);remaining%=86400000;
+  const hours=Math.floor(remaining/3600000);remaining%=3600000;
+  const minutes=Math.floor(remaining/60000);remaining%=60000;
+  const seconds=Math.floor(remaining/1000);
+  output.textContent=`${days} j ${String(hours).padStart(2,'0')} h ${String(minutes).padStart(2,'0')} min ${String(seconds).padStart(2,'0')} s`;
+ }
+ update();setInterval(update,1000);
+})();
