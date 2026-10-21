@@ -49,25 +49,36 @@ function compareChallenge(){const raw=document.getElementById('challenge-code').
 document.getElementById('profile-name').value=profile.name||'';
 document.getElementById('profile-form').addEventListener('submit',e=>{e.preventDefault();const name=document.getElementById('profile-name').value.trim().replace(/\s+/g,' ');if(name.length<2)return;profile={name:name.slice(0,18)};write(PROFILE_KEY,profile);renderXP();document.getElementById('profile-name').value=profile.name;});
 document.getElementById('make-challenge').addEventListener('click',makeChallenge);document.getElementById('compare-challenge').addEventListener('click',compareChallenge);
-// Pass de saison : paliers gratuits basés sur les parties validées.
-const SEASON_KEY='planetGeekSeasonPassV1';
-let seasonState=read(SEASON_KEY,{claimed:[]});
-const seasonTiers=[
- {id:1,need:1,reward:15,label:'Départ cosmique',icon:'🚀'},
- {id:2,need:3,reward:25,label:'Explorateur',icon:'🪐'},
- {id:3,need:5,reward:40,label:'Chasseur d’étoiles',icon:'🌟'},
- {id:4,need:8,reward:60,label:'Pilote galactique',icon:'🛸'},
- {id:5,need:12,reward:100,label:'Légende cosmique',icon:'👑'}
+// Pass de saison automatique : une nouvelle saison démarre tous les 30 jours.
+// La rotation est calculée à partir d'une date fixe pour rester cohérente sur les appareils.
+const SEASON_KEY='planetGeekSeasonPassV2';
+const SEASON_LENGTH=30*24*60*60*1000;
+const SEASON_EPOCH=Date.UTC(2026,9,1); // 1er octobre 2026 UTC
+const seasonThemes=[
+ {name:'GALAXIE EN EXPANSION',items:[['Départ cosmique','🚀',15],['Explorateur lunaire','🌙',25],['Chasseur d’étoiles','🌟',40],['Pilote galactique','🛸',60],['Légende cosmique','👑',100]]},
+ {name:'NÉBULEUSE NÉON',items:[['Étincelle néon','💜',20],['Voyageur violet','🔮',30],['Éclair astral','⚡',45],['Gardien de la nébuleuse','🪐',70],['Maître néon','💎',120]]},
+ {name:'TEMPÊTE STELLAIRE',items:[['Petit météore','☄️',15],['Chasseur de comètes','🌠',35],['Orage spatial','🌩️',50],['Survivant cosmique','🛰️',75],['Roi des étoiles','👑',125]]},
+ {name:'EXPLORATION MARTIENNE',items:[['Recrue martienne','🔴',20],['Rover explorateur','🤖',30],['Pilote de Mars','🚀',50],['Colonisateur','🪐',80],['Héros de Mars','🏆',130]]}
 ];
+function seasonInfo(){const index=Math.max(0,Math.floor((Date.now()-SEASON_EPOCH)/SEASON_LENGTH));const start=SEASON_EPOCH+index*SEASON_LENGTH;return {index,start,end:start+SEASON_LENGTH,theme:seasonThemes[index%seasonThemes.length]};}
+let seasonMeta=seasonInfo();
+let seasonState=read(SEASON_KEY,{seasonIndex:seasonMeta.index,claimed:[]});
+function seasonGames(){const start=new Date(seasonMeta.start).getTime();return xpState.completed.filter(x=>x&&Number.isFinite(new Date(x.date).getTime())&&new Date(x.date).getTime()>=start).length;}
 function renderSeasonPass(){
- const games=gamesNow(),next=seasonTiers.find(t=>games<t.need),tier=seasonTiers.filter(t=>games>=t.need).length;
- const current=next||seasonTiers[seasonTiers.length-1];
+ seasonMeta=seasonInfo();
+ if(seasonState.seasonIndex!==seasonMeta.index){seasonState={seasonIndex:seasonMeta.index,claimed:[]};write(SEASON_KEY,seasonState);}
+ const games=seasonGames();
+ const seasonTiers=seasonMeta.theme.items.map((item,i)=>({id:i+1,need:[1,3,5,8,12][i],label:item[0],icon:item[1],reward:item[2]}));
+ const next=seasonTiers.find(t=>games<t.need),tier=seasonTiers.filter(t=>games>=t.need).length;
+ const eyebrow=document.querySelector('.season-pass-heading .eyebrow');if(eyebrow)eyebrow.textContent=`SAISON ${String(seasonMeta.index+1).padStart(2,'0')} · ${seasonMeta.theme.name}`;
  document.getElementById('season-tier-label').textContent='Palier '+Math.min(5,tier+1)+' / 5';
- document.getElementById('season-progress-label').textContent=next?`${games} / ${next.need} parties validées`:'Pass terminé ! Toutes les étapes sont débloquées.';
+ document.getElementById('season-progress-label').textContent=next?`${games} / ${next.need} parties validées cette saison`:'Pass terminé ! Toutes les étapes sont débloquées.';
  const previous=next?seasonTiers[seasonTiers.indexOf(next)-1]?.need||0:12;
  document.getElementById('season-progress-fill').style.width=next?Math.min(100,Math.max(0,(games-previous)/(next.need-previous)*100))+'%':'100%';
+ const daysLeft=Math.max(1,Math.ceil((seasonMeta.end-Date.now())/86400000));
+ const status=document.getElementById('season-status');if(status)status.textContent=`Nouvelle saison dans ${daysLeft} jour${daysLeft>1?'s':''}. Les récompenses non réclamées de la saison précédente expirent au changement de saison.`;
  document.getElementById('season-rewards').innerHTML=seasonTiers.map(t=>{const unlocked=games>=t.need,claimed=seasonState.claimed.includes(t.id);return `<article class="season-reward ${unlocked?'unlocked':''} ${claimed?'claimed':''}"><span class="season-reward-icon">${t.icon}</span><small>PALIER ${t.id}</small><b>${t.label}</b><strong>+${t.reward} XP</strong><button type="button" data-season-claim="${t.id}" ${!unlocked||claimed?'disabled':''}>${claimed?'RÉCUPÉRÉ':unlocked?'RÉCLAMER':'🔒 '+t.need+' parties'}</button></article>`}).join('');
- document.querySelectorAll('[data-season-claim]').forEach(btn=>btn.addEventListener('click',()=>{const t=seasonTiers.find(x=>x.id===Number(btn.dataset.seasonClaim));if(!t||gamesNow()<t.need||seasonState.claimed.includes(t.id))return;seasonState.claimed.push(t.id);xpState.xp=xpNow()+t.reward;write(SEASON_KEY,seasonState);write(XP_KEY,xpState);renderSeasonPass();renderXP();document.getElementById('season-status').textContent=`Récompense récupérée : +${t.reward} XP !`;}));
+ document.querySelectorAll('[data-season-claim]').forEach(btn=>btn.addEventListener('click',()=>{const t=seasonTiers.find(x=>x.id===Number(btn.dataset.seasonClaim));if(!t||seasonGames()<t.need||seasonState.claimed.includes(t.id))return;seasonState.claimed.push(t.id);xpState.xp=xpNow()+t.reward;write(SEASON_KEY,seasonState);write(XP_KEY,xpState);renderSeasonPass();renderXP();document.getElementById('season-status').textContent=`Récompense récupérée : +${t.reward} XP !`; }));
 }
 
 // Extensions de progression : toutes les données restent sauvegardées localement.
