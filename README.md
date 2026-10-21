@@ -29,3 +29,13 @@ Ouvre `vol-un-oeuf.html` depuis le site. Le jeu utilise Three.js chargé depuis 
 - Les jeux, le moteur de mini-jeux, le Pass et son compte à rebours existants sont conservés.
 - Les données restent enregistrées dans le navigateur via localStorage. Il n'y a pas de serveur ni de synchronisation en ligne.
 - Hébergement : GitHub Pages. Garder tous les fichiers du ZIP dans le même dossier.
+
+## Vol un Œuf 3D — grande mise à jour
+Fichier : `vol-un-oeuf.html` (tout le code du jeu est dans ce fichier ; les autres pages du site sont inchangées).
+- **Marché des vitesses** : 8 niveaux à prix croissants (30 → 700 ◈), niveau actuel et prochaine amélioration affichés.
+- **Écloserie 3D** : les œufs livrés au nid vont dans l'inventaire ; à l'écloserie violette (touche E ou onglet Œufs), animation d'éclosion avec lumière, secousses, explosion de particules et coquille qui s'ouvre.
+- **4 raretés** (commun, rare, épique, légendaire) et **16 créatures** (4 par monde), avec onglet Collection et galerie 3D autour de l'écloserie.
+- **4 portails / mondes** : Île Néon (départ), Forêt Prisme (120 ◈ ou 10 œufs livrés), Abysses Cristal (350 ◈ ou 6 créatures), Vide Violet (800 ◈ ou 40 œufs livrés). Chaque monde a ses couleurs, ses probabilités d'œufs et ses créatures.
+- **3 IA voleuses** (Zéphyr, Ombre, Tank) : chacune cherche un œuf, le vole, le rapporte à sa base. Touche-les quand elles portent un œuf pour les plaquer et le récupérer. Ombre peut te voler l'œuf que tu portes.
+- Sauvegarde dans le navigateur (localStorage, clé `pg_egg_heist_v1`, anciennes sauvegardes compatibles). Bouton « Mode éco » pour les petits PC.
+- Three.js 0.160 est chargé depuis unpkg.com : une connexion Internet est nécessaire.
