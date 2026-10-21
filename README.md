@@ -16,3 +16,7 @@ Site statique de mini-jeux pour GitHub Pages.
 - Données locales dans le navigateur ; pas de compte serveur ni de multijoueur en ligne
 
 Les récompenses sont virtuelles et ne correspondent à aucune valeur monétaire réelle.
+
+
+## Nouveau mini-jeu 3D : Vol un Œuf
+Ouvre `vol-un-oeuf.html` depuis le site. Le jeu utilise Three.js chargé depuis un CDN, donc une connexion Internet est nécessaire pour les graphismes 3D. Les pièces et améliorations sont sauvegardées dans le navigateur.
