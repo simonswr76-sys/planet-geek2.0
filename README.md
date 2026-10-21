@@ -53,3 +53,11 @@ Jeu 3D original du genre « voler et revendre » : achète des gloubis sur le ta
 - Les sauvegardes existantes restent dans leurs clés localStorage habituelles ; les nouvelles options utilisent uniquement `pgFavoritesV2` et `pgDisplayPrefsV1`.
 
 Pour mettre à jour GitHub Pages, téléverse le contenu du dossier `planet-geek2.0-main` dans le dépôt publié, en conservant les fichiers ensemble. Les préférences et progressions locales restent enregistrées dans le navigateur où elles ont été créées ; un site statique ne synchronise pas automatiquement les sauvegardes entre appareils.
+
+
+## Grande mise à jour — missions, records et salons (octobre 2026)
+- Nouvelle page `progression.html` : missions quotidiennes bonus, XP/niveau/coins issus des clés de sauvegarde existantes, paliers bonus de saison et enregistrement de records personnels.
+- Nouvelle page `amis.html` : liste de pseudos locale et création de codes/liens d’invitation.
+- Navigation ajoutée sur les pages existantes et lien depuis Vol un Œuf vers les missions. Le jeu Vol un Œuf et sa clé de sauvegarde `pg_egg_heist_v1` n’ont pas été remplacés.
+- Les nouvelles données utilisent seulement `pgDailyBonusMissionsV2`, `pgSeasonBonusClaimsV2`, `pgPersonalRecordsV2`, `pgFriendsV2` et `pgRoomV2`; aucune ancienne clé n’est supprimée.
+- Limite importante : le classement visible est personnel/local, les pseudos d’amis sont enregistrés sur l’appareil, et les codes de salon ne constituent pas encore du multijoueur en direct. Un serveur est nécessaire pour synchroniser des joueurs réels.
