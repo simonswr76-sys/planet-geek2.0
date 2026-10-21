@@ -6,10 +6,21 @@
 <meta name="theme-color" content="#071323">
 <meta name="description" content="Planet Geek : mini-jeux gratuits, défis, XP, pièces PG, boutique virtuelle et progression. Joue et améliore ton profil !">
 <meta name="color-scheme" content="dark">
-<title>Planet Geek — Mini-jeux gratuits</title>
+<title>Planet Geek — Tous les jeux</title>
 <link rel="stylesheet" href="style.css">
 
 <style id="planet-geek-multipage">
+body[data-page="accueil"] #games,
+body[data-page="accueil"] #progression-planet,
+body[data-page="accueil"] #store,
+body[data-page="accueil"] #arena,
+body[data-page="accueil"] #profile,
+body[data-page="accueil"] #season-pass,
+body[data-page="accueil"] #stats {display:none!important}
+body[data-page="accueil"] #lobby {display:grid!important}
+body[data-page="accueil"] .season-notice {display:flex!important}
+body[data-page="accueil"] .bottom-banner {display:none!important}
+
 body[data-page="jeux"] #lobby,
 body[data-page="jeux"] .season-notice,
 body[data-page="jeux"] #progression-planet,
@@ -18,28 +29,91 @@ body[data-page="jeux"] #arena,
 body[data-page="jeux"] #profile,
 body[data-page="jeux"] #season-pass,
 body[data-page="jeux"] #stats,
-body[data-page="jeux"] .bottom-banner { display:none !important; }
-body[data-page="jeux"] #games { display:block; }
-body[data-page="accueil"] .pg-lobby { display:grid; }
-body[data-page="accueil"] .season-notice { display:flex; }
-body[data-page="jeux"] #games { display:block; }
-body[data-page="profil"] #profile, body[data-page="casier"] #profile, body[data-page="profil"] #progression-planet, body[data-page="stats"] #progression-planet { display:block; }
-body[data-page="stats"] #stats { display:grid; }
-body[data-page="boutique"] #store, body[data-page="pass"] #season-pass, body[data-page="arene"] #arena { display:block; }
-body[data-page="casier"] #profile { display:block; }
-body[data-page="accueil"] .bottom-banner { display:none !important; }
+body[data-page="jeux"] .bottom-banner {display:none!important}
+body[data-page="jeux"] #games {display:block!important}
+
+body[data-page="profil"] #lobby,
+body[data-page="profil"] .season-notice,
+body[data-page="profil"] #games,
+body[data-page="profil"] #store,
+body[data-page="profil"] #arena,
+body[data-page="profil"] #season-pass,
+body[data-page="profil"] #stats,
+body[data-page="profil"] .bottom-banner {display:none!important}
+body[data-page="profil"] #profile,
+body[data-page="profil"] #progression-planet {display:block!important}
+
+body[data-page="boutique"] #lobby,
+body[data-page="boutique"] .season-notice,
+body[data-page="boutique"] #games,
+body[data-page="boutique"] #progression-planet,
+body[data-page="boutique"] #arena,
+body[data-page="boutique"] #profile,
+body[data-page="boutique"] #season-pass,
+body[data-page="boutique"] #stats,
+body[data-page="boutique"] .bottom-banner {display:none!important}
+body[data-page="boutique"] #store {display:block!important}
+
+body[data-page="casier"] #lobby,
+body[data-page="casier"] .season-notice,
+body[data-page="casier"] #games,
+body[data-page="casier"] #progression-planet,
+body[data-page="casier"] #store,
+body[data-page="casier"] #arena,
+body[data-page="casier"] #season-pass,
+body[data-page="casier"] #stats,
+body[data-page="casier"] .bottom-banner {display:none!important}
+body[data-page="casier"] #profile {display:block!important}
+
+body[data-page="pass"] #lobby,
+body[data-page="pass"] .season-notice,
+body[data-page="pass"] #games,
+body[data-page="pass"] #progression-planet,
+body[data-page="pass"] #store,
+body[data-page="pass"] #arena,
+body[data-page="pass"] #profile,
+body[data-page="pass"] #stats,
+body[data-page="pass"] .bottom-banner {display:none!important}
+body[data-page="pass"] #season-pass {display:block!important}
+
+body[data-page="arene"] #lobby,
+body[data-page="arene"] .season-notice,
+body[data-page="arene"] #games,
+body[data-page="arene"] #progression-planet,
+body[data-page="arene"] #store,
+body[data-page="arene"] #profile,
+body[data-page="arene"] #season-pass,
+body[data-page="arene"] #stats,
+body[data-page="arene"] .bottom-banner {display:none!important}
+body[data-page="arene"] #arena {display:block!important}
+
+body[data-page="stats"] #lobby,
+body[data-page="stats"] .season-notice,
+body[data-page="stats"] #games,
+body[data-page="stats"] #store,
+body[data-page="stats"] #arena,
+body[data-page="stats"] #profile,
+body[data-page="stats"] #season-pass,
+body[data-page="stats"] .bottom-banner {display:none!important}
+body[data-page="stats"] #stats,
+body[data-page="stats"] #progression-planet {display:block!important}
+
+@media(max-width:700px){
+  .quick-dock{max-width:calc(100vw - 24px)}
+}
 </style>
+
 </head>
 <body data-page="jeux">
 <header class="topbar">
-  <a class="brand" href="#" aria-label="Planet Geek accueil"><span class="planet">◉</span> PLANET <b>GEEK</b></a>
+  <a class="brand" href="index.html" aria-label="Planet Geek accueil"><span class="planet">◉</span> PLANET <b>GEEK</b></a>
   <div class="search-wrap" role="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Jeu, catégorie, mot-clé…" aria-label="Rechercher par nom, catégorie ou description" autocomplete="off"><button id="clear-search" type="button" aria-label="Effacer la recherche" title="Effacer" hidden>×</button></div>
   <a class="submit-link" href="jeux.html">JOUER <span>↗</span></a>
 </header>
 <div class="menu-wrap">
   <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="quick-dock" aria-label="Ouvrir le menu"><span class="hamburger-lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="menu-toggle-label">MENU</span></button>
   <nav class="quick-dock" id="quick-dock" aria-label="Menu principal" hidden>
-    <a href="index.html"><span aria-hidden="true">🚀</span><b>Accueil</b></a>
+    <a href="index.html"><span aria-hidden="true">🚀</span><b>Lobby</b></a>
     <a href="jeux.html"><span aria-hidden="true">🎮</span><b>Jeux</b></a>
     <a href="profil.html"><span aria-hidden="true">👤</span><b>Profil</b></a>
     <a href="boutique.html"><span aria-hidden="true">🛍️</span><b>Boutique</b></a>
@@ -50,7 +124,7 @@ body[data-page="accueil"] .bottom-banner { display:none !important; }
   </nav>
 </div>
 <section id="lobby" class="pg-lobby" aria-label="Lobby Planet Geek">
- <div class="lobby-copy"><div class="eyebrow">BIENVENUE DANS TON UNIVERS</div><h1>PLANET <span>LOBBY</span></h1><p>Prépare ton personnage, équipe tes cosmétiques et pars explorer l’arène.</p><div class="lobby-actions"><a class="primary-btn" href="jeux.html">JOUER MAINTENANT ↗</a><a class="lobby-secondary" href="casier.html">OUVRIR MON CASIER</a></div><div class="lobby-wallet">✦ Solde virtuel : <strong id="lobby-xp">0 XP</strong></div></div>
+ <div class="lobby-copy"><div class="eyebrow">BIENVENUE DANS TON UNIVERS</div><h1>PLANET <span>LOBBY</span></h1><p>Prépare ton personnage, équipe tes cosmétiques et pars explorer l’arène.</p><div class="lobby-actions"><a class="primary-btn" href="arene.html">JOUER MAINTENANT ↗</a><a class="lobby-secondary" href="casier.html">OUVRIR MON CASIER</a></div><div class="lobby-wallet">✦ Solde virtuel : <strong id="lobby-xp">0 XP</strong></div></div>
  <div class="lobby-avatar" aria-label="Aperçu du personnage"><div class="avatar-orbit"></div><div id="lobby-avatar-icon">🧑‍🚀</div><span id="lobby-skin-name">Explorateur Pixel</span><small>APERÇU DU PERSONNAGE</small></div>
 </section>
 <section class="season-notice" aria-label="État de Planet Geek"><span class="live-dot"></span><strong>PLANET GEEK EST EN LIGNE</strong><span>Mini-jeux · Défis · Boutique · Progression</span><a href="stats.html">Voir les défis ↓</a></section>
@@ -64,6 +138,7 @@ body[data-page="accueil"] .bottom-banner { display:none !important; }
     <button class="filter" data-category="Réflexion">◇ Réflexion</button>
   </nav>
   <div class="game-grid" id="game-grid">
+    <article class="game-card" data-category="Arcade" data-name="Vol un Œuf 3D"><a href="vol-un-oeuf.html" style="display:block;color:inherit;text-decoration:none"><div class="game-cover cover-blaster" style="background:radial-gradient(circle at 70% 20%,#fff3a6 0 4%,transparent 5%),linear-gradient(140deg,#123b56,#2dba8c 48%,#ffcb70)"><div class="cover-label">NOUVEAU · 3D</div><div style="font-size:76px;text-align:center;padding:22px 0;text-shadow:0 8px 24px #0008">🥚</div><span class="cover-symbol">⚡</span></div><div class="game-info"><div><h3>Vol un Œuf 3D</h3><p>Vole des œufs rares, ramène-les au nid et achète des améliorations de vitesse.</p></div><span class="play-btn" style="display:grid;place-items:center">▶</span></div></a><div class="card-foot"><span>🥚 EXPLORATION 3D</span><span>WASD / E</span></div></article>
     <article class="game-card" data-category="Course" data-name="Neon Racer">
       <div class="game-cover cover-racer"><div class="cover-label">COURSE</div><div class="road"><div class="road-lines"></div><div class="car">▰</div></div><span class="cover-symbol">⚡</span></div>
       <div class="game-info"><div><h3>Neon Racer</h3><p>Évite les obstacles et tiens le plus longtemps possible.</p></div><button class="play-btn" data-game="racer" aria-label="Jouer à Neon Racer">▶</button></div>
@@ -179,6 +254,7 @@ body[data-page="accueil"] .bottom-banner { display:none !important; }
 
 <section id="season-pass" class="season-pass-panel" aria-label="Pass de saison">
   <div class="season-pass-heading"><div><div class="eyebrow">SAISON 02 · GALAXIE EN EXPANSION</div><h2>PASS DE <span>SAISON</span></h2><p>Joue aux mini-jeux pour avancer dans le pass et réclamer tes récompenses gratuites de la saison.</p></div><div class="season-emblem" aria-hidden="true">✦</div></div>
+  <div class="season-countdown" aria-live="polite"><span class="season-countdown-icon" aria-hidden="true">⏳</span><div><small>FIN DE LA SAISON</small><strong id="season-countdown">Calcul en cours…</strong></div><span class="season-countdown-note">Nouvelle saison tous les 30 jours</span></div>
   <div class="season-progress-line"><div><strong id="season-tier-label">Palier 1 / 5</strong><small id="season-progress-label">0 / 1 parties validées</small></div><div class="season-track"><span id="season-progress-fill"></span></div></div>
   <div id="season-rewards" class="season-rewards"></div>
   <p id="season-status" class="feature-sub" aria-live="polite">Les récompenses sont sauvegardées sur cet appareil.</p>
@@ -203,7 +279,7 @@ body[data-page="accueil"] .bottom-banner { display:none !important; }
 </section>
 
 
-<section class="bottom-banner"><div class="banner-icon">✦</div><div><h2>PRÊT À PASSER AU NIVEAU SUIVANT ?</h2><p>Choisis un jeu, lance une partie et essaie de battre ton record.</p></div><a href="#games">C'EST PARTI ↗</a></section>
+<section class="bottom-banner"><div class="banner-icon">✦</div><div><h2>PRÊT À PASSER AU NIVEAU SUIVANT ?</h2><p>Choisis un jeu, lance une partie et essaie de battre ton record.</p></div><a href="jeux.html">C'EST PARTI ↗</a></section>
 <footer><a class="brand" href="#"><span class="planet">◉</span> PLANET <b>GEEK</b></a><span>MINI-JEUX GRATUITS · FAIT POUR S'AMUSER</span><span>© <span id="year"></span> PLANET GEEK</span></footer>
 <div class="modal" id="game-modal" aria-hidden="true">
   <div class="modal-panel"><div class="modal-head"><div><div class="eyebrow">PLANET GEEK ARCADE</div><h2 id="modal-title">Jeu</h2></div><button id="close-modal" class="close-btn" aria-label="Fermer">✕</button></div>

@@ -20,3 +20,9 @@ Les récompenses sont virtuelles et ne correspondent à aucune valeur monétaire
 
 ## Nouveau mini-jeu 3D : Vol un Œuf
 Ouvre `vol-un-oeuf.html` depuis le site. Le jeu utilise Three.js chargé depuis un CDN, donc une connexion Internet est nécessaire pour les graphismes 3D. Les pièces et améliorations sont sauvegardées dans le navigateur.
+
+
+## Navigation multipage
+Le site est organisé en pages séparées : Accueil, Jeux, Profil, Boutique, Casier, Pass, Arène et Stats.
+Les fichiers JavaScript, CSS, mini-jeux et la page `vol-un-oeuf.html` sont conservés.
+Les données déjà enregistrées restent dans le stockage local du navigateur : elles ne sont pas synchronisées entre appareils.
