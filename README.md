@@ -42,3 +42,14 @@ Fichier : `vol-un-oeuf.html` (tout le code du jeu est dans ce fichier ; les autr
 
 ## Nouveau jeu : Vole un Gloubi 3D (`vole-un-gloubi.html`)
 Jeu 3D original du genre « voler et revendre » : achète des gloubis sur le tapis roulant (E), ils rapportent des pièces par seconde dans ta base (marche dessus pour collecter), vole ceux des 3 bases rivales (E), verrouille ta base (L), revends (F ou bouton VENDRE). 10 gloubis, 6 raretés (dont SECRET arc-en-ciel), améliorations (vitesse, slots, durée du verrou), IA rivales qui achètent, se verrouillent et attaquent ta base. Sauvegarde dans le navigateur (`pg_gloubi_v1`). Three.js chargé depuis unpkg : Internet requis.
+
+
+## Grande mise à jour néon — octobre 2026
+- Interface harmonisée avec des lumières néon bleues/violettes, des cartes plus lisibles et des états de focus clavier plus visibles.
+- Favoris de jeux : bouton étoile sur les cartes, avec enregistrement local.
+- Barre d’outils rapide : recherche avec `/` ou `Ctrl+K`, accès aux favoris, options d’affichage et retour en haut.
+- Options accessibles : contraste renforcé et réduction des animations, mémorisées sur l’appareil.
+- Toutes les pages et les fichiers de jeu de l’archive d’origine sont conservés.
+- Les sauvegardes existantes restent dans leurs clés localStorage habituelles ; les nouvelles options utilisent uniquement `pgFavoritesV2` et `pgDisplayPrefsV1`.
+
+Pour mettre à jour GitHub Pages, téléverse le contenu du dossier `planet-geek2.0-main` dans le dépôt publié, en conservant les fichiers ensemble. Les préférences et progressions locales restent enregistrées dans le navigateur où elles ont été créées ; un site statique ne synchronise pas automatiquement les sauvegardes entre appareils.

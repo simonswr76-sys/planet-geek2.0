@@ -312,6 +312,7 @@ body[data-page="stats"] #progression-planet {display:block!important}
 </div>
 <script src="games.js"></script><script src="app.js"></script>
 <script src="upgrade.js"></script>
+<script src="planet-geek-enhancements.js" defer></script>
 <script>
 (()=>{const btn=document.getElementById('menu-toggle');const menu=document.getElementById('quick-dock');if(!btn||!menu)return;const close=()=>{menu.hidden=true;btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','Ouvrir le menu')};btn.addEventListener('click',()=>{const opening=menu.hidden;menu.hidden=!opening;btn.setAttribute('aria-expanded',String(opening));btn.setAttribute('aria-label',opening?'Fermer le menu':'Ouvrir le menu')});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});document.addEventListener('click',e=>{if(!menu.hidden&&!menu.contains(e.target)&&!btn.contains(e.target))close()})})();
 </script>
