@@ -43,21 +43,5 @@ Fichier : `vol-un-oeuf.html` (tout le code du jeu est dans ce fichier ; les autr
 ## Nouveau jeu : Vole un Gloubi 3D (`vole-un-gloubi.html`)
 Jeu 3D original du genre « voler et revendre » : achète des gloubis sur le tapis roulant (E), ils rapportent des pièces par seconde dans ta base (marche dessus pour collecter), vole ceux des 3 bases rivales (E), verrouille ta base (L), revends (F ou bouton VENDRE). 10 gloubis, 6 raretés (dont SECRET arc-en-ciel), améliorations (vitesse, slots, durée du verrou), IA rivales qui achètent, se verrouillent et attaquent ta base. Sauvegarde dans le navigateur (`pg_gloubi_v1`). Three.js chargé depuis unpkg : Internet requis.
 
-
-## Grande mise à jour néon — octobre 2026
-- Interface harmonisée avec des lumières néon bleues/violettes, des cartes plus lisibles et des états de focus clavier plus visibles.
-- Favoris de jeux : bouton étoile sur les cartes, avec enregistrement local.
-- Barre d’outils rapide : recherche avec `/` ou `Ctrl+K`, accès aux favoris, options d’affichage et retour en haut.
-- Options accessibles : contraste renforcé et réduction des animations, mémorisées sur l’appareil.
-- Toutes les pages et les fichiers de jeu de l’archive d’origine sont conservés.
-- Les sauvegardes existantes restent dans leurs clés localStorage habituelles ; les nouvelles options utilisent uniquement `pgFavoritesV2` et `pgDisplayPrefsV1`.
-
-Pour mettre à jour GitHub Pages, téléverse le contenu du dossier `planet-geek2.0-main` dans le dépôt publié, en conservant les fichiers ensemble. Les préférences et progressions locales restent enregistrées dans le navigateur où elles ont été créées ; un site statique ne synchronise pas automatiquement les sauvegardes entre appareils.
-
-
-## Grande mise à jour — missions, records et salons (octobre 2026)
-- Nouvelle page `progression.html` : missions quotidiennes bonus, XP/niveau/coins issus des clés de sauvegarde existantes, paliers bonus de saison et enregistrement de records personnels.
-- Nouvelle page `amis.html` : liste de pseudos locale et création de codes/liens d’invitation.
-- Navigation ajoutée sur les pages existantes et lien depuis Vol un Œuf vers les missions. Le jeu Vol un Œuf et sa clé de sauvegarde `pg_egg_heist_v1` n’ont pas été remplacés.
-- Les nouvelles données utilisent seulement `pgDailyBonusMissionsV2`, `pgSeasonBonusClaimsV2`, `pgPersonalRecordsV2`, `pgFriendsV2` et `pgRoomV2`; aucune ancienne clé n’est supprimée.
-- Limite importante : le classement visible est personnel/local, les pseudos d’amis sont enregistrés sur l’appareil, et les codes de salon ne constituent pas encore du multijoueur en direct. Un serveur est nécessaire pour synchroniser des joueurs réels.
+## Nouveau jeu : Cristal Rush 3D (`cristal-rush.html`)
+Jeu de minage en vue à la première personne : souris pour regarder, ZQSD/WASD (ou flèches) pour se déplacer, clic maintenu pour miner, Espace pour sauter, Shift pour sprinter, E pour ouvrir le menu/boutique. 6 raretés de cristaux (dont COSMIQUE arc-en-ciel, extrêmement rare), faisceaux lumineux pour les rares, indicateur de distance/direction, 6 améliorations (dont drones qui minent seuls), événement « Ruée dorée », niveaux, Renaissance (bonus permanent), codex, réglages (sensibilité, volume, mode éco), compteur FPS coloré. Sauvegarde : `pg_cristalrush_v1`. Three.js via unpkg : Internet requis.

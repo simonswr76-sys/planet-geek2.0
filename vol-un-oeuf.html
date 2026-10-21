@@ -29,7 +29,7 @@ body{background:radial-gradient(ellipse at 50% 0%,#2a1670,#070a20 62%)}
 
 </style>
 </head><body>
-<header class="top"><a class="brand" href="index.html">◉ PLANET <span>GEEK</span></a><a href="index.html">← Retour aux mini-jeux</a><a href="progression.html" style="color:#a9c9ff;border:1px solid #a76bff66;border-radius:9px;padding:8px 11px">Missions & XP ↗</a></header>
+<header class="top"><a class="brand" href="index.html">◉ PLANET <span>GEEK</span></a><a href="index.html">← Retour aux mini-jeux</a></header>
 <main class="layout"><section class="game-wrap"><div class="hero"><div><div class="eyebrow">PLANET GEEK ORIGINAL · 3D</div><h1>VOL UN <em>ŒUF</em></h1><p class="sub">Vole des œufs, fais-les éclore, ouvre des portails vers d'autres mondes… et poursuis les voleurs !</p></div></div>
 <div class="viewport"><canvas id="scene" tabindex="0" aria-label="Jeu 3D Vol un Œuf"></canvas><div class="hud"><div class="stat"><small>Pièces</small><strong id="coins">0 ◈</strong></div><div class="stat"><small>Œufs livrés</small><strong id="eggs">0 🥚</strong></div><div class="stat"><small>Vitesse</small><strong id="speed">1.00x</strong></div><div class="stat world"><small>Monde</small><strong id="world">Île Néon</strong></div><div class="stat fps"><small>FPS</small><strong id="fps">--</strong></div></div><div id="status" class="status">Approche d'un œuf et appuie sur E pour le prendre.</div><div id="reveal"></div><div id="flash"></div><div class="touch"><div class="cluster"><button data-move="up">↑</button><button data-move="left">←</button><button data-move="down">↓</button><button data-move="right">→</button></div><button id="touch-steal" aria-label="Interagir">E</button></div><div id="fail"><div><b>Le jeu 3D n'a pas pu démarrer.</b><br>Three.js est chargé depuis Internet (unpkg.com) : vérifie ta connexion, que WebGL est activé, puis recharge avec Ctrl+F5.</div></div></div>
 <p class="help">Commandes : <b>WASD</b> / flèches pour bouger · <b>E</b> pour interagir (prendre un œuf, livrer au nid, écloserie, portail) · <b>Shift</b> pour sprinter · <b>touche contre un voleur qui porte un œuf</b> pour le plaquer et récupérer l'œuf. Sur mobile : boutons à l'écran.</p></section>
@@ -245,4 +245,4 @@ camLook.set(0,.9,3.6);requestAnimationFrame(loop);
 window.__PG={S,player,thieves,PORTALS,HP,NEST,get eggs(){return eggs},get carried(){return carried},get H(){return H},interact,pick,deliver,travel,unlock,startHatch,buySpeed,spawnEgg,persist,SP,get showCre(){return showCre}};
 window.__PG_OK=true;
 
-</script><script src="planet-geek-next.js"></script></body></html>
+</script></body></html>

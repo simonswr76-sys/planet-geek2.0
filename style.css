@@ -165,34 +165,3 @@ button,a{-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-vi
 .season-countdown div strong{font-size:clamp(17px,2.6vw,24px);font-variant-numeric:tabular-nums;color:#fff;letter-spacing:.04em}
 .season-countdown-note{margin-left:auto;color:#b7c7e8;font-size:12px}
 @media(max-width:560px){.season-countdown{gap:10px;padding:13px}.season-countdown-note{width:100%;margin-left:38px}}
-
-/* ===== Grande mise à jour Planet Geek : interface néon cohérente et accessible ===== */
-:root{--pg-glow:rgba(66,232,255,.18);--pg-purple-glow:rgba(167,107,255,.18)}
-body{background-image:radial-gradient(ellipse at 12% 8%,rgba(52,120,255,.12),transparent 34%),radial-gradient(ellipse at 90% 22%,rgba(167,107,255,.10),transparent 30%),radial-gradient(ellipse at 50% 100%,rgba(18,119,177,.08),transparent 42%),linear-gradient(180deg,#06101e,#070d1b 60%,#080b19);background-attachment:fixed}
-.topbar{border-bottom-color:rgba(66,232,255,.24);box-shadow:0 8px 32px rgba(0,0,0,.14)}
-.brand{text-shadow:0 0 22px rgba(66,232,255,.12)}
-.search-wrap{transition:border-color .2s,box-shadow .2s,background .2s}
-.search-wrap:focus-within{background:#0d2038;box-shadow:0 0 0 3px rgba(66,232,255,.12),0 0 24px rgba(66,232,255,.08)}
-.game-card,.feature-panel,.pg-store-card,.profile-panel,.xp-panel,.season-pass-panel,.pg-progression{backdrop-filter:blur(8px)}
-.game-card{position:relative;overflow:hidden;border-color:rgba(91,188,255,.19);box-shadow:0 10px 28px rgba(0,0,0,.12)}
-.game-card::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(125deg,rgba(66,232,255,.035),transparent 42%,rgba(167,107,255,.035));opacity:0;transition:opacity .2s}
-.game-card:hover::after{opacity:1}
-.game-info h3{letter-spacing:.01em}
-.play-btn,.primary-btn,.submit-link,.menu-toggle,.pg-tool-btn{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,filter .18s ease}
-.play-btn:hover,.primary-btn:hover,.submit-link:hover{filter:brightness(1.1);box-shadow:0 0 24px rgba(66,232,255,.15)}
-button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #a76bff!important;outline-offset:3px!important}
-.pg-favorite-btn{position:absolute;right:10px;top:10px;z-index:8;width:36px;height:36px;display:grid;place-items:center;border:1px solid rgba(66,232,255,.42);border-radius:11px;background:rgba(5,15,29,.88);color:#b8d6f2;font-size:23px;line-height:1;cursor:pointer;box-shadow:0 5px 16px #0005;backdrop-filter:blur(8px)}
-.pg-favorite-btn:hover,.pg-favorite-btn.is-favorite{color:#ffe58a;border-color:#ffe58a88;background:rgba(40,31,22,.92);box-shadow:0 0 20px rgba(255,229,138,.12)}
-.pg-favorite-pulse{animation:pg-fav-pulse .7s ease 2;border-color:#ffe58a!important}
-@keyframes pg-fav-pulse{50%{box-shadow:0 0 0 4px rgba(255,229,138,.18),0 0 34px rgba(255,229,138,.2)}}
-.pg-utility-tools{position:fixed;right:16px;bottom:16px;z-index:1500;display:flex;align-items:center;gap:7px;padding:7px;border:1px solid rgba(66,232,255,.24);border-radius:15px;background:rgba(5,15,29,.88);box-shadow:0 12px 36px rgba(0,0,0,.42);backdrop-filter:blur(16px)}
-.pg-tool-btn{display:flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:8px 11px;border:1px solid transparent;border-radius:10px;background:transparent;color:#d9f7ff;font:700 12px 'Rajdhani',sans-serif;cursor:pointer}
-.pg-tool-btn:hover{border-color:rgba(66,232,255,.45);background:linear-gradient(120deg,rgba(66,232,255,.12),rgba(167,107,255,.12));transform:translateY(-1px)}
-.pg-tool-btn:first-child{color:#42e8ff}.pg-tool-btn:nth-child(2){color:#ffe58a}.pg-tool-btn:nth-child(3){color:#c8a7ff}.pg-top-btn{width:38px;padding:6px;font-size:20px}
-.pg-settings-panel{position:fixed;right:16px;bottom:76px;z-index:1501;width:min(320px,calc(100vw - 28px));padding:16px;border:1px solid rgba(66,232,255,.35);border-radius:16px;background:rgba(7,19,35,.97);box-shadow:0 16px 44px rgba(0,0,0,.48);backdrop-filter:blur(18px);color:#eef7ff}
-.pg-settings-panel[hidden]{display:none!important}.pg-settings-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;font:700 14px Orbitron,sans-serif}.pg-settings-head button{width:30px;height:30px;border:1px solid #34516e;border-radius:8px;background:#0e2037;color:white;font-size:20px;cursor:pointer}.pg-settings-panel label{display:flex;align-items:center;gap:10px;padding:10px 0;color:#d8e8fa;font-size:15px}.pg-settings-panel input{accent-color:#42e8ff;width:17px;height:17px}.pg-settings-panel p{margin:8px 0 0;color:#8fa8c4;font-size:12px}
-.pg-update-toast{position:fixed;left:50%;bottom:82px;z-index:1600;max-width:calc(100vw - 30px);padding:11px 16px;border:1px solid rgba(66,232,255,.38);border-radius:12px;background:rgba(7,19,35,.97);color:#eafaff;box-shadow:0 10px 30px #0006;opacity:0;transform:translate(-50%,12px);pointer-events:none;transition:opacity .18s,transform .18s;font-size:14px}.pg-update-toast.is-visible{opacity:1;transform:translate(-50%,0)}
-html.pg-high-contrast{--muted:#c0d4ec;--line:rgba(160,220,255,.42)}html.pg-high-contrast body{color:#fff}html.pg-high-contrast .feature-sub,html.pg-high-contrast .game-info p,html.pg-high-contrast .pg-settings-panel p{color:#d2e2f4!important}html.pg-high-contrast .game-card,html.pg-high-contrast .feature-panel{border-color:rgba(160,220,255,.48)}
-html.pg-reduced-motion *,html.pg-reduced-motion *::before,html.pg-reduced-motion *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-@media(max-width:700px){.pg-utility-tools{left:8px;right:8px;bottom:8px;justify-content:space-around;gap:3px;padding:5px;border-radius:13px}.pg-tool-btn{flex:1;min-width:0;padding:8px 5px;font-size:11px}.pg-tool-btn span{display:inline}.pg-top-btn{flex:0 0 36px;width:36px}.pg-settings-panel{right:10px;bottom:66px}.pg-update-toast{bottom:72px}.game-card{overflow:hidden}}
-@media(max-width:420px){.pg-tool-btn{gap:4px;font-size:10px}.pg-tool-btn span{font-size:10px}.pg-favorite-btn{width:32px;height:32px;right:7px;top:7px}}
