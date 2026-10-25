@@ -61,3 +61,10 @@ Pour mettre à jour GitHub Pages, téléverse le contenu du dossier `planet-geek
 - Navigation ajoutée sur les pages existantes et lien depuis Vol un Œuf vers les missions. Le jeu Vol un Œuf et sa clé de sauvegarde `pg_egg_heist_v1` n’ont pas été remplacés.
 - Les nouvelles données utilisent seulement `pgDailyBonusMissionsV2`, `pgSeasonBonusClaimsV2`, `pgPersonalRecordsV2`, `pgFriendsV2` et `pgRoomV2`; aucune ancienne clé n’est supprimée.
 - Limite importante : le classement visible est personnel/local, les pseudos d’amis sont enregistrés sur l’appareil, et les codes de salon ne constituent pas encore du multijoueur en direct. Un serveur est nécessaire pour synchroniser des joueurs réels.
+
+
+## Mise à jour jeux PC et mobile
+- Jeux ajoutés : Parkour Rush, Défense Néon, Enquête Express, Créatures Pixel, Block Mania, Mini Ferme et Beat Master. Neon Racer existait déjà.
+- Records et progression des nouveaux jeux enregistrés localement dans le navigateur.
+- Commandes clavier sur PC et commandes tactiles au pointeur sur téléphone/tablette.
+- Le site, les pages existantes et les clés de sauvegarde existantes n’ont pas été volontairement supprimés ou renommés.
