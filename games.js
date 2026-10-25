@@ -11,7 +11,7 @@ function canvasGame(name, instructions, setup) {
   const loop = () => { if(!running) return; frame++; state.draw(frame); raf=requestAnimationFrame(loop); };
   loop();
   cleanup = () => {running=false;cancelAnimationFrame(raf);window.removeEventListener('keydown',key);window.removeEventListener('keyup',keyup);c.removeEventListener('pointerdown',pointer);};
-  function key(e){if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','a','d','w','s'].includes(e.key)){e.preventDefault();state.key?.(e.key,true);}}
+  function key(e){if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','a','d','w','s','q','A','D','Q','W','S'].includes(e.key)){e.preventDefault();state.key?.(e.key,true);}}
   function keyup(e){state.key?.(e.key,false);}
   function pointer(e){const r=c.getBoundingClientRect();state.pointer?.((e.clientX-r.left)/r.width*c.width,(e.clientY-r.top)/r.height*c.height);}
   window.addEventListener('keydown',key);window.addEventListener('keyup',keyup);c.addEventListener('pointerdown',pointer);
@@ -216,10 +216,76 @@ function extraArcade(mode){
  canvasGame(cfg.name,cfg.desc,(c,x)=>{let px=350,items=[],score=0,t=0,over=false,keys={};return {key:(k,v)=>{keys[k]=v;if(mode==='meteordodge'&&(k==='ArrowLeft'||k==='a')&&v)px=Math.max(25,px-35);if(mode==='meteordodge'&&(k==='ArrowRight'||k==='d')&&v)px=Math.min(695,px+35)},pointer:xx=>px=xx,draw:()=>{x.fillStyle='#071222';x.fillRect(0,0,720,390);for(let i=0;i<60;i++){x.fillStyle='#526b9a';x.fillRect((i*83)%720,(i*47)%390,2,2)}if(!over&&t%30===0)items.push({x:25+Math.random()*670,y:-20,good:mode==='starcatcher'||Math.random()>.25});items.forEach(o=>{o.y+=mode==='starcatcher'?4:3.5;x.font='25px sans-serif';x.fillStyle=o.good?'#ffe47a':'#ff6680';x.fillText(mode==='starcatcher'?(o.good?'⭐':'💫'):'☄️',o.x,o.y);if(o.y>320&&o.y<370&&Math.abs(o.x-px)<30){if(mode==='starcatcher'){score+=10;o.y=450}else over=true}});items=items.filter(o=>o.y<420);if(mode==='starcatcher'){x.fillStyle='#42e8ff';x.fillRect(px-28,345,56,15)}else{x.fillStyle='#42e8ff';x.beginPath();x.moveTo(px,335);x.lineTo(px-17,370);x.lineTo(px+17,370);x.fill()}if(!over)score++;x.fillStyle='white';x.font='bold 20px sans-serif';x.fillText('SCORE '+score,18,28);if(over){x.fillStyle='#020816cc';x.fillRect(80,130,560,120);x.fillStyle='#ff6680';x.textAlign='center';x.font='bold 30px sans-serif';x.fillText('FIN DE PARTIE',360,180);x.fillStyle='white';x.font='18px sans-serif';x.fillText('Score '+score+' · clique pour recommencer',360,215);x.textAlign='left'}t++}}});
 }
 
+function royaumePixel(){
+ canvasGame('Royaume Pixel','PC : ← → ou Q / D pour courir, ESPACE ou ↑ pour sauter. Téléphone : utilise les boutons tactiles. Ramasse les pièces, évite les créatures et atteins le drapeau !',(c,x)=>{
+  const W=720,H=390, gravity=.55;
+  let level=1,score=0,lives=3,coins=0,over=false,won=false,keys={},cam=0,frame=0,player,platforms=[],treasures=[],foes=[],flagX=0;
+  const levelDefs=[
+   {end:1850, gaps:[[360,430],[780,850],[1220,1300]], platforms:[[220,292,100],[500,265,120],[670,300,100],[900,245,125],[1080,285,110],[1370,255,130],[1570,290,100]]},
+   {end:2200, gaps:[[300,390],[650,735],[1080,1170],[1570,1650]], platforms:[[170,280,110],[430,250,120],[790,270,120],[960,220,110],[1210,255,120],[1430,230,100],[1710,265,120],[1920,230,100]]},
+   {end:2550, gaps:[[350,450],[800,900],[1260,1360],[1730,1830],[2150,2230]], platforms:[[210,260,110],[500,235,120],[690,280,100],[950,230,120],[1110,270,110],[1400,215,130],[1580,260,110],[1870,220,120],[2040,270,100],[2290,235,110]]}
+  ];
+  function buildLevel(){
+   const d=levelDefs[level-1]; flagX=d.end-70; cam=0; over=false; won=false;
+   player={x:35,y:285,w:23,h:30,vx:0,vy:0,ground:false,inv:0};
+   platforms=[{x:0,y:345,w:d.end+100,h:45,ground:true}];
+   d.gaps.forEach(g=>{platforms.push({x:g[0],y:345,w:g[1]-g[0],h:45,ground:true,gap:true})});
+   // Ground is split around pits.
+   platforms=platforms.filter(p=>!p.gap);
+   let cursor=0; const ground=[]; d.gaps.sort((a,b)=>a[0]-b[0]).forEach(g=>{if(g[0]>cursor)ground.push({x:cursor,y:345,w:g[0]-cursor,h:45,ground:true});cursor=g[1]}); if(cursor<d.end+100)ground.push({x:cursor,y:345,w:d.end+100-cursor,h:45,ground:true});
+   platforms=ground.concat(d.platforms.map(p=>({x:p[0],y:p[1],w:p[2],h:12,ground:false})));
+   treasures=[]; for(let i=130;i<d.end-100;i+=115){let py=300;const plat=d.platforms.find(p=>i>p[0]-10&&i<p[0]+p[2]+10);if(plat)py=plat[1]-25;treasures.push({x:i,y:py,got:false,phase:Math.random()*6});}
+   foes=[]; for(let i=260;i<d.end-150;i+=250){if(d.gaps.some(g=>i>g[0]-35&&i<g[1]+35))continue;foes.push({x:i,y:315,w:25,h:25,vx:(i%2?1:-1)*(.8+level*.18),left:i-65,right:i+65,alive:true});}
+  }
+  buildLevel();
+  const controls=document.createElement('div'); controls.className='game-controls'; controls.setAttribute('aria-label','Commandes tactiles');
+  controls.style.cssText='display:flex;justify-content:space-between;gap:10px;max-width:440px;margin:10px auto 0;touch-action:none;';
+  controls.innerHTML='<div style="display:flex;gap:8px"><button type="button" data-pgkey="left" aria-label="Aller à gauche">◀</button><button type="button" data-pgkey="right" aria-label="Aller à droite">▶</button></div><button type="button" data-pgkey="jump" aria-label="Sauter" style="background:#43276b;border-color:#b58aff">SAUT</button>';
+  host.appendChild(controls);
+  controls.querySelectorAll('button').forEach(b=>{const k=b.dataset.pgkey;const down=e=>{e.preventDefault();keys[k]=true;if(k==='jump')keys.jumpPressed=true;};const up=e=>{e.preventDefault();keys[k]=false;};b.addEventListener('pointerdown',down);['pointerup','pointercancel','pointerleave'].forEach(ev=>b.addEventListener(ev,up));});
+  function reset(){score=0;coins=0;lives=3;level=1;keys={};buildLevel();}
+  function finish(){over=true;const best=Number(localStorage.getItem('pg_royaume_pixel_best')||0);if(score>best)localStorage.setItem('pg_royaume_pixel_best',String(score));}
+  function draw(){
+   frame++; x.clearRect(0,0,W,H);
+   const sky=x.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#17265a');sky.addColorStop(1,'#65bce8');x.fillStyle=sky;x.fillRect(0,0,W,H);
+   // Pixel clouds and distant hills
+   for(let i=0;i<8;i++){const cx=((i*145-cam*.22)%850+850)%850-60;x.fillStyle='#ffffff35';x.fillRect(cx,45+(i%3)*24,48,13);x.fillRect(cx+12,34+(i%3)*24,24,13);}
+   for(let i=0;i<6;i++){const hx=((i*180-cam*.12)%1000+1000)%1000-100;x.fillStyle=i%2?'#377a89':'#286b80';x.beginPath();x.moveTo(hx,345);x.lineTo(hx+80,220);x.lineTo(hx+160,345);x.fill();}
+   x.save();x.translate(-cam,0);
+   // platforms
+   platforms.forEach(p=>{x.fillStyle=p.ground?'#7b4b2b':'#87512f';x.fillRect(p.x,p.y,p.w,p.h);x.fillStyle='#58d66d';x.fillRect(p.x,p.y,p.w,7);x.fillStyle='#b87943';for(let bx=p.x+8;bx<p.x+p.w-5;bx+=24)x.fillRect(bx,p.y+14,12,5);});
+   // coins
+   treasures.forEach(t=>{if(t.got)return;const bob=Math.sin(frame*.08+t.phase)*3;x.fillStyle='#ffdb4d';x.shadowColor='#ffb800';x.shadowBlur=10;x.beginPath();x.ellipse(t.x,t.y+bob,7,10,0,0,Math.PI*2);x.fill();x.shadowBlur=0;x.strokeStyle='#fff3a0';x.stroke();});
+   // enemies
+   foes.forEach(f=>{if(!f.alive)return;x.fillStyle='#7b3fbc';x.fillRect(f.x,f.y+5,f.w,f.h-5);x.fillStyle='#c78cff';x.fillRect(f.x+3,f.y,f.w-6,8);x.fillStyle='#fff';x.fillRect(f.x+5,f.y+9,5,6);x.fillRect(f.x+16,f.y+9,5,6);x.fillStyle='#222';x.fillRect(f.x+7,f.y+11,2,3);x.fillRect(f.x+18,f.y+11,2,3);});
+   // goal flag
+   x.fillStyle='#eaf6ff';x.fillRect(flagX,230,5,115);x.fillStyle='#ff5ac8';x.beginPath();x.moveTo(flagX+5,232);x.lineTo(flagX+50,247);x.lineTo(flagX+5,265);x.fill();x.fillStyle='#ffe47a';x.fillRect(flagX-7,342,20,5);
+   // player: original little explorer, not a copyrighted character
+   if(player.inv<=0||Math.floor(frame/5)%2===0){x.fillStyle='#26345c';x.fillRect(player.x+2,player.y+20,8,10);x.fillRect(player.x+14,player.y+20,8,10);x.fillStyle='#2ce0ff';x.fillRect(player.x,player.y+7,player.w,16);x.fillStyle='#ffd1a1';x.fillRect(player.x+3,player.y,17,13);x.fillStyle='#ff6f91';x.fillRect(player.x+1,player.y-3,21,6);x.fillStyle='#15213c';x.fillRect(player.x+14,player.y+4,3,4);}
+   x.restore();
+   if(!over&&!won){
+    const left=keys.left||keys.ArrowLeft||keys.q||keys.Q||keys.a||keys.A, right=keys.right||keys.ArrowRight||keys.d||keys.D;
+    player.vx=left?-3.2:right?3.2:0;player.x+=player.vx;player.vy=Math.min(12,player.vy+gravity);const oldY=player.y;player.y+=player.vy;player.ground=false;
+    platforms.forEach(p=>{if(player.x+player.w>p.x&&player.x<p.x+p.w&&oldY+player.h<=p.y+4&&player.y+player.h>=p.y&&player.vy>=0){player.y=p.y-player.h;player.vy=0;player.ground=true;}});
+    if((keys.jump||keys.jumpPressed||keys[' ']||keys.ArrowUp||keys.w||keys.W)&&player.ground){player.vy=-10.8;player.ground=false;keys.jumpPressed=false;}
+    if(player.inv>0)player.inv--;
+    treasures.forEach(t=>{if(!t.got&&Math.abs((player.x+player.w/2)-t.x)<19&&Math.abs((player.y+player.h/2)-t.y)<25){t.got=true;coins++;score+=10;}});
+    foes.forEach(f=>{if(!f.alive)return;f.x+=f.vx;if(f.x<f.left||f.x>f.right)f.vx*=-1;if(player.x+player.w>f.x&&player.x<f.x+f.w&&player.y+player.h>f.y&&player.y<f.y+f.h){if(player.vy>1&&oldY+player.h<=f.y+9){f.alive=false;player.vy=-7;score+=50;}else if(player.inv===0){lives--;player.inv=100;player.vy=-5;if(lives<=0)finish();}}});
+    if(player.y>H+60){lives--;if(lives<=0)finish();else{player.x=Math.max(25,player.x-100);player.y=250;player.vy=0;player.inv=90;}}
+    if(player.x>flagX){if(level<3){level++;score+=100;buildLevel();}else{won=true;finish();}}
+    cam=Math.max(0,Math.min(flagX-W+110,player.x-220));
+   }
+   x.fillStyle='#071222dd';x.fillRect(10,10,300,58);x.fillStyle='#fff';x.font='bold 16px sans-serif';x.fillText('MONDES '+level+'/3   •   PIÈCES '+coins,22,33);x.fillText('SCORE '+score+'   •   VIES '+('♥'.repeat(Math.max(0,lives))),22,55);
+   if(over||won){x.fillStyle='#071222df';x.fillRect(95,105,530,180);x.textAlign='center';x.fillStyle=won?'#ffe47a':'#ff83c9';x.font='bold 30px sans-serif';x.fillText(won?'ROYAUME TERMINÉ !':'PARTIE TERMINÉE',360,155);x.fillStyle='#fff';x.font='19px sans-serif';x.fillText('Score : '+score+'  •  Pièces : '+coins,360,190);x.font='16px sans-serif';x.fillText('Appuie sur RECOMMENCER pour rejouer',360,225);x.textAlign='left';}
+  }
+  return {draw,key:(k,v)=>{keys[k]=v;if((k===' '||k==='ArrowUp'||k==='w'||k==='W')&&v)keys.jumpPressed=true;},pointer:()=>{}};
+ });
+}
+
 function launch(game){
- cleanup(); title.textContent=({gemtap:'Gem Tap',meteordodge:'Meteor Dodge',numberrush:'Number Rush',starcatcher:'Star Catcher',colormemory:'Color Memory',gemrush:'Gem Rush',meteorzero:'Meteor Zero',quizflash:'Quiz Flash',panierstellar:'Panier Stellaire',memoirecosmique:'Mémoire Cosmique',racer:'Neon Racer',jumper:'Pixel Jumper',blaster:'Star Blaster',memory:'Memory Matrix',mahjong:'Mahjong Neon',dino:'Dino Dash',flappy:'Flappy Rocket',bricks:'Brick Breaker',mole:'Critter Pop',snake:'Snake Neon',ttt:'Tic Tac Toe',reaction:'Reflex Rush',pong:'Neon Pong',blocks:'Block Master',invaders:'Space Invaders',math:'Math Sprint',color:'Color Tap',orbit:'Orbit Catch',cave:'Cave Explorer'})[game]||'Jeu';
- help.textContent=({gemtap:'Clique sur les gemmes pour marquer des points.',meteordodge:'Esquive les météores.',numberrush:'Résous des calculs rapidement.',starcatcher:'Attrape les étoiles.',colormemory:'Répète la séquence de couleurs.',gemrush:'Clique sur les gemmes avant la fin du chrono.',meteorzero:'Esquive les météores et survis.',quizflash:'Enchaîne les calculs en temps limité.',panierstellar:'Attrape les étoiles qui tombent.',memoirecosmique:'Répète la séquence de couleurs.',racer:'Évite les obstacles !',jumper:'Grimpe le plus haut possible !',blaster:'Survis dans l’espace !',memory:'Retrouve toutes les paires !',mahjong:'Mahjong solitaire avec 100 niveaux et sauvegarde automatique.',dino:'Saute par-dessus les obstacles et bats ton record.',flappy:'Passe entre les portails sans les toucher.',bricks:'Casse toutes les briques avec la balle.',mole:'Attrape les créatures avant la fin du temps.',snake:'Mange les étoiles et bats ton record !',ttt:'Aligne trois symboles contre l’IA.',reaction:'Teste ta vitesse de réaction !',pong:'Bats l’ordinateur au ping-pong !',blocks:'Place les blocs et complète les lignes !',invaders:'Défends la planète contre les aliens.',math:'Résous des calculs en 30 secondes.',color:'Teste tes réflexes et clique sur la zone de couleur.',orbit:'Attrape les étoiles et évite les météores.',cave:'Explore la grotte et collecte les cristaux.'})[game]||'Amuse-toi bien !';
- ({gemtap:()=>extraArcade('gemtap'),meteordodge:()=>extraArcade('meteordodge'),numberrush:()=>extraArcade('numberrush'),starcatcher:()=>extraArcade('starcatcher'),colormemory:()=>extraArcade('colormemory'),gemrush:()=>extraArcade('gemtap'),meteorzero:()=>extraArcade('meteordodge'),quizflash:()=>extraArcade('numberrush'),panierstellar:()=>extraArcade('starcatcher'),memoirecosmique:()=>extraArcade('colormemory'),racer, jumper, blaster, memory, mahjong, dino:dinoDash, flappy:flappyRocket, bricks:brickBreaker, mole:whackMole, snake, ttt:tictactoe, reaction, pong:neonPong, blocks:blockMaster,invaders:spaceInvaders,math:mathSprint,color:colorTap,orbit:orbitCatch,cave:caveExplorer})[game]?.();
+ cleanup(); title.textContent=({gemtap:'Gem Tap',meteordodge:'Meteor Dodge',numberrush:'Number Rush',starcatcher:'Star Catcher',colormemory:'Color Memory',gemrush:'Gem Rush',meteorzero:'Meteor Zero',quizflash:'Quiz Flash',panierstellar:'Panier Stellaire',memoirecosmique:'Mémoire Cosmique',racer:'Neon Racer',royaumePixel:'Royaume Pixel',jumper:'Pixel Jumper',blaster:'Star Blaster',memory:'Memory Matrix',mahjong:'Mahjong Neon',dino:'Dino Dash',flappy:'Flappy Rocket',bricks:'Brick Breaker',mole:'Critter Pop',snake:'Snake Neon',ttt:'Tic Tac Toe',reaction:'Reflex Rush',pong:'Neon Pong',blocks:'Block Master',invaders:'Space Invaders',math:'Math Sprint',color:'Color Tap',orbit:'Orbit Catch',cave:'Cave Explorer'})[game]||'Jeu';
+ help.textContent=({gemtap:'Clique sur les gemmes pour marquer des points.',meteordodge:'Esquive les météores.',numberrush:'Résous des calculs rapidement.',starcatcher:'Attrape les étoiles.',colormemory:'Répète la séquence de couleurs.',gemrush:'Clique sur les gemmes avant la fin du chrono.',meteorzero:'Esquive les météores et survis.',quizflash:'Enchaîne les calculs en temps limité.',panierstellar:'Attrape les étoiles qui tombent.',memoirecosmique:'Répète la séquence de couleurs.',racer:'Évite les obstacles !',royaumePixel:'Plateforme à défilement horizontal : pièces, ennemis et trois mondes.',jumper:'Grimpe le plus haut possible !',blaster:'Survis dans l’espace !',memory:'Retrouve toutes les paires !',mahjong:'Mahjong solitaire avec 100 niveaux et sauvegarde automatique.',dino:'Saute par-dessus les obstacles et bats ton record.',flappy:'Passe entre les portails sans les toucher.',bricks:'Casse toutes les briques avec la balle.',mole:'Attrape les créatures avant la fin du temps.',snake:'Mange les étoiles et bats ton record !',ttt:'Aligne trois symboles contre l’IA.',reaction:'Teste ta vitesse de réaction !',pong:'Bats l’ordinateur au ping-pong !',blocks:'Place les blocs et complète les lignes !',invaders:'Défends la planète contre les aliens.',math:'Résous des calculs en 30 secondes.',color:'Teste tes réflexes et clique sur la zone de couleur.',orbit:'Attrape les étoiles et évite les météores.',cave:'Explore la grotte et collecte les cristaux.'})[game]||'Amuse-toi bien !';
+ ({gemtap:()=>extraArcade('gemtap'),meteordodge:()=>extraArcade('meteordodge'),numberrush:()=>extraArcade('numberrush'),starcatcher:()=>extraArcade('starcatcher'),colormemory:()=>extraArcade('colormemory'),gemrush:()=>extraArcade('gemtap'),meteorzero:()=>extraArcade('meteordodge'),quizflash:()=>extraArcade('numberrush'),panierstellar:()=>extraArcade('starcatcher'),memoirecosmique:()=>extraArcade('colormemory'),racer, royaumePixel, jumper, blaster, memory, mahjong, dino:dinoDash, flappy:flappyRocket, bricks:brickBreaker, mole:whackMole, snake, ttt:tictactoe, reaction, pong:neonPong, blocks:blockMaster,invaders:spaceInvaders,math:mathSprint,color:colorTap,orbit:orbitCatch,cave:caveExplorer})[game]?.();
 }
 window.PlanetGames={launch,restart:()=>{const game=window.currentGame;if(game)launch(game);}};
 window.addEventListener('beforeunload',()=>cleanup());
