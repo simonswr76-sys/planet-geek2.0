@@ -36,7 +36,8 @@ h1{margin:0;font-size:clamp(26px,5vw,42px);letter-spacing:1px}h1 em{font-style:n
 #dead{position:fixed;inset:0;z-index:8;background:#200010dd;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;font-size:32px;font-weight:900}#dead button{font-size:16px;padding:10px 22px;border-radius:10px;border:0;font-weight:900;cursor:pointer}
 .cell{font-style:normal;border:1px solid;border-radius:7px;padding:3px 7px;font-size:12px;font-weight:800;min-width:34px;text-align:center}input[type=range]{width:150px}
 .tabs{grid-template-columns:repeat(3,1fr)}
-</style></head><body>
+</style><link rel="stylesheet" href="mobile.css">
+</head><body>
 <canvas id="scene"></canvas><div id="flash"></div><div id="hurt"></div><div id="pops"></div>
 <div class="hud" id="tl"><div class="box"><small>Pièces</small><strong id="coins">0 ◈</strong></div><div class="box"><small id="lvl">Niv. 1</small><div class="bar"><i id="xpb" style="width:0"></i></div></div><div class="box" id="mats">🧱 0</div></div>
 <div class="hud box" id="fpsbox"><small>FPS</small><strong id="fps">--</strong><span id="ms">-- ms</span></div>

@@ -1,0 +1,60 @@
+/* Planet Geek — optimisation mobile, ajoutée sans remplacer les styles existants */
+:root { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+html { width:100%; min-width:0; scroll-padding-top:76px; }
+body { max-width:100%; min-width:0; overflow-x:clip; }
+img, video, canvas, iframe, svg { max-width:100%; }
+img, video { height:auto; }
+button, input, select, textarea { max-width:100%; font:inherit; }
+button, [role="button"], a, input, select, textarea { -webkit-tap-highlight-color:transparent; }
+button, [role="button"] { touch-action:manipulation; }
+input, select, textarea { font-size:16px; }
+pre, code { max-width:100%; overflow-wrap:anywhere; }
+table { max-width:100%; }
+@media (max-width: 760px) {
+  html { scroll-padding-top:64px; }
+  body { font-size:15px; }
+  .topbar, .top, header, .header, .site-header, .navbar { flex-wrap:wrap; gap:10px; }
+  .topbar, .top, .site-header { padding-left:12px!important; padding-right:12px!important; }
+  main, .main, .container, .page, .content, .layout, .wrap, .shell { max-width:100%!important; width:100%; min-width:0; }
+  main, .main, .container, .page, .content, .layout, .wrap, .shell { padding-left:12px!important; padding-right:12px!important; }
+  .layout { grid-template-columns:minmax(0,1fr)!important; }
+  .sidebar, .side-panel, .game-sidebar, aside { width:100%; min-width:0; }
+  .hero, .page-header, .section-header { flex-wrap:wrap; align-items:flex-start; }
+  h1 { font-size:clamp(24px,7vw,36px); overflow-wrap:anywhere; }
+  h2 { font-size:clamp(19px,5.4vw,28px); }
+  .quick-dock { gap:6px!important; flex-wrap:wrap; }
+  .quick-dock a { min-height:42px; display:inline-flex; align-items:center; justify-content:center; }
+  .game-grid, .games-grid, .cards-grid, .features-grid, .stats-grid, .shop-grid, .grid { grid-template-columns:repeat(2,minmax(0,1fr))!important; gap:10px!important; }
+  .game-card, .card, .feature-panel, .panel, .stat-card { min-width:0; }
+  .game-card img, .game-card canvas, .card img { max-width:100%; }
+  .game-card button, .card button, .game-card a, .card a { min-height:40px; }
+  .game-modal, #game-modal, .modal, .dialog { max-width:calc(100vw - 16px)!important; width:calc(100vw - 16px)!important; max-height:90dvh; overflow:auto; }
+  #game-host, .game-host, .game-wrap, .game-container { width:100%; max-width:100%; min-width:0; }
+  #game-host canvas, .game-wrap canvas, .game-container canvas, canvas { display:block; max-width:100%; }
+  .toolbar, .actions, .button-row, .controls, .filters { flex-wrap:wrap; }
+  .toolbar button, .actions button, .button-row button, .filters button { min-height:42px; }
+  .table-wrap, .table-container { max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  table { font-size:13px; }
+  td, th { padding:8px!important; }
+  .pg-utility-tools { left:6px!important; right:6px!important; bottom:max(6px,env(safe-area-inset-bottom))!important; }
+  .pg-tool-btn { min-height:42px; }
+  .pg-settings-panel { max-width:calc(100vw - 20px); }
+  .top a, nav a { min-height:40px; }
+  /* Préserve la zone jouable et évite le zoom accidentel pendant les gestes. */
+  .game-canvas, #gameCanvas, #game-canvas, #world, .world-canvas { touch-action:none; }
+}
+@media (max-width: 480px) {
+  .game-grid, .games-grid, .cards-grid, .features-grid, .stats-grid, .shop-grid, .grid { grid-template-columns:minmax(0,1fr)!important; }
+  main, .main, .container, .page, .content, .layout, .wrap, .shell { padding-left:10px!important; padding-right:10px!important; }
+  .game-card, .card, .feature-panel, .panel { border-radius:14px; }
+  .quick-dock { display:grid!important; grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .quick-dock a { width:100%; }
+  .hero { gap:8px; }
+  .hero button, .hero a, .page-header button, .page-header a { min-height:42px; }
+  .pg-utility-tools { gap:3px!important; }
+  .pg-tool-btn { padding:8px 4px!important; font-size:10px!important; }
+}
+@media (orientation:landscape) and (max-height:500px) {
+  .game-modal, #game-modal, .modal, .dialog { max-height:calc(100dvh - 12px); }
+  .topbar, .top { padding-top:6px!important; padding-bottom:6px!important; }
+}
