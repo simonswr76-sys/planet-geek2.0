@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080008">
+<title>Virus Fantôme — Blague Planet Geek</title>
+<link rel="stylesheet" href="mobile.css">
+<style>
+:root{color-scheme:dark;--red:#ff174f;--cyan:#22d3ee}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#05040a;color:#f8f7ff;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#ff174f08 0 1px,transparent 1px 4px);z-index:5}
+main{width:min(850px,100%);margin:auto;padding:clamp(16px,4vw,32px)}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+a{color:var(--cyan)}
+.pill{border:1px solid #ff174f99;color:#ff7896;border-radius:999px;padding:6px 10px;font-size:.76rem}
+.panel{margin-top:22px;border:1px solid #ff174f99;border-radius:16px;padding:clamp(18px,4vw,30px);background:radial-gradient(ellipse at top,#4b061d 0%,#100711 55%,#09070d 100%);box-shadow:0 0 28px #ff174f20}
+h1{font-size:clamp(2rem,8vw,4rem);line-height:1.05;margin:14px 0;color:var(--red);text-shadow:0 0 18px #ff174f80;overflow-wrap:anywhere}
+.sub{color:#ff9ab0;letter-spacing:.12em;font-size:.8rem}
+.alert{border-left:4px solid var(--red);padding:12px 14px;background:#ff174f12;color:#ffd9e1;line-height:1.5}
+.progress{height:12px;background:#2b1823;border-radius:99px;overflow:hidden;margin:12px 0}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#ff174f,#ff8a65);box-shadow:0 0 14px #ff174f;transition:width .3s}
+.status{min-height:3.5em;color:#ff8aa3;line-height:1.6;overflow-wrap:anywhere}
+.logs{height:145px;overflow:hidden;border:1px solid #512033;background:#050309;padding:12px;color:#ff728f;font-size:.83rem;line-height:1.7}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:13px 16px;min-height:48px;cursor:pointer}
+#start{background:var(--red);color:#fff}
+#stop{background:#e8e7f1;color:#140e1b}
+button:focus-visible,a:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.note{font: .9rem/1.6 Arial,sans-serif;color:#c7bfd0;margin-top:18px}
+#reveal{display:none;text-align:center;padding:22px;border:1px solid #22d3ee;border-radius:14px;background:#06202a;margin-top:18px}
+#reveal h2{color:#67f0ff}
+body.flash{animation:flash .25s steps(2,end) 4}
+@keyframes flash{50%{background:#3b0013}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<div class="top"><a href="coffre.html">← Retour au coffre</a><span class="pill">SIMULATION • AUCUN VIRUS</span></div>
+<section class="panel" aria-labelledby="title">
+<div class="sub">PLANET GEEK // SIMULATEUR DE BLAGUE</div>
+<h1 id="title">☠ VIRUS FANTÔME</h1>
+<div class="alert" role="status" aria-live="polite">ALERTE FICTIVE : aucune analyse réelle n'est effectuée. Lance l'effet quand tu es prêt.</div>
+<p id="status" class="status">Système en attente. Appuie sur « Lancer la blague » pour démarrer la simulation.</p>
+<div class="progress" role="progressbar" aria-label="Progression de la simulation" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress"><div class="bar" id="bar"></div></div>
+<div class="logs" id="logs" aria-label="Journal fictif" aria-live="polite">> module_prank.exe prêt<br>> aucun accès système demandé<br>> en attente de démarrage…</div>
+<div class="actions"><button id="start" type="button">Lancer la blague</button><button id="stop" type="button">Arrêter / révéler la blague</button></div>
+<p class="note">Effets visuels uniquement. Cette page ne peut pas infecter, éteindre, verrouiller ni endommager ton téléphone. Le bouton d’arrêt reste disponible à tout moment.</p>
+<div id="reveal" role="status" aria-live="polite"><h2>😂 C’ÉTAIT UNE BLAGUE !</h2><p>Aucun virus installé. Ton appareil n’a pas été modifié.</p><a href="coffre.html">Retourner au coffre</a></div>
+</section>
+</main>
+<script>
+(() => {
+  const status = document.getElementById('status');
+  const bar = document.getElementById('bar');
+  const progress = document.getElementById('progress');
+  const logs = document.getElementById('logs');
+  const reveal = document.getElementById('reveal');
+  const start = document.getElementById('start');
+  const stop = document.getElementById('stop');
+  let timer = null, step = 0, running = false;
+  const events = [
+    ['Initialisation du scénario fantôme…', '> chargement des effets visuels…'],
+    ['Signal inconnu détecté… (simulation)', '> signal_fantome = SIMULÉ'],
+    ['Analyse des pixels de l’écran…', '> aucun fichier ni capteur consulté'],
+    ['Tentative de connexion… REFUSÉE', '> connexion fictive interrompue'],
+    ['ALERTE : présence fantôme détectée !', '> BOO 👻 // effet de surprise'],
+    ['Désactivation du faux virus…', '> scénario terminé']
+  ];
+  function finish() {
+    if (timer) clearInterval(timer);
+    timer = null; running = false;
+    status.textContent = 'Simulation arrêtée. Aucun changement n’a été fait sur l’appareil.';
+    bar.style.width = '100%'; progress.setAttribute('aria-valuenow','100');
+    reveal.style.display = 'block';
+    document.body.classList.remove('flash');
+    start.disabled = false; start.textContent = 'Rejouer la blague';
+    stop.textContent = 'Blague terminée';
+    logs.innerHTML += '<br>> RÉVÉLATION : C’ÉTAIT UNE BLAGUE — aucun virus réel.';
+  }
+  start.addEventListener('click', () => {
+    if (running) return;
+    if (timer) clearInterval(timer);
+    step = 0; running = true; reveal.style.display = 'none';
+    start.disabled = true; stop.textContent = 'Arrêter / révéler la blague';
+    logs.innerHTML = '> démarrage du scénario…';
+    document.body.classList.add('flash');
+    timer = setInterval(() => {
+      const e = events[Math.min(step, events.length - 1)];
+      status.textContent = e[0];
+      logs.innerHTML += '<br>' + e[1];
+      const pct = Math.min(100, Math.round((step + 1) / events.length * 100));
+      bar.style.width = pct + '%'; progress.setAttribute('aria-valuenow', String(pct));
+      if (logs.childElementCount > 30) logs.innerHTML = logs.innerHTML.split('<br>').slice(-8).join('<br>');
+      step++;
+      if (step >= events.length) finish();
+    }, 1500);
+  });
+  stop.addEventListener('click', finish);
+})();
+</script>
+</body>
+</html>

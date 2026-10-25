@@ -15,3 +15,6 @@ Installation : extraire tous les fichiers et publier le contenu du dossier plane
 Les sauvegardes sont locales à chaque navigateur/appareil. Elles ne se synchronisent pas entre appareils et ne sont pas incluses dans le ZIP.
 
 Tests automatisés : intégrité de l'archive, présence des six pages et du moteur, syntaxe JavaScript vérifiée avec Node.js. Les parties n'ont pas été testées dans un navigateur réel.
+
+
+AJOUT : coffre.html propose « BLAGUE — Virus Fantôme », une simulation visuelle sans danger dans virus-fantome.html. Aucun arrêt, verrouillage ou accès système réel.
