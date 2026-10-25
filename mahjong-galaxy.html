@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#071323"><meta name="description" content="Mahjong Galaxy — 200 niveaux de réflexion sur Planet Geek."><title>Mahjong Galaxy — Planet Geek</title><link rel="stylesheet" href="puzzles.css"></head>
+<body data-game="mahjong" data-slug="mahjong-galaxy" data-title="Mahjong Galaxy">
+<div class="wrap">
+<header class="top"><div><div class="brand">PLANET GEEK · RÉFLEXION</div><a class="back" href="jeux.html">← Retour aux jeux</a></div><div class="muted">PC + mobile · sauvegarde locale</div></header>
+<section class="hero"><h1>Mahjong Galaxy</h1><p>Retire toutes les paires identiques du plateau. Termine les niveaux pour débloquer les suivants, gagner de l’XP et battre tes records. La progression est enregistrée automatiquement sur cet appareil.</p></section>
+<section class="stats" aria-label="Progression">
+<div class="stat"><small>Niveau actuel</small><strong id="levelStat">1 / 200+</strong></div><div class="stat"><small>XP gagnée</small><strong id="xpStat">0</strong></div><div class="stat"><small>Record</small><strong id="recordStat">—</strong></div><div class="stat"><small>Niveaux terminés</small><strong id="doneStat">0</strong></div></section>
+<div class="layout"><main class="panel"><div class="top"><strong id="objective">Objectif du niveau</strong><span class="muted" id="levelHint">Niveau 1</span></div><div id="board" class="board" aria-label="Plateau de jeu"></div><div id="status" class="status" role="status" aria-live="polite">Prêt ?</div><div class="controls" id="controls"></div><div class="controls"><button id="restart">Recommencer le niveau</button><button id="hint">Indice</button><button class="primary" id="next" disabled>Niveau suivant →</button></div><p class="notice" id="saveNote">Sauvegarde locale activée.</p></main>
+<aside class="panel side"><h2>Ta progression</h2><p>Les niveaux sont générés progressivement jusqu’à 250. Tes niveaux débloqués, XP et records sont conservés dans le stockage local du navigateur.</p><div class="top"><strong>Niveaux</strong><span class="muted" id="unlockedLabel">1 débloqué</span></div><div class="levels" id="levels"></div><p class="notice">Astuce : sur téléphone, touche les cases ou utilise les boutons affichés sous le plateau.</p><button id="resetSave">Réinitialiser cette sauvegarde</button></aside></div>
+</div><script src="puzzle-core.js"></script></body></html>
