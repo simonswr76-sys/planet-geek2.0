@@ -1,0 +1,10 @@
+PLANET GEEK — GUIDE DE L’ARCADE SECRÈTE
+
+1. Test de réflexes : attends le signal vert avant de cliquer.
+2. Mémoire lumineuse : répète les couleurs dans le bon ordre.
+3. Code mystérieux : devine un nombre entre 1 et 100.
+4. Casse-briques : déplace la raquette avec la souris ou le doigt.
+5. Esquive cosmique : change de voie pour éviter les météorites.
+
+Les scores et fragments sont sauvegardés dans le stockage local du navigateur.
+Les sons sont désactivés au départ et s’activent uniquement si tu appuies sur le bouton.
