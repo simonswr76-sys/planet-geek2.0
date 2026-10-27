@@ -15,6 +15,8 @@ h1{margin:12px 0;font-size:clamp(2rem,7vw,3.3rem)}header p{color:var(--muted);li
 h2{margin:0 0 8px;font-size:1.2rem}
 .book{transition:transform .2s,border-color .2s,box-shadow .2s}.book:hover,.book:focus-within{transform:translateY(-4px);border-color:#22d3ee;box-shadow:0 14px 38px #0008,0 0 22px #22d3ee18}
 .prank-book{position:relative;overflow:hidden;border-color:#7e2444}.prank-cover{background:radial-gradient(circle at 50% 30%,#7f1232,#170615 72%);animation:ghostGlow 3s ease-in-out infinite}.prank-link{background:linear-gradient(90deg,#ff174f,#8b5cf6);color:white}.prank-book::after{content:"SIMULATION SANS DANGER";display:block;color:#ff9ab0;font-size:.68rem;letter-spacing:.08em;margin-top:12px;text-align:center}
+.secret-book{border-color:#6544b8;background:linear-gradient(145deg,#1c163d,#11162b)}.secret-cover{background:radial-gradient(circle at 50% 35%,#22d3ee,#4c1d95 55%,#080b18);animation:ghostGlow 2.4s ease-in-out infinite}.download.alt{background:linear-gradient(90deg,#8b5cf6,#22d3ee);color:#fff}.downloads{margin-top:28px;padding:20px;border:1px solid #303b65;border-radius:18px;background:#0c1226}.downloads h2{margin-bottom:8px}.download-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.download-list .download{margin-top:8px}
+@media(max-width:560px){.download-list{grid-template-columns:1fr}}
 @keyframes ghostGlow{0%,100%{box-shadow:inset 0 0 0 #ff174f00}50%{box-shadow:inset 0 0 28px #ff174f55}}
 @media(prefers-reduced-motion:reduce){.book,.prank-cover{animation:none;transition:none}}.book p{color:var(--muted);line-height:1.5;min-height:44px}
 .download{display:block;text-align:center;text-decoration:none;color:#07111f;background:linear-gradient(90deg,var(--cyan),#a5f3fc);font-weight:bold;padding:12px 16px;border-radius:10px;margin-top:18px;transition:transform .15s,filter .15s}
@@ -38,7 +40,19 @@ h2{margin:0 0 8px;font-size:1.2rem}
 <article class="book prank-book"><div class="cover prank-cover" aria-hidden="true">☠️</div><h2>BLAGUE — Virus Fantôme</h2>
 <p>Une simulation de piratage avec alertes, parasites visuels et révélation surprise. Aucun virus réel.</p>
 <a class="download prank-link" href="virus-fantome.html">Lancer la blague</a></article>
-</section><footer>Planet Geek · Le Coffre Caché</footer>
+<article class="book secret-book"><div class="cover secret-cover" aria-hidden="true">🗝️</div><h2>Le Laboratoire Interdit</h2>
+<p>Une salle secrète avec mini-jeux, codes cachés, records locaux et surprises. Code à découvrir dans Virus Fantôme.</p>
+<a class="download alt" href="page-secrete.html">Entrer dans le laboratoire</a></article>
+<article class="book"><div class="cover" aria-hidden="true">🕹️</div><h2>Arcade secrète</h2>
+<p>Trois mini-jeux rapides : réflexes, mémoire et code mystérieux. Les records restent dans ce navigateur.</p>
+<a class="download" href="mini-jeux-secrets.html">Jouer aux mini-jeux</a></article>
+</section>
+<section class="downloads" aria-label="Téléchargements bonus"><h2>🎁 Téléchargements bonus</h2><p style="color:var(--muted);line-height:1.5">Des petits fichiers bonus Planet Geek, sans programme à installer.</p><div class="download-list">
+<a class="download" href="downloads/fond-ecran-fantome.svg" download>🖼️ Fond d’écran Fantôme</a>
+<a class="download" href="downloads/fond-ecran-neon.svg" download>🌌 Fond d’écran Néon</a>
+<a class="download" href="downloads/badge-survivant.svg" download>🏆 Badge Survivant</a>
+<a class="download" href="downloads/indices-secrets.txt" download>📜 Fichier d’indices</a>
+</div></section><footer>Planet Geek · Le Coffre Caché · Les secrets sont des easter eggs inoffensifs</footer>
 </main>
 </body>
 </html>
