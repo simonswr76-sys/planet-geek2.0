@@ -27,8 +27,8 @@ h1{margin:0;font-size:clamp(26px,5vw,42px);letter-spacing:1px}h1 em{font-style:n
 .row button{border:0;border-radius:9px;padding:9px 13px;font-weight:900;font-size:12px;cursor:pointer;color:#06091f;background:linear-gradient(100deg,#ffe98b,#ffbd59);white-space:nowrap}.row button:disabled{opacity:.35;cursor:not-allowed}.help{color:#a8b7d3;font-size:13px;line-height:1.5;margin:6px 0}
 .back{display:inline-block;margin-top:10px;color:#9fb4d6;font-size:13px}#toast{position:fixed;left:50%;bottom:60px;transform:translateX(-50%);background:#070a20ee;border:1px solid #38e8ff;border-radius:10px;padding:8px 16px;opacity:0;transition:.3s;z-index:20}#toast.show{opacity:1}
 #fail{display:none;position:fixed;inset:0;z-index:30;place-items:center;text-align:center;padding:24px;background:#050719;line-height:1.6}
-</style><link rel="stylesheet" href="mobile.css">
-</head><body>
+@media (pointer:coarse){#help{display:none}#fpsbox{padding:4px 10px}#rare{font-size:12px;top:8px}#evt{top:44px}#banner{top:14%}}
+</style></head><body>
 <canvas id="scene"></canvas><div id="flash"></div><div id="pops"></div>
 <div class="hud" id="tl"><div class="box"><small>Pièces</small><strong id="coins">0 ◈</strong></div><div class="box"><small id="lvl">Niv. 1</small><div class="bar"><i id="xpb" style="width:0"></i></div></div></div>
 <div class="hud box" id="fpsbox"><small>FPS</small><strong id="fps">--</strong><span id="ms">-- ms</span></div>
@@ -107,21 +107,31 @@ $('tab').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||
 $('tab').addEventListener('input',e=>{const k=e.target.dataset.set;if(k){S[k]=+e.target.value;try{localStorage.setItem(KEY,JSON.stringify(S))}catch{}}});
 document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.tab;ui()}));
 // entrées
-const menu=$('menu');function setMenu(v){menu.style.display=v?'flex':'none'}
-$('play').addEventListener('click',()=>{canvas.requestPointerLock&&canvas.requestPointerLock();if(!canvas.requestPointerLock){locked=true;setMenu(false)}});
+let TC=[];const menu=$('menu');function setMenu(v){menu.style.display=v?'flex':'none';TC.forEach(e=>e.style.display=v?'none':'block')}
+$('play').addEventListener('click',()=>{if(IS_TOUCH){locked=true;setMenu(false);return}canvas.requestPointerLock&&canvas.requestPointerLock();if(!canvas.requestPointerLock){locked=true;setMenu(false)}});
 document.addEventListener('pointerlockchange',()=>{locked=document.pointerLockElement===canvas;setMenu(!locked);if(!locked)ui()});
 addEventListener('mousemove',e=>{if(!locked)return;P.yaw-=e.movementX*.0022*S.sens;P.pitch=cl(P.pitch-e.movementY*.0022*S.sens,-1.5,1.5)});
 canvas.addEventListener('mousedown',e=>{if(e.button===0)keys.add('mine')});addEventListener('mouseup',e=>{if(e.button===0)keys.delete('mine')});
 addEventListener('keydown',e=>{keys.add(e.code);keys.add('k:'+e.key.toLowerCase());if(e.code==='Space'&&locked){e.preventDefault();if(P.ground){P.vy=7.5;P.ground=false}}if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))e.preventDefault();if(e.code==='KeyE'&&locked)document.exitPointerLock()});addEventListener('keyup',e=>{keys.delete(e.code);keys.delete('k:'+e.key.toLowerCase())});addEventListener('blur',()=>keys.clear());
 const dn=(...k)=>k.some(x=>keys.has(x));
+
+const IS_TOUCH=matchMedia('(pointer:coarse)').matches||'ontouchstart' in window,joy={x:0,y:0};
+if(IS_TOUCH){const mk=css=>{const d=document.createElement('div');d.style.cssText=css;document.body.appendChild(d);return d};
+ const lz=mk('position:fixed;right:0;top:0;width:55%;height:100%;z-index:11;touch-action:none'),jz=mk('position:fixed;left:0;bottom:0;width:45%;height:60%;z-index:12;touch-action:none'),jb=mk('display:none;position:fixed;width:110px;height:110px;border-radius:50%;border:2px solid #38e8ffaa;background:#38e8ff22;pointer-events:none;z-index:13'),jk=document.createElement('div');jk.style.cssText='position:absolute;left:35px;top:35px;width:40px;height:40px;border-radius:50%;background:#38e8ffcc;box-shadow:0 0 16px #38e8ff';jb.appendChild(jk);TC.push(lz,jz);
+ let jid=null,ox=0,oy=0;jz.addEventListener('pointerdown',e=>{e.preventDefault();jid=e.pointerId;try{jz.setPointerCapture(jid)}catch{}ox=e.clientX;oy=e.clientY;jb.style.display='block';jb.style.left=ox-55+'px';jb.style.top=oy-55+'px'});
+ jz.addEventListener('pointermove',e=>{if(e.pointerId!==jid)return;let dx=e.clientX-ox,dy=e.clientY-oy;const l=Math.hypot(dx,dy);if(l>55){dx*=55/l;dy*=55/l}jk.style.transform=`translate(${dx}px,${dy}px)`;joy.x=dx/55;joy.y=dy/55});
+ const je=e=>{if(e.pointerId!==jid)return;jid=null;jb.style.display='none';jk.style.transform='none';joy.x=joy.y=0};jz.addEventListener('pointerup',je);jz.addEventListener('pointercancel',je);
+ let lid=null,lx=0,ly=0;lz.addEventListener('pointerdown',e=>{e.preventDefault();lid=e.pointerId;try{lz.setPointerCapture(lid)}catch{}lx=e.clientX;ly=e.clientY});lz.addEventListener('pointermove',e=>{if(e.pointerId!==lid||!locked)return;P.yaw-=(e.clientX-lx)*.005*S.sens*1;P.pitch=cl(P.pitch-(e.clientY-ly)*.005*S.sens*1,-1.5,1.5);lx=e.clientX;ly=e.clientY});const le=e=>{if(e.pointerId===lid)lid=null};lz.addEventListener('pointerup',le);lz.addEventListener('pointercancel',le);
+ const btn=(t,pos,down,up)=>{const b=document.createElement('button');b.textContent=t;b.style.cssText='position:fixed;z-index:14;border-radius:50%;border:2px solid #fff6;background:#8a5cff77;color:#fff;font-weight:900;font-size:13px;touch-action:none;backdrop-filter:blur(3px);width:60px;height:60px;'+pos;b.addEventListener('pointerdown',e=>{e.preventDefault();b.style.background='#38e8ffcc';down()});['pointerup','pointercancel','pointerleave'].forEach(v=>b.addEventListener(v,()=>{b.style.background='#8a5cff77';if(up)up()}));document.body.appendChild(b);TC.push(b);return b};
+ btn('⛏','right:24px;bottom:40px;width:92px;height:92px;font-size:24px',()=>keys.add('mine'),()=>keys.delete('mine'));btn('SAUT','right:130px;bottom:30px',()=>{if(locked&&P.ground){P.vy=7.5;P.ground=false}});btn('RUN','right:34px;bottom:150px',()=>{keys.has('ShiftLeft')?keys.delete('ShiftLeft'):keys.add('ShiftLeft')});const mb=btn('☰','left:14px;top:150px;width:46px;height:46px;font-size:18px',()=>{locked=false;setMenu(true);ui()});TC.forEach(e=>e.style.display=menu.style.display==='none'?'block':'none');$('play').textContent='▶ JOUER'}
 function resize(){const r=canvas.getBoundingClientRect();renderer.setSize(Math.max(1,r.width),Math.max(1,r.height),false);camera.aspect=r.width/Math.max(1,r.height);camera.updateProjectionMatrix()}new ResizeObserver(resize).observe(canvas);resize();
 // boucle
 ui();for(let i=0;i<30;i++)spawnC();const clock=new THREE.Clock();let fr=0,ft=0,fmax=0,gT=0,uiT=0,spT=0,saveT=0;
 function loop(){requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.05);gT+=dt;fr++;ft+=dt;fmax=Math.max(fmax,dt);
  if(ft>=.5){const f=Math.round(fr/ft),e=$('fps');e.textContent=f;e.style.color=f>=50?'#7dff9d':f>=30?'#ffcf5a':'#ff5d6c';$('ms').textContent=(ft/fr*1000).toFixed(1)+' ms · min '+Math.round(1/Math.max(fmax,.001));fr=0;ft=0;fmax=0}
  // déplacement (ZQSD, WASD, flèches)
- let fw=0,st=0;if(locked||keys.has('force')){if(dn('KeyW','ArrowUp','k:z'))fw++;if(dn('KeyS','ArrowDown'))fw--;if(dn('KeyA','ArrowLeft','k:q'))st--;if(dn('KeyD','ArrowRight'))st++}
- const l=Math.hypot(fw,st)||1,sp=spd()*(dn('ShiftLeft','ShiftRight')?1.5:1);const sx=Math.cos(P.yaw),sz=-Math.sin(P.yaw),fx=-Math.sin(P.yaw),fz=-Math.cos(P.yaw);P.x+=(fx*fw+sx*st)/l*sp*dt;P.z+=(fz*fw+sz*st)/l*sp*dt;const pr=Math.hypot(P.x,P.z);if(pr>72){P.x*=72/pr;P.z*=72/pr}
+ let fw=0,st=0;if(locked||keys.has('force')){if(dn('KeyW','ArrowUp','k:z'))fw++;if(dn('KeyS','ArrowDown'))fw--;if(dn('KeyA','ArrowLeft','k:q'))st--;if(dn('KeyD','ArrowRight'))st++;fw-=joy.y;st+=joy.x}
+ const l=Math.hypot(fw,st)||1,sp=spd()*(dn('ShiftLeft','ShiftRight')?1.5:1);const sx=Math.cos(P.yaw),sz=-Math.sin(P.yaw),fx=-Math.sin(P.yaw),fz=-Math.cos(P.yaw);P.x+=(fx*fw+sx*st)/l*Math.min(1,l)*sp*dt;P.z+=(fz*fw+sz*st)/l*Math.min(1,l)*sp*dt;const pr=Math.hypot(P.x,P.z);if(pr>72){P.x*=72/pr;P.z*=72/pr}
  if(!P.ground){P.vy-=20*dt;P.y+=P.vy*dt;if(P.y<=0){P.y=0;P.vy=0;P.ground=true}}
  camera.position.set(P.x,P.y+1.7+(fw||st?Math.sin(gT*11)*.04:0),P.z);camera.rotation.y=P.yaw;camera.rotation.x=P.pitch;
  // minage

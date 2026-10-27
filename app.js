@@ -14,7 +14,7 @@ if(!Array.isArray(xpState.completed))xpState.completed=[];
 if(!Array.isArray(shop.owned))shop.owned=['default'];
 const levelFor=xp=>Math.min(100,Math.floor(Math.sqrt(Math.max(0,xp)/100))+1);
 const today=()=>new Date().toLocaleDateString('sv-SE');
-const gameNames={gemtap:'Gem Tap',meteordodge:'Meteor Dodge',numberrush:'Number Rush',starcatcher:'Star Catcher',colormemory:'Color Memory',racer:'Neon Racer',parkour:'Parkour Rush',defense:'Défense Néon',enquete:'Enquête Express',creatures:'Créatures Pixel',blockmania:'Block Mania',ferme:'Mini Ferme',beat:'Beat Master',jumper:'Pixel Jumper',blaster:'Star Blaster',memory:'Memory Matrix',mahjong:'Mahjong Neon',snake:'Snake Neon',ttt:'Tic Tac Toe',reaction:'Reflex Rush',pong:'Neon Pong',blocks:'Block Master',dino:'Dino Dash',flappy:'Flappy Rocket',bricks:'Brick Breaker',mole:'Critter Pop',invaders:'Space Invaders',math:'Math Sprint',color:'Color Tap',orbit:'Orbit Catch',cave:'Cave Explorer'};
+const gameNames={gemtap:'Gem Tap',meteordodge:'Meteor Dodge',numberrush:'Number Rush',starcatcher:'Star Catcher',colormemory:'Color Memory',racer:'Neon Racer',jumper:'Pixel Jumper',blaster:'Star Blaster',memory:'Memory Matrix',mahjong:'Mahjong Neon',snake:'Snake Neon',ttt:'Tic Tac Toe',reaction:'Reflex Rush',pong:'Neon Pong',blocks:'Block Master',dino:'Dino Dash',flappy:'Flappy Rocket',bricks:'Brick Breaker',mole:'Critter Pop',invaders:'Space Invaders',math:'Math Sprint',color:'Color Tap',orbit:'Orbit Catch',cave:'Cave Explorer'};
 const xpNow=()=>Math.max(0,Number(xpState.xp)||0);
 const gamesNow=()=>Math.max(0,Number(xpState.games)||0);
 function completionsToday(){return xpState.completed.filter(x=>x&&String(x.date||'').slice(0,10)===today());}
