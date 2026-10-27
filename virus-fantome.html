@@ -33,6 +33,20 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--cyan);outline-offse
 #reveal h2{color:#67f0ff}
 body.flash{animation:flash .25s steps(2,end) 4}
 @keyframes flash{50%{background:#3b0013}}
+
+/* Effets de frayeur uniquement visuels, sans bloquer la page */
+.panel{position:relative;overflow:hidden;animation:panelPulse 4s ease-in-out infinite}
+@keyframes panelPulse{0%,100%{box-shadow:0 0 22px #ff174f18}50%{box-shadow:0 0 34px #ff174f38, inset 0 0 24px #ff174f0d}}
+.glitch{animation:glitch .18s steps(2,end) 3}
+@keyframes glitch{0%{transform:translate(0)}25%{transform:translate(2px,-1px);filter:hue-rotate(40deg)}50%{transform:translate(-2px,1px)}75%{transform:translate(1px,1px);filter:contrast(1.4)}100%{transform:translate(0)}}
+#soundToggle,#secretBtn{background:#171a2a;color:#e6e8ff;border:1px solid #5a426d}
+#soundToggle[aria-pressed="true"]{border-color:#22d3ee;color:#67f0ff}
+#secret{display:none;margin-top:16px;padding:15px;border:1px dashed #22d3ee;border-radius:12px;color:#a8f7ff;background:#06171d;line-height:1.6}
+#scareOverlay{pointer-events:none;display:none;position:fixed;inset:0;z-index:10;background:#030207;color:#ff174f;align-items:center;justify-content:center;text-align:center;padding:24px;font-size:clamp(1.3rem,5vw,2.4rem);font-weight:900;letter-spacing:.05em}
+#scareOverlay.show{display:flex;animation:overlayFlicker .22s steps(2,end) 4}
+@keyframes overlayFlicker{50%{background:#21000b;color:#fff}}
+@media(prefers-reduced-motion:reduce){.panel{animation:none}.glitch,#scareOverlay.show{animation:none}}
+
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -46,10 +60,12 @@ body.flash{animation:flash .25s steps(2,end) 4}
 <p id="status" class="status">Système en attente. Appuie sur « Lancer la blague » pour démarrer la simulation.</p>
 <div class="progress" role="progressbar" aria-label="Progression de la simulation" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress"><div class="bar" id="bar"></div></div>
 <div class="logs" id="logs" aria-label="Journal fictif" aria-live="polite">> module_prank.exe prêt<br>> aucun accès système demandé<br>> en attente de démarrage…</div>
-<div class="actions"><button id="start" type="button">Lancer la blague</button><button id="stop" type="button">Arrêter / révéler la blague</button></div>
+<div class="actions"><button id="start" type="button">Lancer la blague</button><button id="stop" type="button">Arrêter / révéler la blague</button><button id="soundToggle" type="button" aria-pressed="false">Activer le son inquiétant</button><button id="secretBtn" type="button">?</button></div>
+<div id="secret" role="status">🔓 SECRET DÉBLOQUÉ : tu as trouvé le signal fantôme caché ! Code secret : <strong>BOO-404</strong>. Rien n’a été installé sur ton appareil.</div>
 <p class="note">Effets visuels uniquement. Cette page ne peut pas infecter, éteindre, verrouiller ni endommager ton téléphone. Le bouton d’arrêt reste disponible à tout moment.</p>
 <div id="reveal" role="status" aria-live="polite"><h2>😂 C’ÉTAIT UNE BLAGUE !</h2><p>Aucun virus installé. Ton appareil n’a pas été modifié.</p><a href="coffre.html">Retourner au coffre</a></div>
 </section>
+<div id="scareOverlay" aria-hidden="true"><div>⚠ SIGNAL PERDU ⚠<br><small style="display:block;font-size:.48em;margin-top:18px;color:#ff9ab0">Simulation visuelle…</small></div></div>
 </main>
 <script>
 (() => {
@@ -60,45 +76,87 @@ body.flash{animation:flash .25s steps(2,end) 4}
   const reveal = document.getElementById('reveal');
   const start = document.getElementById('start');
   const stop = document.getElementById('stop');
-  let timer = null, step = 0, running = false;
+  const soundToggle = document.getElementById('soundToggle');
+  const secretBtn = document.getElementById('secretBtn');
+  const secret = document.getElementById('secret');
+  const overlay = document.getElementById('scareOverlay');
+  let timer = null, step = 0, running = false, soundOn = false, audioCtx = null, titleClicks = 0;
   const events = [
     ['Initialisation du scénario fantôme…', '> chargement des effets visuels…'],
     ['Signal inconnu détecté… (simulation)', '> signal_fantome = SIMULÉ'],
     ['Analyse des pixels de l’écran…', '> aucun fichier ni capteur consulté'],
     ['Tentative de connexion… REFUSÉE', '> connexion fictive interrompue'],
     ['ALERTE : présence fantôme détectée !', '> BOO 👻 // effet de surprise'],
+    ['Signal perdu… écran simulé en cours de rétablissement…', '> séquence de frayeur visuelle'],
     ['Désactivation du faux virus…', '> scénario terminé']
   ];
+  function beep(freq=170, duration=.12, type='sine', volume=.035) {
+    if (!soundOn) return;
+    try {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+      osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.001, audioCtx.currentTime + duration);
+      osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + duration);
+    } catch (_) { /* Audio indisponible : les effets visuels fonctionnent toujours. */ }
+  }
+  function addLog(line) {
+    const row = document.createElement('div'); row.textContent = line; logs.appendChild(row);
+    while (logs.children.length > 8) logs.removeChild(logs.firstElementChild);
+  }
   function finish() {
     if (timer) clearInterval(timer);
     timer = null; running = false;
     status.textContent = 'Simulation arrêtée. Aucun changement n’a été fait sur l’appareil.';
     bar.style.width = '100%'; progress.setAttribute('aria-valuenow','100');
-    reveal.style.display = 'block';
-    document.body.classList.remove('flash');
-    start.disabled = false; start.textContent = 'Rejouer la blague';
-    stop.textContent = 'Blague terminée';
-    logs.innerHTML += '<br>> RÉVÉLATION : C’ÉTAIT UNE BLAGUE — aucun virus réel.';
+    overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true');
+    reveal.style.display = 'block'; document.body.classList.remove('flash','glitch');
+    start.disabled = false; start.textContent = 'Rejouer la blague'; stop.textContent = 'Blague terminée';
+    addLog('> RÉVÉLATION : C’ÉTAIT UNE BLAGUE — aucun virus réel.');
+    beep(520,.16,'triangle',.025);
   }
+  soundToggle.addEventListener('click', () => {
+    soundOn = !soundOn; soundToggle.setAttribute('aria-pressed', String(soundOn));
+    soundToggle.textContent = soundOn ? 'Couper le son' : 'Activer le son inquiétant';
+    if (soundOn) { beep(220,.16,'sine',.025); soundToggle.title = 'Le son est activé uniquement pour cette simulation'; }
+  });
+  // Petit secret : appuyer cinq fois sur le titre débloque un message caché.
+  document.getElementById('title').addEventListener('click', () => {
+    titleClicks++;
+    if (titleClicks >= 5) { secret.style.display = 'block'; addLog('> EASTER EGG DÉBLOQUÉ : BOO-404'); beep(660,.22,'triangle',.03); titleClicks = 0; }
+  });
+  secretBtn.addEventListener('click', () => {
+    secret.style.display = secret.style.display === 'block' ? 'none' : 'block';
+    if (secret.style.display === 'block') { addLog('> vérification du secret… indice : appuie cinq fois sur le titre'); beep(330,.12,'triangle',.02); }
+  });
   start.addEventListener('click', () => {
     if (running) return;
     if (timer) clearInterval(timer);
     step = 0; running = true; reveal.style.display = 'none';
     start.disabled = true; stop.textContent = 'Arrêter / révéler la blague';
-    logs.innerHTML = '> démarrage du scénario…';
-    document.body.classList.add('flash');
+    logs.replaceChildren(); addLog('> démarrage du scénario…');
+    document.body.classList.add('flash','glitch');
     timer = setInterval(() => {
+      if (step === 5) {
+        // Faux écran de signal perdu très bref, non bloquant et immédiatement annulable.
+        overlay.classList.add('show'); overlay.setAttribute('aria-hidden','false');
+        setTimeout(() => { overlay.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); }, 850);
+      }
       const e = events[Math.min(step, events.length - 1)];
-      status.textContent = e[0];
-      logs.innerHTML += '<br>' + e[1];
+      status.textContent = e[0]; addLog(e[1]);
       const pct = Math.min(100, Math.round((step + 1) / events.length * 100));
       bar.style.width = pct + '%'; progress.setAttribute('aria-valuenow', String(pct));
-      if (logs.childElementCount > 30) logs.innerHTML = logs.innerHTML.split('<br>').slice(-8).join('<br>');
+      if (step === 1) beep(110,.22,'sawtooth',.025);
+      else if (step === 3) beep(145,.18,'square',.018);
+      else if (step === 4) { beep(260,.22,'sawtooth',.025); document.body.classList.add('glitch'); setTimeout(()=>document.body.classList.remove('glitch'),600); }
       step++;
       if (step >= events.length) finish();
-    }, 1500);
+    }, 1250);
   });
   stop.addEventListener('click', finish);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && running) finish(); });
 })();
 </script>
 </body>

@@ -12,7 +12,11 @@ header{text-align:center;padding:36px 0 24px}.eyebrow{color:var(--cyan);text-tra
 h1{margin:12px 0;font-size:clamp(2rem,7vw,3.3rem)}header p{color:var(--muted);line-height:1.6}
 .books{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.book{background:linear-gradient(145deg,#171f40,var(--panel));border:1px solid #343d69;border-radius:18px;padding:24px;box-shadow:0 12px 32px #0005}
 .cover{height:100px;display:grid;place-items:center;border-radius:12px;margin-bottom:18px;background:linear-gradient(135deg,#6d28d9,#0891b2);font-size:2.5rem}
-h2{margin:0 0 8px;font-size:1.2rem}.book p{color:var(--muted);line-height:1.5;min-height:44px}
+h2{margin:0 0 8px;font-size:1.2rem}
+.book{transition:transform .2s,border-color .2s,box-shadow .2s}.book:hover,.book:focus-within{transform:translateY(-4px);border-color:#22d3ee;box-shadow:0 14px 38px #0008,0 0 22px #22d3ee18}
+.prank-book{position:relative;overflow:hidden;border-color:#7e2444}.prank-cover{background:radial-gradient(circle at 50% 30%,#7f1232,#170615 72%);animation:ghostGlow 3s ease-in-out infinite}.prank-link{background:linear-gradient(90deg,#ff174f,#8b5cf6);color:white}.prank-book::after{content:"SIMULATION SANS DANGER";display:block;color:#ff9ab0;font-size:.68rem;letter-spacing:.08em;margin-top:12px;text-align:center}
+@keyframes ghostGlow{0%,100%{box-shadow:inset 0 0 0 #ff174f00}50%{box-shadow:inset 0 0 28px #ff174f55}}
+@media(prefers-reduced-motion:reduce){.book,.prank-cover{animation:none;transition:none}}.book p{color:var(--muted);line-height:1.5;min-height:44px}
 .download{display:block;text-align:center;text-decoration:none;color:#07111f;background:linear-gradient(90deg,var(--cyan),#a5f3fc);font-weight:bold;padding:12px 16px;border-radius:10px;margin-top:18px;transition:transform .15s,filter .15s}
 .download:hover{transform:translateY(-2px);filter:brightness(1.08)}footer{color:var(--muted);text-align:center;font-size:.85rem;margin:28px 0 8px}
 @media(max-width:560px){.books{grid-template-columns:1fr}}
