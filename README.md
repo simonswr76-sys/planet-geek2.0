@@ -56,3 +56,5 @@ Mise à jour Portal Worlds 3D : 12 mondes reliés par des portails (Bonbonland, 
 
 
 Mise à jour : joystick virtuel pour jouer sur téléphone dans Vol un Œuf et Vole un Gloubi ; Cristal Rush et Neon Royale ont maintenant des contrôles tactiles complets (joystick à gauche, glisser à droite pour regarder, boutons d'action, bouton Menu).
+
+Mise à jour majeure Portal Worlds 3D : Index de 160 orbes nommés (20 zones x 8) avec 7 raretes (DIVIN et SECRET en plus), 18 mondes + Nexus, 5 obbies publics (checkpoints, plateformes mobiles / qui disparaissent / trampolines, recompenses, stats de base ou mode facile), 6 plateformes en altitude par monde (30 m a 1280 m, saut maintenu pour enchainer les sauts multiples), et un Obby du Createur protege par le code secret (touche R).
