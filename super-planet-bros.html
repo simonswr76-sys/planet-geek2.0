@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071323"><meta name="description" content="Super Planet Bros — aventure de plateforme originale avec 50 niveaux.">
+<title>Super Planet Bros — Planet Geek</title>
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="mobile.css">
+<style>
+:root{color-scheme:dark}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#182b57,#050b18 70%);color:#f4f8ff;font-family:system-ui,sans-serif}
+.sp-wrap{max-width:1180px;margin:auto;padding:18px}.sp-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.sp-back,.sp-btn{border:1px solid #375b8b;background:#10213d;color:#eaf6ff;border-radius:12px;padding:11px 15px;text-decoration:none;font-weight:700;cursor:pointer}.sp-hero{margin:18px 0;padding:20px;border:1px solid #3657a0;border-radius:20px;background:linear-gradient(120deg,#111d44,#183f5c 55%,#442b78)}.sp-hero h1{margin:0 0 6px;font-size:clamp(26px,5vw,42px)}.sp-hero p{margin:0;color:#c5d7f5}.sp-stats{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.sp-stat{padding:9px 14px;border-radius:12px;background:#101d33;border:1px solid #263e62}.sp-game{position:relative;background:#0a1730;border:1px solid #375b8b;border-radius:18px;overflow:hidden;box-shadow:0 18px 60px #0008}.sp-game canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;touch-action:none}.sp-hud{display:flex;gap:9px;justify-content:space-between;align-items:center;flex-wrap:wrap;padding:10px;background:#0b1830}.sp-controls{display:none;justify-content:space-between;gap:14px;padding:12px;background:#0b1830}.sp-pad{display:flex;gap:10px}.sp-touch{width:62px;height:56px;border:1px solid #5b80bd;border-radius:14px;background:linear-gradient(#213d69,#142747);color:white;font-size:25px;font-weight:900;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}.sp-touch.jump{width:92px;background:linear-gradient(#6b3ec5,#3c2b87)}.sp-levels{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0}.sp-level{width:42px;height:40px;border:1px solid #36557f;border-radius:10px;background:#10213a;color:#fff;font-weight:700}.sp-level:disabled{opacity:.35}.sp-level.current{border-color:#42e8ff;box-shadow:0 0 12px #42e8ff66}.sp-note{color:#9fb5d5;font-size:14px}@media(max-width:760px){.sp-wrap{padding:10px}.sp-controls{display:flex}.sp-hud{font-size:13px}.sp-touch{width:58px;height:54px}} 
+button,a{-webkit-tap-highlight-color:transparent}button{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+</style><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icons/planet-geek-180.png"></head>
+<body>
+<div class="sp-wrap">
+<header class="sp-top"><a class="sp-back" href="jeux.html">← Retour aux jeux</a><strong>PLANET GEEK · AVENTURE</strong><button class="sp-btn" id="reset">Réinitialiser la progression</button></header>
+<section class="sp-hero"><h1>⭐ Super Planet Bros</h1><p>Une grande aventure de plateforme originale : explore 50 niveaux, récupère les étoiles, évite les créatures et atteins le portail ! Progression sauvegardée automatiquement sur cet appareil.</p></section>
+<div class="sp-stats"><div class="sp-stat">Niveau : <b id="levelLabel">1 / 50</b></div><div class="sp-stat">Étoiles : <b id="coinLabel">0</b></div><div class="sp-stat">Meilleur niveau : <b id="bestLabel">1</b></div><div class="sp-stat">Sauvegarde : <b>automatique</b></div></div>
+<section class="sp-game"><canvas id="game" width="960" height="540" aria-label="Jeu de plateforme Super Planet Bros"></canvas><div class="sp-hud"><span id="message">Atteins le portail lumineux !</span><span>PC : ← → / Q D · Espace pour sauter</span><button class="sp-btn" id="restart">Recommencer</button></div><div class="sp-controls"><div class="sp-pad"><button class="sp-touch" data-key="left">◀</button><button class="sp-touch" data-key="right">▶</button></div><button class="sp-touch jump" data-key="jump">SAUT</button></div></section>
+<h2>Choisir un niveau</h2><div id="levels" class="sp-levels"></div><p class="sp-note">Astuce : tu peux rejouer les niveaux déjà débloqués. Les étoiles et les niveaux terminés restent enregistrés dans le navigateur de cet appareil.</p>
+</div>
+<script>
+(()=>{
+'use strict';
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d'),W=960,H=540;
+const KEY='planetGeek.superPlanetBros.save.v1';
+let save;try{save=JSON.parse(localStorage.getItem(KEY)||'{}')}catch{save={}}
+save={unlocked:Math.max(1,Math.min(50,save.unlocked||1)),stars:Math.max(0,save.stars||0),done:Array.isArray(save.done)?save.done:[],best:Math.max(1,save.best||1)};
+let level=1,player,platforms,coins,enemies,goal,camera=0,keys={},won=false,dead=false,frame=0,levelStars=0;
+const $=id=>document.getElementById(id);
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(save))}catch{};renderLevels();$('coinLabel').textContent=save.stars;$('bestLabel').textContent=save.best}
+function renderLevels(){ $('levels').innerHTML='';for(let i=1;i<=50;i++){let b=document.createElement('button');b.className='sp-level'+(i===level?' current':'');b.textContent=i;b.disabled=i>save.unlocked;b.addEventListener('click',()=>load(i));$('levels').appendChild(b)}$('levelLabel').textContent=level+' / 50'}
+function makeLevel(n){
+ const ground=[],items=[],foes=[],length=2200+n*95;let x=0;
+ while(x<length){let gap=(x>300 && Math.random()<0.14+n*.001)?90+Math.min(90,n*2):0;x+=gap;let width=180+Math.random()*210;ground.push({x,y:440-Math.min(95,Math.floor(n/5)*8),w:width,h:100});if(Math.random()<.8)items.push({x:x+60+Math.random()*Math.max(20,width-100),y:ground[ground.length-1].y-55,r:13,got:false});if(n>2&&Math.random()<.35)foes.push({x:x+width*.55,y:ground[ground.length-1].y-34,w:34,h:34,min:x+10,max:x+width-45,dir:1,speed:1+n*.035});x+=width}
+ ground.push({x:length,y:440,w:350,h:100});return {platforms:ground,coins:items,enemies:foes,goal:{x:length+180,y:340,w:35,h:100},length:length+400};
+}
+function load(n){level=n;let l=makeLevel(n);platforms=l.platforms;coins=l.coins;enemies=l.enemies;goal=l.goal;worldLength=l.length;camera=0;won=false;dead=false;levelStars=0;player={x:55,y:300,w:34,h:46,vx:0,vy:0,on:false};$('message').textContent='Niveau '+n+' : trouve le portail !';renderLevels()}
+let worldLength=2500;
+function restart(){load(level)}
+function rect(x,y,w,h,color){ctx.fillStyle=color;ctx.fillRect(x-camera,y,w,h)}
+function draw(){
+ frame++;ctx.clearRect(0,0,W,H);
+ let sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#152d60');sky.addColorStop(1,'#75b9d2');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+ for(let i=0;i<9;i++){let px=((i*180-camera*.22)%(W+220)+W+220)%(W+220)-80;ctx.fillStyle='#d6f1ff';ctx.globalAlpha=.15;ctx.beginPath();ctx.arc(px,90+(i%3)*55,35,0,7);ctx.arc(px+35,90+(i%3)*55,26,0,7);ctx.fill();ctx.globalAlpha=1}
+ // plateformes
+ platforms.forEach(p=>{let x=p.x-camera;if(x+p.w<0||x>W)return;ctx.fillStyle='#245b48';ctx.fillRect(x,p.y,p.w,p.h);ctx.fillStyle='#64d66d';ctx.fillRect(x,p.y,p.w,12);ctx.fillStyle='#347a5b';for(let k=0;k<p.w;k+=32)ctx.fillRect(x+k,p.y+20,17,8)});
+ // collectibles
+ coins.forEach(c=>{if(c.got)return;let x=c.x-camera;ctx.fillStyle='#ffe46b';ctx.beginPath();ctx.arc(x,c.y,13,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#fff6b0';ctx.lineWidth=4;ctx.stroke();ctx.fillStyle='#a86b13';ctx.font='bold 16px sans-serif';ctx.fillText('★',x-7,c.y+6)});
+ // enemies
+ enemies.forEach(e=>{let x=e.x-camera;ctx.fillStyle='#9c58df';ctx.beginPath();ctx.roundRect(x,e.y,e.w,e.h,10);ctx.fill();ctx.fillStyle='white';ctx.fillRect(x+8,e.y+9,6,7);ctx.fillRect(x+21,e.y+9,6,7);ctx.fillStyle='#252044';ctx.fillRect(x+10,e.y+11,3,4);ctx.fillRect(x+23,e.y+11,3,4)});
+ // portal
+ let gx=goal.x-camera;ctx.shadowColor='#54f5ff';ctx.shadowBlur=28;ctx.strokeStyle='#78f7ff';ctx.lineWidth=8;ctx.beginPath();ctx.ellipse(gx+17,goal.y+48,22,48,0,0,Math.PI*2);ctx.stroke();ctx.shadowBlur=0;ctx.fillStyle='#eaffff';ctx.font='bold 18px sans-serif';ctx.fillText('EXIT',gx-8,goal.y-12);
+ // hero
+ let px=player.x-camera;ctx.fillStyle='#ffe0a6';ctx.beginPath();ctx.arc(px+17,player.y+10,12,0,7);ctx.fill();ctx.fillStyle='#273c89';ctx.fillRect(px+4,player.y+22,27,22);ctx.fillStyle='#ffca4b';ctx.fillRect(px+2,player.y+20,31,8);ctx.fillStyle='#f6faff';ctx.fillRect(px+9,player.y+7,4,5);ctx.fillRect(px+21,player.y+7,4,5);ctx.fillStyle='#263b68';ctx.fillRect(px+5,player.y+42,10,5);ctx.fillRect(px+21,player.y+42,10,5);
+ if(won||dead){ctx.fillStyle='#061225bb';ctx.fillRect(0,0,W,H);ctx.fillStyle='white';ctx.textAlign='center';ctx.font='bold 46px system-ui';ctx.fillText(won?'NIVEAU TERMINÉ !':'OUPS !',W/2,H/2-10);ctx.font='22px system-ui';ctx.fillText(won?'Le prochain portail est débloqué.':'Réessaie, tu vas y arriver !',W/2,H/2+34);ctx.textAlign='left'}
+}
+function physics(){
+ if(won||dead)return;
+ let left=keys.left||keys.ArrowLeft||keys.q||keys.Q,right=keys.right||keys.ArrowRight||keys.d||keys.D,jump=keys.jump||keys[' ' ]||keys.ArrowUp||keys.z||keys.Z;
+ player.vx=left?-4.2:right?4.2:0;player.x=Math.max(0,Math.min(worldLength-80,player.x+player.vx));player.vy+=.58;player.y+=player.vy;player.on=false;
+ platforms.forEach(p=>{if(player.x+player.w>p.x&&player.x<p.x+p.w&&player.y+player.h>=p.y&&player.y+player.h<=p.y+22&&player.vy>=0){player.y=p.y-player.h;player.vy=0;player.on=true}});
+ if(jump&&player.on){player.vy=-12.5;player.on=false}
+ coins.forEach(c=>{if(!c.got&&Math.hypot(player.x+17-c.x,player.y+20-c.y)<28){c.got=true;save.stars++;levelStars++;persist()}});
+ enemies.forEach(e=>{e.x+=e.dir*e.speed;if(e.x<e.min||e.x>e.max)e.dir*=-1;if(player.x+player.w>e.x&&player.x<e.x+e.w&&player.y+player.h>e.y&&player.y<e.y+e.h){if(player.vy>1&&player.y+player.h<e.y+22){e.x=-999;player.vy=-8}else dead=true}});
+ if(player.y>H+80)dead=true;
+ if(player.x+player.w>goal.x){won=true;if(!save.done.includes(level))save.done.push(level);save.unlocked=Math.max(save.unlocked,Math.min(50,level+1));save.best=Math.max(save.best,save.unlocked);persist();$('message').textContent='Bravo ! Niveau '+level+' terminé. '+levelStars+' étoile(s) récupérée(s).'}
+ camera=Math.max(0,Math.min(worldLength-W,player.x-W*.32));
+ if(dead)$('message').textContent='Essaie encore : bouton Recommencer.';
+}
+function loop(){physics();draw();requestAnimationFrame(loop)}
+window.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowUp',' ','a','d','q','z','A','D','Q','Z'].includes(e.key)){e.preventDefault();keys[e.key]=true}});
+window.addEventListener('keyup',e=>keys[e.key]=false);
+document.querySelectorAll('[data-key]').forEach(b=>{let k=b.dataset.key;const down=e=>{e.preventDefault();keys[k]=true},up=e=>{e.preventDefault();keys[k]=false};b.addEventListener('pointerdown',down);['pointerup','pointercancel','pointerleave'].forEach(ev=>b.addEventListener(ev,up))});
+$('restart').addEventListener('click',restart);$('reset').addEventListener('click',()=>{if(confirm('Effacer la progression de Super Planet Bros sur cet appareil ?')){save={unlocked:1,stars:0,done:[],best:1};persist();load(1)}});
+load(1);persist();loop();
+})();
+</script></body></html>

@@ -1,0 +1,28 @@
+PLANET GEEK — MISE À JOUR AJOUTÉE
+
+Cette archive est basée sur le ZIP fourni par l'utilisateur. Les fichiers déjà présents ont été conservés ; les nouveautés sont ajoutées ou modifiées sans retirer les pages existantes.
+
+NOUVEAUTÉS
+- Super Planet Bros : jeu de plateforme original, 50 niveaux, étoiles, ennemis, portails, commandes clavier et boutons tactiles, progression sauvegardée localement.
+- Mahjong Galaxy : plafond augmenté de 250 à 350 niveaux (+100).
+- Catalogue : ajout de Super Planet Bros et des six jeux de réflexion déjà présents dans l'archive.
+- Icônes : miniatures illustrées de type application pour les cartes de jeux. Le script app-icons.js attribue aussi une icône aux nouvelles cartes ajoutées au catalogue qui utilisent .game-card.
+- iPhone/mobile : suppression de la sélection de texte au toucher prolongé sur les boutons et éléments de jeu, sans bloquer la sélection dans les champs de saisie.
+- Installation : manifest.webmanifest et icône Apple Touch pour faciliter l'ajout de Planet Geek à l'écran d'accueil lorsque le navigateur le permet.
+
+SAUVEGARDES
+- Super Planet Bros et les jeux de réflexion utilisant puzzle-core.js enregistrent leur progression avec localStorage sur l'appareil et le navigateur utilisés.
+- Le système existant de Planet Geek (XP, pièces, profil et records) est conservé.
+- Les sauvegardes locales ne se synchronisent pas automatiquement entre PC et iPhone : chaque appareil/navigateur possède son propre stockage.
+
+INSTALLATION
+1. Extraire le ZIP.
+2. Publier le contenu du dossier planet-geek2.0-main dans le dépôt GitHub Pages en conservant l'arborescence.
+3. Ne pas renommer les fichiers HTML/JS/CSS ni le dossier assets.
+4. Sur iPhone, ouvrir le site dans Safari puis utiliser Partager > Sur l'écran d'accueil.
+
+VÉRIFICATIONS EFFECTUÉES
+- Les 54 entrées du ZIP source ont été conservées.
+- Les liens locaux href/src des pages HTML ont été vérifiés : aucune référence locale manquante détectée.
+- Les fichiers HTML, JavaScript et CSS sont présents dans l'archive.
+- Pas de test navigateur réel effectué dans cette session.

@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const body=document.body, type=body.dataset.game, slug=body.dataset.slug, title=body.dataset.title;
 const $=id=>document.getElementById(id), board=$('board'), status=$('status'), controls=$('controls');
-const KEY='planetGeek.puzzle.v1.'+slug, MAX=250;
+const KEY='planetGeek.puzzle.v1.'+slug, MAX=350;
 let saved; try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch{saved={}}
 let state={unlocked:Math.max(1,saved.unlocked||1),completed:saved.completed||[],xp:saved.xp||0,record:saved.record||null,best:saved.best||{},level:Math.max(1,saved.level||1)};
 let model={},selected=null,won=false,moves=0,flips=0,first=null,usedHint=false;

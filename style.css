@@ -165,3 +165,13 @@ button,a{-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-vi
 .season-countdown div strong{font-size:clamp(17px,2.6vw,24px);font-variant-numeric:tabular-nums;color:#fff;letter-spacing:.04em}
 .season-countdown-note{margin-left:auto;color:#b7c7e8;font-size:12px}
 @media(max-width:560px){.season-countdown{gap:10px;padding:13px}.season-countdown-note{width:100%;margin-left:38px}}
+
+
+/* Planet Geek — tactile controls: avoid iOS long-press text selection */
+button, .play-btn, .filter, .game-card, .game-cover, [role="button"], .tile, .sp-touch {
+  -webkit-user-select:none !important; user-select:none !important;
+  -webkit-touch-callout:none !important; -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+button *, .play-btn *, .game-cover * { -webkit-user-select:none !important; user-select:none !important; -webkit-touch-callout:none !important; }
+img, .pg-app-icon { -webkit-user-drag:none; user-select:none; -webkit-user-select:none; pointer-events:none; }

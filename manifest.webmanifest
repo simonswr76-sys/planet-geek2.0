@@ -1,0 +1,22 @@
+{
+  "name": "Planet Geek",
+  "short_name": "Planet Geek",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#06101e",
+  "theme_color": "#071323",
+  "icons": [
+    {
+      "src": "assets/icons/planet-geek-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/super-planet-bros.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
