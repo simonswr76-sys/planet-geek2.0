@@ -1,0 +1,21 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#070b1d"><title>Crystal Defender — Planet Geek</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0%,#17285a,#070b1d 65%);color:#eef6ff;font-family:system-ui,Arial;min-height:100vh;display:grid;place-items:center;padding:14px}main{width:min(980px,100%);text-align:center}h1{font-size:clamp(28px,6vw,54px);margin:8px;color:#a56bff;text-shadow:0 0 22px #a56bff66}p{color:#c8d8f4}.hud{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:10px}.pill{background:#101d3b;border:1px solid #a56bff66;border-radius:14px;padding:9px 15px}canvas{width:100%;max-width:900px;height:auto;aspect-ratio:16/9;background:#081127;border:1px solid #a56bff88;border-radius:18px;box-shadow:0 0 35px #a56bff22;touch-action:none}button{background:linear-gradient(120deg,#a56bff,#956aff);border:0;color:#071020;font-weight:900;border-radius:12px;padding:12px 18px;margin:5px;font-size:15px;touch-action:manipulation}.controls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}a{color:#cfeaff}.hint{font-size:13px}@media(max-width:600px){body{padding:8px}canvas{border-radius:10px}}
+</style></head><body><main><a href="jeux.html">← Retour aux jeux</a><h1>Crystal Defender</h1><p>Protège le noyau : touche les cristaux lumineux pour marquer des points.</p><div class="hud"><div class="pill">Score : <b id="score">0</b></div><div class="pill">Record : <b id="best">0</b></div><div class="pill" id="status">Prêt ?</div></div><canvas id="game" width="900" height="506"></canvas><div class="controls"><button id="left">◀ GAUCHE</button><button id="action">JOUER / ACTION</button><button id="right">DROITE ▶</button></div><p class="hint">Clique ou touche les cristaux. Chaque cristal rapporte 10 points. Le record est sauvegardé.</p></main><script>
+const c=document.getElementById('game'),ctx=c.getContext('2d'),$=id=>document.getElementById(id);let score=0,best=+(localStorage.getItem('pg_crystal_defender_best')||0),running=false,keys={},last=0; $('best').textContent=best;
+function saveScore(v){score=v;$('score').textContent=v;if(v>best){best=v;$('best').textContent=v;localStorage.setItem('pg_crystal_defender_best',best)}}
+function start(){running=true;score=0;saveScore(0);$('status').textContent='En cours';resetGame()}
+$('action').onclick=()=>running?actionGame():start();$('left').onpointerdown=()=>keys.left=true;$('left').onpointerup=$('left').onpointerleave=()=>keys.left=false;$('right').onpointerdown=()=>keys.right=true;$('right').onpointerup=$('right').onpointerleave=()=>keys.right=false;
+addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(e.code==='Space'){e.preventDefault();running?actionGame():start()}});addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
+function end(){running=false;$('status').textContent='Terminé — rejoue !'}
+function draw(){requestAnimationFrame(draw);let dt=Math.min((performance.now()-last)/16.67,2);last=performance.now();ctx.clearRect(0,0,900,506);
+ctx.fillStyle='#101d3b';ctx.fillRect(0,0,900,506);if(!window.defender)window.defender={targets:[],tick:0};let d=window.defender;
+if(running){d.tick+=dt;if(d.tick%42<dt)d.targets.push({x:40+Math.random()*820,y:70+Math.random()*350,life:110});d.targets.forEach(t=>t.life-=dt);d.targets=d.targets.filter(t=>t.life>0);saveScore(score+0)}
+d.targets.forEach(t=>{ctx.beginPath();ctx.fillStyle='#42eaff';ctx.shadowBlur=24;ctx.shadowColor='#42eaff';ctx.arc(t.x,t.y,22,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0});
+ctx.fillStyle='#fff';ctx.font='22px system-ui';ctx.fillText('TOUCHE LES CRISTAUX AVANT QU’ILS DISPARAISSENT',25,38);
+c.onclick=e=>{if(!running){start();return}let b=c.getBoundingClientRect(),x=(e.clientX-b.left)*900/b.width,y=(e.clientY-b.top)*506/b.height;let i=d.targets.findIndex(t=>Math.hypot(t.x-x,t.y-y)<32);if(i>=0){d.targets.splice(i,1);saveScore(score+10)}};
+}
+function resetGame(){}
+function actionGame(){}
+draw();
+</script></body></html>

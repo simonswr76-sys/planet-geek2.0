@@ -1,0 +1,20 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#070b1d"><title>Sky Runner — Planet Geek</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0%,#17285a,#070b1d 65%);color:#eef6ff;font-family:system-ui,Arial;min-height:100vh;display:grid;place-items:center;padding:14px}main{width:min(980px,100%);text-align:center}h1{font-size:clamp(28px,6vw,54px);margin:8px;color:#42eaff;text-shadow:0 0 22px #42eaff66}p{color:#c8d8f4}.hud{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:10px}.pill{background:#101d3b;border:1px solid #42eaff66;border-radius:14px;padding:9px 15px}canvas{width:100%;max-width:900px;height:auto;aspect-ratio:16/9;background:#081127;border:1px solid #42eaff88;border-radius:18px;box-shadow:0 0 35px #42eaff22;touch-action:none}button{background:linear-gradient(120deg,#42eaff,#956aff);border:0;color:#071020;font-weight:900;border-radius:12px;padding:12px 18px;margin:5px;font-size:15px;touch-action:manipulation}.controls{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}a{color:#cfeaff}.hint{font-size:13px}@media(max-width:600px){body{padding:8px}canvas{border-radius:10px}}
+</style></head><body><main><a href="jeux.html">← Retour aux jeux</a><h1>Sky Runner</h1><p>Cours sur les plateformes du ciel</p><div class="hud"><div class="pill">Score : <b id="score">0</b></div><div class="pill">Record : <b id="best">0</b></div><div class="pill" id="status">Prêt ?</div></div><canvas id="game" width="900" height="506"></canvas><div class="controls"><button id="left">◀ GAUCHE</button><button id="action">JOUER / ACTION</button><button id="right">DROITE ▶</button></div><p class="hint">Saute avec ESPACE ou le bouton ACTION. Déplace-toi avec A/D, les flèches ou les boutons tactiles.</p></main><script>
+const c=document.getElementById('game'),ctx=c.getContext('2d'),$=id=>document.getElementById(id);let score=0,best=+(localStorage.getItem('pg_sky_runner_best')||0),running=false,keys={},last=0; $('best').textContent=best;
+function saveScore(v){score=v;$('score').textContent=v;if(v>best){best=v;$('best').textContent=v;localStorage.setItem('pg_sky_runner_best',best)}}
+function start(){running=true;score=0;saveScore(0);$('status').textContent='En cours';resetGame()}
+$('action').onclick=()=>running?actionGame():start();$('left').onpointerdown=()=>keys.left=true;$('left').onpointerup=$('left').onpointerleave=()=>keys.left=false;$('right').onpointerdown=()=>keys.right=true;$('right').onpointerup=$('right').onpointerleave=()=>keys.right=false;
+addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(e.code==='Space'){e.preventDefault();running?actionGame():start()}});addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
+function end(){running=false;$('status').textContent='Terminé — rejoue !'}
+function draw(){requestAnimationFrame(draw);let dt=Math.min((performance.now()-last)/16.67,2);last=performance.now();ctx.clearRect(0,0,900,506);
+ctx.fillStyle='#101d3b';ctx.fillRect(0,420,900,86);ctx.fillStyle='#41eaff';ctx.fillRect(0,420,900,5);
+if(!window.runner)window.runner={x:120,y:380,vy:0,obs:[],tick:0};let r=window.runner;
+if(running){r.tick+=dt;if((keys.left||keys.a)&&r.x>35)r.x-=5*dt;if((keys.right||keys.d)&&r.x<850)r.x+=5*dt;if((keys[' ']||keys.up)&&r.y>=380)r.vy=-13; r.vy+=.55*dt;r.y+=r.vy*dt;if(r.y>380){r.y=380;r.vy=0}if(r.tick%68<dt){r.obs.push({x:930,h:35+Math.random()*55})}r.obs.forEach(o=>o.x-=7*dt);r.obs=r.obs.filter(o=>o.x>-50);r.obs.forEach(o=>{ctx.fillStyle='#ff5c9d';ctx.fillRect(o.x,420-o.h,28,o.h);if(Math.abs(o.x-r.x)<27&&r.y>420-o.h-28)end()});saveScore(Math.floor(r.tick/8))}
+ctx.fillStyle='#42e8ff';ctx.shadowBlur=18;ctx.shadowColor='#42e8ff';ctx.fillRect(r.x,r.y,30,40);ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='22px system-ui';ctx.fillText('SKY RUNNER',25,38);
+}
+function resetGame(){}
+function actionGame(){}
+draw();
+</script></body></html>

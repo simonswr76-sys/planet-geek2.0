@@ -1,0 +1,15 @@
+PLANET GEEK — CORRECTION ET 3 NOUVEAUX JEUX
+
+Correction de la console créateur de Neon Frontier 3D :
+- Les clics sur le titre étaient bloqués par pointer-events:none du HUD. Le titre reçoit maintenant pointer-events:auto.
+- Accès secret : 5 clics rapides sur PLANET GEEK // FRONTIER, puis code simonSWR.
+- Accès de secours : Ctrl + Maj + G puis code créateur.
+- Outils supplémentaires : +100 secteurs, tous les secteurs (niveau 9999), +100 000 cristaux locaux, récupérer les noyaux, invincibilité et super saut.
+
+Nouveaux jeux :
+- Sky Runner : runner à sauts et obstacles.
+- Crystal Defender : mini-jeu de réflexes, cliquer/toucher les cristaux.
+- Drift Circuit : conduite arcade et esquive du trafic.
+Les trois jeux ont commandes PC/tactiles et record local.
+
+Les sauvegardes sont locales au navigateur et à l'appareil. Aucun multijoueur en ligne n'est créé.

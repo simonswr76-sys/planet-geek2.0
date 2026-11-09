@@ -6,7 +6,7 @@
 #creator .modal{border-color:#ffdb65;box-shadow:0 0 55px #ffcb3340}
 #creator .logo{background:linear-gradient(100deg,#ffe77a,#ff8c42 60%,#fff);background-clip:text}
 #creator .btn{width:min(100%,360px)}
-.brand{user-select:none;-webkit-user-select:none;cursor:pointer}
+.brand{user-select:none;-webkit-user-select:none;cursor:pointer;pointer-events:auto;touch-action:manipulation}
 button,.act,.btn{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 @media(max-width:520px){.modal{padding:18px}.keys{grid-template-columns:1fr}.btn{width:100%;margin:4px 0}}
 </style></head><body><div id="game"></div>
@@ -19,6 +19,9 @@ button,.act,.btn{-webkit-user-select:none;user-select:none;-webkit-touch-callout
   <p class="sub">Console secrète du créateur — outils de test et accès rapide.</p>
   <div class="keys"><div id="creatorStatus">Mode créateur activé</div><div>Les changements sont sauvegardés localement.</div></div>
   <button class="btn" id="creatorSkip">DÉBLOQUER +100 SECTEURS</button>
+  <button class="btn" id="creatorMax">DÉBLOQUER TOUS LES SECTEURS</button>
+  <button class="btn" id="creatorCoins">AJOUTER 100 000 CRISTAUX</button>
+  <button class="btn" id="creatorCores">RÉCUPÉRER TOUS LES NOYAUX</button>
   <button class="btn" id="creatorFinish">TERMINER CE SECTEUR</button>
   <button class="btn" id="creatorInvincible">INVINCIBILITÉ : ON/OFF</button>
   <button class="btn" id="creatorJump">SUPER SAUT : ON/OFF</button>
@@ -27,7 +30,7 @@ button,.act,.btn{-webkit-user-select:none;user-select:none;-webkit-touch-callout
 \n<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
 <script type="module">
 import * as THREE from 'three';
-const $=id=>document.getElementById(id);const SAVE='pg_neon_frontier_3d_v1';let saved={level:1,best:0,creatorUnlocked:false,invincible:false,superJump:false};try{saved={...saved,...JSON.parse(localStorage.getItem(SAVE)||'{}')}}catch{};
+const $=id=>document.getElementById(id);const SAVE='pg_neon_frontier_3d_v1';let saved={level:1,best:0,coins:0,creatorUnlocked:false,invincible:false,superJump:false};try{saved={...saved,...JSON.parse(localStorage.getItem(SAVE)||'{}')}}catch{};
 $('continueText').textContent=`Sauvegarde trouvée : secteur ${saved.level} · meilleur secteur ${saved.best||1}`;
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x071027);scene.fog=new THREE.FogExp2(0x071027,.012);
 const camera=new THREE.PerspectiveCamera(65,innerWidth/innerHeight,.1,300);const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;$('game').appendChild(renderer.domElement);
@@ -77,9 +80,13 @@ document.querySelector('.brand').addEventListener('click',()=>{
  }
 });
 $('creatorClose').onclick=()=>$('creator').classList.add('hidden');
+$('creatorMax').onclick=()=>{saved.level=9999;saved.best=9999;save();buildLevel(9999);playing=true;$('creator').classList.add('hidden');notify('Tous les secteurs sont débloqués !')};
+$('creatorCoins').onclick=()=>{saved.coins=(saved.coins||0)+100000;save();$('creatorStatus').textContent='Cristaux créateur : '+saved.coins.toLocaleString('fr-FR');notify('+100 000 cristaux créateur !')};
+$('creatorCores').onclick=()=>{$('creator').classList.add('hidden');got=6;$('crystals').textContent='6';$('bar').style.width='100%';$('goal').textContent='Portail activé !';notify('Tous les noyaux récupérés ! Rejoins le portail.')};
 $('creatorSkip').onclick=()=>{saved.level=Math.max(saved.level||1,level)+100;saved.best=Math.max(saved.best||0,saved.level);save();buildLevel(saved.level);playing=true;$('creator').classList.add('hidden');notify('100 secteurs débloqués !')};
 $('creatorFinish').onclick=()=>{got=6;$('crystals').textContent='6';$('bar').style.width='100%';$('goal').textContent='Portail activé !';$('creator').classList.add('hidden');notify('Secteur prêt à être terminé : rejoins le portail !')};
 $('creatorInvincible').onclick=()=>{saved.invincible=!saved.invincible;save();$('creatorStatus').textContent='Invincibilité : '+(saved.invincible?'ACTIVÉE':'désactivée');notify('Mode invincible mis à jour')};
 $('creatorJump').onclick=()=>{saved.superJump=!saved.superJump;save();$('creatorStatus').textContent='Super saut : '+(saved.superJump?'ACTIVÉ':'désactivé');notify('Super saut mis à jour')};
+addEventListener('keydown',e=>{if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='g'){e.preventDefault();if(saved.creatorUnlocked){$('creator').classList.remove('hidden')}else{const code=prompt('Code créateur :');if(code==='simonSWR'){saved.creatorUnlocked=true;save();$('creator').classList.remove('hidden');notify('Bienvenue dans le Creator Lab !')}}}});
 function animate(){requestAnimationFrame(animate);let dt=Math.min(clock2.getDelta(),.04);update(dt);for(let o of world.children){if(o.userData.goal)o.rotation.z=Math.sin(performance.now()*.0008)*.08}renderer.render(scene,camera)}animate();addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 </script></body></html>
