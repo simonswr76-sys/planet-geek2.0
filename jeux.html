@@ -153,8 +153,8 @@ body[data-page="stats"] #progression-planet {display:block!important}
   #game-grid .game-info { min-height:76px; }
 }
 </style>
-</head>
-<body data-page="jeux">
+<link rel="stylesheet" href="planet-geek-hub.css"></head>
+<body data-page="jeux"><a class="pg-centre-shortcut" href="centre-pg.html" aria-label="Ouvrir le Centre Planet Geek">✨ Centre PG</a>
 <header class="topbar">
   <a class="brand" href="index.html" aria-label="Planet Geek accueil"><span class="planet">◉</span> PLANET <b>GEEK</b></a>
   <div class="search-wrap" role="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Jeu, catégorie, mot-clé…" aria-label="Rechercher par nom, catégorie ou description" autocomplete="off"><button id="clear-search" type="button" aria-label="Effacer la recherche" title="Effacer" hidden>×</button></div>
@@ -187,7 +187,7 @@ body[data-page="stats"] #progression-planet {display:block!important}
     <button class="filter" data-category="Arcade">✹ Arcade</button>
     <button class="filter" data-category="Réflexion">◇ Réflexion</button>
   </nav>
-  <div class="game-grid" id="game-grid"><article class="game-card" data-category="Réflexion" data-name="Mahjong Neon">
+  <div class="game-grid" id="game-grid"><article class="game-card" data-category="Arcade" data-name="Neon Frontier 3D"><a href="neon-frontier-3d.html" style="display:block;color:inherit;text-decoration:none"><div class="game-cover" style="background:linear-gradient(135deg,#091a3c,#244d80 55%,#633b9e);min-height:190px"><div class="cover-label">NOUVEAU · VRAIE 3D</div><img src="assets/icons/neon-frontier-3d.svg" alt="Icône Neon Frontier 3D" style="display:block;width:100%;height:145px;object-fit:contain;padding:8px"><span class="cover-symbol">✦</span></div><div class="game-info"><div><h3>Neon Frontier 3D</h3><p>Explore les îles flottantes, récupère les noyaux et ouvre le portail !</p></div><span class="play-btn" style="display:grid;place-items:center">▶</span></div></a><div class="card-foot"><span>✦ AVENTURE 3D</span><span>PC + MOBILE</span></div></article><article class="game-card" data-category="Réflexion" data-name="Mahjong Neon">
       <div class="game-cover cover-mahjong"><div class="cover-label">RÉFLEXION</div><div class="mahjong-art"><span>龍</span><span>竹</span><span>發</span><span>中</span></div><span class="cover-symbol">◆</span></div>
       <div class="game-info"><div><h3>Mahjong Neon</h3><p>Associe les tuiles libres et vide le plateau. Plusieurs niveaux !</p></div><button class="play-btn" data-game="mahjong" aria-label="Jouer à Mahjong Neon">▶</button></div>
       <div class="card-foot"><span>◇ RÉFLEXION</span><span>SOURIS / TACTILE</span></div>
@@ -348,5 +348,5 @@ body[data-page="stats"] #progression-planet {display:block!important}
 <script>
 (()=>{const btn=document.getElementById('menu-toggle');const menu=document.getElementById('quick-dock');if(!btn||!menu)return;const close=()=>{menu.hidden=true;btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','Ouvrir le menu')};btn.addEventListener('click',()=>{const opening=menu.hidden;menu.hidden=!opening;btn.setAttribute('aria-expanded',String(opening));btn.setAttribute('aria-label',opening?'Fermer le menu':'Ouvrir le menu')});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});document.addEventListener('click',e=>{if(!menu.hidden&&!menu.contains(e.target)&&!btn.contains(e.target))close()})})();
 </script>
-</body>
+<script src="planet-geek-hub.js"></script></body>
 </html>

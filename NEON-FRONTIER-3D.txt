@@ -1,0 +1,7 @@
+NEON FRONTIER 3D — NOUVEAU JEU PLANET GEEK
+
+Ouvrir neon-frontier-3d.html depuis le site. Le jeu charge Three.js depuis jsDelivr (connexion Internet requise).
+Objectif : collecter 6 noyaux d’énergie puis rejoindre le portail. Plusieurs secteurs, plateformes, sentinelles, personnage 3D construit en géométrie, contrôles PC et tactile, sauvegarde locale de progression.
+
+PC : ZQSD/WASD ou flèches, Espace pour sauter, Shift pour sprinter. Mobile : joystick virtuel et boutons Saut/Boost.
+Sauvegarde locale par navigateur/appareil.

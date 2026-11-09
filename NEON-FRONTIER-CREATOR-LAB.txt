@@ -1,0 +1,11 @@
+NEON FRONTIER 3D — MISE À JOUR CREATOR LAB
+
+Améliorations :
+- Décor 3D enrichi : arches lumineuses, balises, rochers flottants et éclats.
+- Console créateur cachée : toucher/clic 5 fois sur PLANET GEEK // FRONTIER.
+- Code créateur : simonSWR.
+- Outils : débloquer 100 secteurs, terminer un secteur, invincibilité et super saut.
+- Les options du créateur et la progression sont enregistrées dans la sauvegarde locale.
+- Commandes PC et joystick tactile conservés.
+
+La console est destinée au mode solo local. Les sauvegardes restent sur l'appareil et le navigateur utilisés.
