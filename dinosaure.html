@@ -18,7 +18,8 @@ button:hover{transform:scale(1.05)}button:active{transform:scale(.96)}
 button:focus-visible{outline:3px solid #fff;outline-offset:3px}
 #mu{position:absolute;top:8px;left:8px;padding:4px 10px;font-size:16px;background:rgba(0,0,0,.45);color:#fff;box-shadow:none;border:1px solid var(--cy)}
 .hint{opacity:.7;font-size:14px;text-align:center;margin:0}
-</style><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icons/planet-geek-180.png"></head><body>
+</style><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icons/planet-geek-180.png"><link rel="stylesheet" href="planet-geek-redesign.css">
+</head><body>
 <h1>NEON DINO</h1>
 <div id="wrap">
 <canvas id="c" width="1600" height="600"></canvas>
@@ -72,4 +73,5 @@ $('go').addEventListener('click',()=>{if(st!=='play')start()});
 $('mu').addEventListener('click',e=>{mute=!mute;e.target.textContent=mute?'🔇':'🔊';e.target.blur()});
 document.addEventListener('visibilitychange',()=>{last=performance.now()});
 requestAnimationFrame(loop);
-</script></body></html>
+</script><script src="planet-geek-redesign.js" defer></script>
+</body></html>

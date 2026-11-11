@@ -1,0 +1,29 @@
+PLANET GEEK — REFONTE VISUELLE 2026
+
+NOUVEAUTÉS
+- Nouvelle barre de navigation unifiée sur les pages du site, avec état actif.
+- Menu mobile repliable et navigation adaptée aux petits écrans.
+- Nouvelle page d'accueil avec bannière, appels à l'action et raccourcis.
+- Affichage sur l'accueil des XP, pièces, niveau et parties depuis les sauvegardes locales existantes.
+- Barre de recherche unifiée qui réutilise le moteur de recherche de la page Jeux.
+- Style commun bleu néon / violet, cartes et interactions harmonisées.
+- Améliorations tactiles : suppression de la sélection involontaire sur les boutons et liens mobiles.
+
+PRÉSERVATION
+- Tous les fichiers d'origine sont conservés.
+- games.js, les jeux, leurs pages, les sauvegardes localStorage et les systèmes existants ne sont pas remplacés.
+- Les nouvelles fonctions utilisent les clés de sauvegarde déjà présentes.
+- Aucun compte en ligne ni serveur n'est ajouté : les données locales restent propres au navigateur/appareil.
+
+INSTALLATION
+1. Fais une copie de ton dossier actuel.
+2. Décompresse cette archive.
+3. Envoie le contenu du dossier planet-geek2.0-main dans ton dépôt GitHub en remplaçant les anciens fichiers.
+4. Attends la fin de GitHub Pages puis recharge le site (Ctrl+F5 sur PC).
+
+TESTS EFFECTUÉS
+- Archive ZIP vérifiée (CRC).
+- Syntaxe JavaScript du nouveau script vérifiée avec Node.js.
+- Les 75 fichiers d'origine sont conservés ; 35 pages HTML reçoivent les liens vers la refonte.
+- Les fichiers de jeux et games.js n'ont pas été remplacés.
+- Pas de test de jeu complet dans un navigateur réel effectué.
