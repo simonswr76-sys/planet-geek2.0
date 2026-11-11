@@ -106,58 +106,10 @@ function shut(){modal.classList.remove('open');modal.setAttribute('aria-hidden',
 document.querySelectorAll('[data-game]').forEach(b=>b.addEventListener('click',()=>openGame(b.dataset.game)));
 document.getElementById('claim-xp').addEventListener('click',claimXP);
 close.addEventListener('click',shut);modal.addEventListener('click',e=>{if(e.target===modal)shut();});document.addEventListener('keydown',e=>{if(e.key==='Escape')shut();});document.getElementById('restart-game').addEventListener('click',()=>{window.currentGame=current;PlanetGames.launch(current);});
-const search=document.getElementById('search'),clearSearch=document.getElementById('clear-search'),filters=[...document.querySelectorAll('.filter')],cards=[...document.querySelectorAll('.game-card')];let category='Tous',activeSuggestion=-1;
+const search=document.getElementById('search'),clearSearch=document.getElementById('clear-search'),filters=[...document.querySelectorAll('.filter')],cards=[...document.querySelectorAll('.game-card')];let category='Tous';
 const normalizeSearch=value=>String(value||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('fr').trim();
-const searchWrap=search?.closest('.search-wrap');
-let suggestionBox=null;
-if(search&&searchWrap){
-  suggestionBox=document.createElement('div');suggestionBox.id='pg-search-results';suggestionBox.className='pg-search-results';suggestionBox.hidden=true;suggestionBox.setAttribute('role','listbox');suggestionBox.setAttribute('aria-label','Jeux correspondants');searchWrap.appendChild(suggestionBox);
-  search.setAttribute('aria-controls','pg-search-results');search.setAttribute('aria-autocomplete','list');search.setAttribute('aria-expanded','false');
-}
-function cardData(card){
- const title=card.dataset.name||card.querySelector('h3')?.textContent?.trim()||'Jeu Planet Geek';
- const categoryName=card.dataset.category||'Mini-jeu';
- const desc=card.querySelector('.game-info p')?.textContent?.trim()||categoryName;
- const searchable=normalizeSearch([title,categoryName,desc,card.querySelector('.cover-label')?.textContent].filter(Boolean).join(' '));
- const words=normalizeSearch(search.value).split(/\s+/).filter(Boolean);
- const score=words.reduce((n,w)=>n+(normalizeSearch(title).startsWith(w)?5:normalizeSearch(title).includes(w)?3:searchable.includes(w)?1:0),0);
- return {card,title,categoryName,desc,searchable,score};
-}
-function closeSuggestions(){if(!suggestionBox)return;suggestionBox.hidden=true;suggestionBox.innerHTML='';activeSuggestion=-1;search?.setAttribute('aria-expanded','false');search?.removeAttribute('aria-activedescendant');}
-function openCard(card){if(!card)return;const link=card.querySelector('a[href]');if(link){window.location.href=link.href;return;}const play=card.querySelector('[data-game]');if(play){play.click();return;}card.scrollIntoView({behavior:'smooth',block:'center'});}
-function renderSuggestions(q){
- if(!suggestionBox)return;
- if(!q){closeSuggestions();return;}
- const words=q.split(/\s+/).filter(Boolean);
- const matches=cards.map(cardData).filter(x=>(category==='Tous'||x.card.dataset.category===category)&&words.every(w=>x.searchable.includes(w))).sort((a,b)=>b.score-a.score||a.title.localeCompare(b.title,'fr')).slice(0,7);
- suggestionBox.innerHTML='';activeSuggestion=-1;
- if(!matches.length){const empty=document.createElement('div');empty.className='pg-search-empty';empty.textContent='Aucun jeu trouvé. Essaie un autre mot ou une catégorie.';suggestionBox.appendChild(empty);}
- else matches.forEach((item,index)=>{
-   const button=document.createElement('button');button.type='button';button.className='pg-search-result';button.id='pg-search-option-'+index;button.setAttribute('role','option');button.setAttribute('aria-selected','false');
-   const visual=document.createElement('span');visual.className='pg-search-result-visual';const img=item.card.querySelector('.game-cover img');
-   if(img){const clone=document.createElement('img');clone.src=img.getAttribute('src');clone.alt='';visual.appendChild(clone);}else{const cover=item.card.querySelector('.game-cover');const emoji=cover?.textContent?.match(/[\u{1F300}-\u{1FAFF}]/u)?.[0];visual.textContent=emoji||({Course:'🏁',Plateforme:'⬆',Arcade:'✦',Réflexion:'◇'}[item.categoryName]||'🎮');}
-   const copy=document.createElement('span');copy.className='pg-search-result-copy';const name=document.createElement('strong');name.textContent=item.title;const meta=document.createElement('small');meta.textContent=item.categoryName+' · '+item.desc;copy.append(name,meta);
-   const action=document.createElement('span');action.className='pg-search-result-action';action.textContent='JOUER ↗';button.append(visual,copy,action);
-   button.addEventListener('pointerdown',e=>e.preventDefault());button.addEventListener('click',()=>{closeSuggestions();openCard(item.card);});suggestionBox.appendChild(button);
- });
- suggestionBox.hidden=false;search.setAttribute('aria-expanded','true');
-}
-function update(){
- const q=normalizeSearch(search?.value||'');let visible=0;
- cards.forEach(c=>{const d=cardData(c);const ok=(category==='Tous'||c.dataset.category===category)&&(!q||q.split(/\s+/).filter(Boolean).every(w=>d.searchable.includes(w)));c.hidden=!ok;if(ok)visible++;});
- const count=document.getElementById('visible-count');if(count)count.textContent=visible;
- const empty=document.getElementById('empty');if(empty)empty.hidden=visible!==0;
- if(clearSearch)clearSearch.hidden=!(search?.value||'');renderSuggestions(q);
-}
-if(search){search.addEventListener('input',update);search.addEventListener('focus',()=>{if(search.value)renderSuggestions(normalizeSearch(search.value));});search.addEventListener('keydown',e=>{
- if(e.key==='Escape'){if(search.value){search.value='';update();}else closeSuggestions();e.stopPropagation();}
- else if(e.key==='ArrowDown'||e.key==='ArrowUp'){const opts=[...suggestionBox?.querySelectorAll('.pg-search-result')||[]];if(!opts.length)return;e.preventDefault();activeSuggestion=(activeSuggestion+(e.key==='ArrowDown'?1:-1)+opts.length)%opts.length;opts.forEach((o,i)=>{o.setAttribute('aria-selected',String(i===activeSuggestion));o.classList.toggle('is-active',i===activeSuggestion);});search.setAttribute('aria-activedescendant',opts[activeSuggestion].id);}
- else if(e.key==='Enter'){e.preventDefault();const opts=[...suggestionBox?.querySelectorAll('.pg-search-result')||[]];if(activeSuggestion>=0&&opts[activeSuggestion])opts[activeSuggestion].click();else{const first=cards.find(c=>!c.hidden);if(first)openCard(first);}}
- });}
-if(clearSearch)clearSearch.addEventListener('click',()=>{search.value='';update();search.focus();});
-filters.forEach(b=>b.addEventListener('click',()=>{filters.forEach(f=>f.classList.toggle('active',f===b));category=b.dataset.category;update();}));
-document.addEventListener('click',e=>{if(searchWrap&&!searchWrap.contains(e.target))closeSuggestions();});
-const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();update();
+function update(){const q=normalizeSearch(search.value);let visible=0;cards.forEach(c=>{const searchable=normalizeSearch([c.dataset.name,c.dataset.category,c.querySelector('h3')?.textContent,c.querySelector('.game-info p')?.textContent,c.querySelector('.cover-label')?.textContent].filter(Boolean).join(' '));const ok=(category==='Tous'||c.dataset.category===category)&&searchable.includes(q);c.hidden=!ok;if(ok)visible++;});document.getElementById('visible-count').textContent=visible;document.getElementById('empty').hidden=visible!==0;clearSearch.hidden=!search.value;}
+search.addEventListener('input',update);clearSearch.addEventListener('click',()=>{search.value='';update();search.focus();});search.addEventListener('keydown',e=>{if(e.key==='Escape'){if(search.value){search.value='';update();e.stopPropagation();}}else if(e.key==='Enter'){const first=cards.find(c=>!c.hidden);if(first){first.scrollIntoView({behavior:'smooth',block:'center'});first.querySelector('[data-game]')?.focus({preventScroll:true});}}});filters.forEach(b=>b.addEventListener('click',()=>{filters.forEach(f=>f.classList.toggle('active',f===b));category=b.dataset.category;update();}));document.getElementById('year').textContent=new Date().getFullYear();update();
 
 /* Défis hebdomadaires intégrés à la progression principale */
 function renderWeeklyMissions(){

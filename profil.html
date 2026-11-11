@@ -129,7 +129,7 @@ body[data-page="stats"] #progression-planet {display:block!important}
 <body data-page="profil"><a class="pg-centre-shortcut" href="centre-pg.html" aria-label="Ouvrir le Centre Planet Geek">✨ Centre PG</a>
 <header class="topbar">
   <a class="brand" href="index.html" aria-label="Planet Geek accueil"><span class="planet">◉</span> PLANET <b>GEEK</b></a>
-  <div class="search-wrap" role="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Que veux-tu jouer ? Tape un nom…" aria-label="Rechercher par nom, catégorie ou description" autocomplete="off"><button id="clear-search" type="button" aria-label="Effacer la recherche" title="Effacer" hidden>×</button></div>
+  <div class="search-wrap" role="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Jeu, catégorie, mot-clé…" aria-label="Rechercher par nom, catégorie ou description" autocomplete="off"><button id="clear-search" type="button" aria-label="Effacer la recherche" title="Effacer" hidden>×</button></div>
   <a class="submit-link" href="jeux.html">JOUER <span>↗</span></a>
 </header>
 <div class="menu-wrap">
@@ -271,6 +271,7 @@ body[data-page="stats"] #progression-planet {display:block!important}
   </div>
   <div class="profile-level"><small>NIVEAU</small><strong id="profile-level">1</strong><span id="profile-xp">0 XP</span></div>
 </section>
+<section class="feature-panel" style="margin:18px auto;max-width:1100px"><div class="eyebrow">IDENTITÉ PLANET GEEK</div><h2>TITRE <span>DE JOUEUR</span></h2><p class="feature-sub">Ton titre choisi dans les événements s'affiche ici.</p><strong id="profile-player-title">Novice</strong><p><a class="primary-btn" href="evenements.html">GÉRER MES TITRES ↗</a></p></section>
 <section class="xp-panel" aria-label="Progression XP">
   <div class="xp-title"><div class="eyebrow">TON AVANCÉE</div><h2>PLANET <span>XP</span></h2><p>Joue, gagne de l’XP et débloque des badges !</p></div>
   <div class="xp-stats"><div><small>XP TOTALE</small><strong id="xp-total">0 XP</strong></div><div><small>NIVEAU</small><strong id="xp-level">1</strong></div><div><small>PARTIES VALIDÉES</small><strong id="xp-games">0</strong></div><div><small>PIÈCES PG</small><strong id="pg-coins">0 ◈</strong></div></div>
@@ -318,5 +319,5 @@ body[data-page="stats"] #progression-planet {display:block!important}
 <script>
 (()=>{const btn=document.getElementById('menu-toggle');const menu=document.getElementById('quick-dock');if(!btn||!menu)return;const close=()=>{menu.hidden=true;btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','Ouvrir le menu')};btn.addEventListener('click',()=>{const opening=menu.hidden;menu.hidden=!opening;btn.setAttribute('aria-expanded',String(opening));btn.setAttribute('aria-label',opening?'Fermer le menu':'Ouvrir le menu')});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});document.addEventListener('click',e=>{if(!menu.hidden&&!menu.contains(e.target)&&!btn.contains(e.target))close()})})();
 </script>
-<script src="planet-geek-hub.js"></script></body>
+<script src="planet-geek-hub.js"></script><script>(()=>{try{const s=JSON.parse(localStorage.getItem("planetGeekEventsV1")||"{}");const e=document.getElementById("profile-player-title");if(e)e.textContent=s.equipped||"Novice"}catch{}})();</script></body>
 </html>
