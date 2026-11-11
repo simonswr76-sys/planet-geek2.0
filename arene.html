@@ -125,12 +125,11 @@ body[data-page="stats"] #progression-planet {display:block!important}
  body[data-page] .page-welcome{padding:10px 16px}
 }
 </style>
-<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icons/planet-geek-180.png"><link rel="stylesheet" href="planet-geek-hub.css"><link rel="stylesheet" href="planet-geek-redesign.css">
-</head>
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icons/planet-geek-180.png"><link rel="stylesheet" href="planet-geek-hub.css"></head>
 <body data-page="arene"><a class="pg-centre-shortcut" href="centre-pg.html" aria-label="Ouvrir le Centre Planet Geek">✨ Centre PG</a>
 <header class="topbar">
   <a class="brand" href="index.html" aria-label="Planet Geek accueil"><span class="planet">◉</span> PLANET <b>GEEK</b></a>
-  <div class="search-wrap" role="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Jeu, catégorie, mot-clé…" aria-label="Rechercher par nom, catégorie ou description" autocomplete="off"><button id="clear-search" type="button" aria-label="Effacer la recherche" title="Effacer" hidden>×</button></div>
+  <div class="search-wrap" role="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Que veux-tu jouer ? Tape un nom…" aria-label="Rechercher par nom, catégorie ou description" autocomplete="off"><button id="clear-search" type="button" aria-label="Effacer la recherche" title="Effacer" hidden>×</button></div>
   <a class="submit-link" href="jeux.html">JOUER <span>↗</span></a>
 </header>
 <div class="menu-wrap">
@@ -319,6 +318,5 @@ body[data-page="stats"] #progression-planet {display:block!important}
 <script>
 (()=>{const btn=document.getElementById('menu-toggle');const menu=document.getElementById('quick-dock');if(!btn||!menu)return;const close=()=>{menu.hidden=true;btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','Ouvrir le menu')};btn.addEventListener('click',()=>{const opening=menu.hidden;menu.hidden=!opening;btn.setAttribute('aria-expanded',String(opening));btn.setAttribute('aria-label',opening?'Fermer le menu':'Ouvrir le menu')});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});document.addEventListener('click',e=>{if(!menu.hidden&&!menu.contains(e.target)&&!btn.contains(e.target))close()})})();
 </script>
-<script src="planet-geek-hub.js"></script><script src="planet-geek-redesign.js" defer></script>
-</body>
+<script src="planet-geek-hub.js"></script></body>
 </html>

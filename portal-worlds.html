@@ -41,8 +41,7 @@ html,body{touch-action:none;-webkit-user-select:none;user-select:none}
 #pw{display:none;position:fixed;inset:0;z-index:40;background:#050719ee;align-items:center;justify-content:center;padding:16px}.pwb{flex:1;border:0;border-radius:10px;padding:12px;font-weight:900;font-size:15px;cursor:pointer;color:#06091f;background:linear-gradient(100deg,#ffe98b,#ffbd59)}#pw.shake .card{animation:sh .4s}@keyframes sh{20%{transform:translateX(-12px)}40%{transform:translateX(12px)}60%{transform:translateX(-8px)}80%{transform:translateX(8px)}}
 .cgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.cc{border:1px solid;border-radius:11px;padding:8px;background:#0a0d2899;display:flex;flex-direction:column;gap:3px;font-size:12px}.cc i{width:20px;height:20px;border-radius:50%;display:block}.cc small{font-size:10px;color:#8fa0cc}.cc.lock{border-color:#ffffff1f;opacity:.5}.cc.lock i{background:#26305a}details summary{list-style:none}
 .tabs{grid-template-columns:repeat(auto-fit,minmax(86px,1fr))!important}.cgrid2{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}.cbtn{border:1px solid #8a5cff66;background:#14186a;color:#fff;border-radius:9px;padding:9px 6px;font-weight:800;font-size:12px;cursor:pointer}.cbtn:hover{background:#2a2a9a}#spdc button{border:0;border-radius:6px;width:26px;height:26px;font-weight:900;font-size:15px;background:linear-gradient(100deg,#38e8ff,#8a5cff);color:#06091f;cursor:pointer}
-</style><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icons/planet-geek-180.png"><link rel="stylesheet" href="planet-geek-redesign.css">
-</head><body>
+</style><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="assets/icons/planet-geek-180.png"></head><body>
 <canvas id="scene"></canvas><div id="flash"></div><div id="fade"></div><div id="pops"></div>
 <div class="hud" id="tl"><div class="box"><small>Pièces</small><strong id="coins">0 ◈</strong><div id="wname"></div><div id="ips" style="font-size:12px;color:#7dff9d"></div></div></div>
 <div class="hud box" id="fpsbox"><small>FPS</small><strong id="fps">--</strong><span id="ms">-- ms</span></div><button id="mbtn">☰ Menu</button>
@@ -327,5 +326,4 @@ function loop(){requestAnimationFrame(loop);const dt=Math.min(clock.getDelta(),.
 requestAnimationFrame(loop);
 window.__PG={S,P,W,OR,keys,joy,setSpd,claimQ,claimDaily,bankAct,stkAct,startEv,cmb,ev,QS,CRA,tickStocks,qval,get creatorOK(){return creatorOK},groundAt,finishOb,idxCount,NM,RP,isOpen,spdE,jmpE,djE,get ob(){return ob},buyUp,openPw,tryPw,REL,idleRate,fmt,get sPed(){return sPed},get sChest(){return sChest},get orbs(){return orbs},get portals(){return portals},get plats(){return plats},get hero(){return hero},spawnOrb,collect,travel,unlock,interact,jump,cost,persist,heightAt,vmul,openMenu,closeToPlay,get active(){return active},touch};window.__PG_OK=true;
 
-</script><script src="planet-geek-redesign.js" defer></script>
-</body></html>
+</script></body></html>
