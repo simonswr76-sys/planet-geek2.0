@@ -128,7 +128,7 @@ body[data-page="stats"] #progression-planet {display:block!important}
 <link rel="apple-touch-icon" href="assets/icons/planet-geek-180.png">
 <style id="planet-geek-clean-mobile">
 /* Catalogue épuré : priorité au nom des jeux, sans grandes images décoratives */
-#game-grid .game-cover { display:none !important; }
+/* Les couvertures des jeux restent visibles pour mieux reconnaître chaque jeu. */
 #game-grid .game-card { min-width:0; }
 #game-grid .game-info { min-height:88px; padding:16px 17px; align-items:center; }
 #game-grid .game-info h3 { margin:0 0 5px; }
@@ -157,7 +157,7 @@ body[data-page="stats"] #progression-planet {display:block!important}
 <body data-page="jeux"><a class="pg-centre-shortcut" href="centre-pg.html" aria-label="Ouvrir le Centre Planet Geek">✨ Centre PG</a>
 <header class="topbar">
   <a class="brand" href="index.html" aria-label="Planet Geek accueil"><span class="planet">◉</span> PLANET <b>GEEK</b></a>
-  <div class="search-wrap" role="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Jeu, catégorie, mot-clé…" aria-label="Rechercher par nom, catégorie ou description" autocomplete="off"><button id="clear-search" type="button" aria-label="Effacer la recherche" title="Effacer" hidden>×</button></div>
+  <div class="search-wrap" role="search"><span class="search-icon" aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Rechercher un jeu..." aria-label="Rechercher un jeu" autocomplete="off" aria-controls="pg-search-results"><button id="clear-search" type="button" aria-label="Effacer la recherche" title="Effacer" hidden>×</button><div id="pg-search-results" class="pg-search-results" role="listbox" aria-label="Jeux correspondants" hidden></div></div>
   <a class="submit-link" href="jeux.html">JOUER <span>↗</span></a>
 </header>
 <div class="menu-wrap">
@@ -346,7 +346,7 @@ body[data-page="stats"] #progression-planet {display:block!important}
     <div class="modal-bottom"><span id="game-help">Amuse-toi bien !</span><div class="modal-actions"><button id="claim-xp" class="claim-xp-btn">✓ TERMINER LA PARTIE · +10 XP</button><button id="restart-game" class="restart-btn">↻ RECOMMENCER</button></div></div>
   </div>
 </div>
-<script src="games.js"></script><script src="app.js"></script>
+<script src="games.js"></script><script src="app.js"></script><script src="planet-geek-search.js"></script>
 <script src="upgrade.js"></script>
 <script>
 (()=>{const btn=document.getElementById('menu-toggle');const menu=document.getElementById('quick-dock');if(!btn||!menu)return;const close=()=>{menu.hidden=true;btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','Ouvrir le menu')};btn.addEventListener('click',()=>{const opening=menu.hidden;menu.hidden=!opening;btn.setAttribute('aria-expanded',String(opening));btn.setAttribute('aria-label',opening?'Fermer le menu':'Ouvrir le menu')});menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});document.addEventListener('click',e=>{if(!menu.hidden&&!menu.contains(e.target)&&!btn.contains(e.target))close()})})();

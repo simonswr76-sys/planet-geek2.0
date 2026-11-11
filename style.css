@@ -175,3 +175,44 @@ button, .play-btn, .filter, .game-card, .game-cover, [role="button"], .tile, .sp
 }
 button *, .play-btn *, .game-cover * { -webkit-user-select:none !important; user-select:none !important; -webkit-touch-callout:none !important; }
 img, .pg-app-icon { -webkit-user-drag:none; user-select:none; -webkit-user-select:none; pointer-events:none; }
+
+/* PLANET GEEK — recherche instantanée et finition visuelle */
+.search-wrap{position:relative;z-index:120;isolation:isolate;transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+.search-wrap:focus-within{transform:translateY(-1px);box-shadow:0 0 0 3px #42e8ff20,0 10px 30px #02081788,0 0 24px #42e8ff20}
+.search-wrap .search-icon{font-size:22px;line-height:1;flex:0 0 auto;text-shadow:0 0 12px #42e8ff99}
+.search-wrap input{font-size:16px}
+.pg-search-results{position:absolute;top:calc(100% + 10px);left:0;right:0;max-height:min(68vh,490px);overflow:auto;padding:7px;border:1px solid #42e8ff66;border-radius:14px;background:linear-gradient(145deg,#07182cf7,#11152ff7);box-shadow:0 18px 48px #0009,0 0 30px #42e8ff18;backdrop-filter:blur(20px);z-index:500;animation:pg-search-in .16s ease-out}
+.pg-search-results[hidden]{display:none}
+.pg-search-result{width:100%;display:flex;align-items:center;gap:10px;text-align:left;padding:10px;border:1px solid transparent;border-radius:10px;background:transparent;color:#eaf7ff;cursor:pointer;transition:background .16s ease,border-color .16s ease,transform .16s ease}
+.pg-search-result:hover,.pg-search-result[aria-selected="true"]{background:linear-gradient(100deg,#12334b,#251d49);border-color:#42e8ff66;transform:translateX(2px)}
+.pg-search-result-icon{display:grid;place-items:center;width:36px;height:36px;flex:0 0 36px;border:1px solid #42e8ff55;border-radius:9px;background:#0b2a42;color:#8df4ff;font-size:17px}
+.pg-search-result-copy{display:grid;gap:2px;min-width:0;flex:1}
+.pg-search-result-copy strong{font:700 12px Orbitron,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pg-search-result-copy small{font-size:12px;color:#91a9c4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pg-search-result-tag{font:700 9px Orbitron,sans-serif;color:#9ed9ee;white-space:nowrap}
+.pg-search-result-arrow{color:#42e8ff;font-size:17px}
+.pg-search-empty{padding:18px 12px;text-align:center;color:#a8bfd8;font-size:14px}
+@keyframes pg-search-in{from{opacity:0;transform:translateY(-6px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* Animations légères, effets lumineux et interactions cohérents sur toutes les pages */
+:root{--pg-glow-cyan:0 0 22px #42e8ff22;--pg-glow-violet:0 0 24px #a76bff22}
+.topbar{box-shadow:0 8px 28px #02081725}
+.brand{transition:filter .2s ease,transform .2s ease}
+.brand:hover{filter:drop-shadow(0 0 10px #42e8ff77);transform:translateY(-1px)}
+button,.primary-btn,.feature-button,.submit-link,.lobby-secondary,.quick-dock a{transition:transform .18s ease,filter .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease}
+button:hover:not(:disabled),.primary-btn:hover,.feature-button:hover,.submit-link:hover,.lobby-secondary:hover{filter:brightness(1.12);transform:translateY(-2px)}
+button:active:not(:disabled),.primary-btn:active,.feature-button:active{transform:translateY(0) scale(.98)}
+.game-card,.feature-panel,.pg-locker-card,.daily-login-card,.season-countdown{box-shadow:0 8px 24px #02081725;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease,filter .22s ease}
+.game-card:hover,.feature-panel:hover,.pg-locker-card:hover{transform:translateY(-5px);border-color:#42e8ff88;box-shadow:0 15px 38px #02081755,0 0 22px #42e8ff16}
+.game-cover{transition:filter .25s ease}
+.game-card:hover .game-cover{filter:saturate(1.18) brightness(1.08)}
+.game-card:hover .play-btn{box-shadow:0 0 18px #42e8ff55;transform:scale(1.06)}
+.pg-lobby{animation:pg-rise-in .55s ease both}
+.season-notice{animation:pg-rise-in .55s .07s ease both}
+.pg-home-strip{animation:pg-rise-in .55s .13s ease both}
+.game-card{animation:pg-rise-in .45s ease both}
+.game-card:nth-child(2){animation-delay:.035s}.game-card:nth-child(3){animation-delay:.07s}.game-card:nth-child(4){animation-delay:.105s}.game-card:nth-child(5){animation-delay:.14s}.game-card:nth-child(6){animation-delay:.175s}.game-card:nth-child(7){animation-delay:.21s}.game-card:nth-child(8){animation-delay:.245s}
+.feature-panel{animation:pg-rise-in .45s ease both}
+@keyframes pg-rise-in{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:760px){.pg-search-results{left:0;right:0;max-height:60vh}.pg-search-result{padding:11px 9px}.pg-search-result-copy small{max-width:52vw}.pg-search-result-tag{font-size:8px}.game-card:hover,.feature-panel:hover,.pg-locker-card:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){.pg-lobby,.season-notice,.pg-home-strip,.game-card,.feature-panel{animation:none!important}.pg-search-results{animation:none!important}}
